@@ -1,4 +1,4 @@
-/// Widget tests for [PaywallScreen] (onboarding) and [MyWalkPaywallView] (contextual).
+/// Widget tests for [PaywallScreen] (onboarding) and [GraceWayPaywallView] (contextual).
 library;
 
 import 'dart:async';
@@ -8,10 +8,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
-import 'package:mywalk/domain/repositories/iap_repository.dart';
-import 'package:mywalk/presentation/providers/store_provider.dart';
-import 'package:mywalk/presentation/views/onboarding/paywall_screen.dart';
-import 'package:mywalk/presentation/views/shared/mywalk_paywall_view.dart';
+import 'package:graceway/domain/repositories/iap_repository.dart';
+import 'package:graceway/presentation/providers/store_provider.dart';
+import 'package:graceway/presentation/views/onboarding/paywall_screen.dart';
+import 'package:graceway/presentation/views/shared/graceway_paywall_view.dart';
 
 // ── Mocks ──────────────────────────────────────────────────────────────────
 
@@ -94,9 +94,9 @@ Future<_Deps> _buildTestStore(
 }
 
 List<_FakeProduct> get _allProducts => [
-      _FakeProduct(id: MyWalkProducts.monthly, rawPrice: 4.99),
-      _FakeProduct(id: MyWalkProducts.annual, rawPrice: 39.99),
-      _FakeProduct(id: MyWalkProducts.lifetime, rawPrice: 99.99),
+      _FakeProduct(id: GraceWayProducts.monthly, rawPrice: 4.99),
+      _FakeProduct(id: GraceWayProducts.annual, rawPrice: 39.99),
+      _FakeProduct(id: GraceWayProducts.lifetime, rawPrice: 99.99),
     ];
 
 Widget _wrapPaywallScreen(StoreProvider store, {VoidCallback? onNext}) {
@@ -114,12 +114,12 @@ Widget _wrapPaywallView(StoreProvider store, {String? contextTitle}) {
   return MaterialApp(
     home: ChangeNotifierProvider<StoreProvider>.value(
       value: store,
-      child: MyWalkPaywallView(contextTitle: contextTitle),
+      child: GraceWayPaywallView(contextTitle: contextTitle),
     ),
   );
 }
 
-/// Wraps [MyWalkPaywallView] pushed on top of a simple home so that
+/// Wraps [GraceWayPaywallView] pushed on top of a simple home so that
 /// [Navigator.pop()] works, and the 1200ms auto-dismiss timer can fire cleanly.
 Widget _wrapPaywallViewRouted(StoreProvider store) {
   return MaterialApp(
@@ -132,7 +132,7 @@ Widget _wrapPaywallViewRouted(StoreProvider store) {
             MaterialPageRoute(
               builder: (_) => ChangeNotifierProvider<StoreProvider>.value(
                 value: store,
-                child: const MyWalkPaywallView(),
+                child: const GraceWayPaywallView(),
               ),
             ),
           ),
@@ -233,7 +233,7 @@ void main() {
         (tester) async {
       final deps = await _buildTestStore(
         tester,
-        products: [_FakeProduct(id: MyWalkProducts.annual, rawPrice: 39.99)],
+        products: [_FakeProduct(id: GraceWayProducts.annual, rawPrice: 39.99)],
       );
 
       await tester.pumpWidget(_wrapPaywallScreen(deps.store));
@@ -298,7 +298,7 @@ void main() {
               purchaseParam: captureAny(named: 'purchaseParam')))
           .captured
           .single as PurchaseParam;
-      expect(captured.productDetails.id, MyWalkProducts.annual);
+      expect(captured.productDetails.id, GraceWayProducts.annual);
     });
 
     testWidgets('tapping CTA when no products loaded calls onNext',
@@ -317,9 +317,9 @@ void main() {
     });
   });
 
-  // ── MyWalkPaywallView ────────────────────────────────────────────────
+  // ── GraceWayPaywallView ────────────────────────────────────────────────
 
-  group('MyWalkPaywallView', () {
+  group('GraceWayPaywallView', () {
     testWidgets('shows loading text when no products are loaded',
         (tester) async {
       final deps = await _buildTestStore(tester, products: []);
@@ -399,13 +399,13 @@ void main() {
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Welcome to MyWalk Pro'), findsNothing);
+      expect(find.text('Welcome to GraceWay Pro'), findsNothing);
 
       deps.store.isPremium = true;
       deps.store.notifyListeners();
       await tester.pump(); // Trigger rebuild — _purchaseSuccess becomes true.
 
-      expect(find.text('Welcome to MyWalk Pro'), findsOneWidget);
+      expect(find.text('Welcome to GraceWay Pro'), findsOneWidget);
 
       // Drain the 1200 ms auto-dismiss timer so the test ends cleanly.
       await tester.pump(const Duration(milliseconds: 1300));
@@ -437,7 +437,7 @@ void main() {
               purchaseParam: captureAny(named: 'purchaseParam')))
           .captured
           .single as PurchaseParam;
-      expect(captured.productDetails.id, MyWalkProducts.annual);
+      expect(captured.productDetails.id, GraceWayProducts.annual);
     });
 
     testWidgets('"Not now" button pops the navigator', (tester) async {

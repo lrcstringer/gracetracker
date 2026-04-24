@@ -7,15 +7,15 @@ class TodayHelpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const accent = MyWalkColor.golden;
-    const sage = MyWalkColor.sage;
+    const accent = GraceWayColor.golden;
+    const sage = GraceWayColor.sage;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
         title: const Text('Today — Help'),
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -26,7 +26,7 @@ class TodayHelpView extends StatelessWidget {
             const HelpHero(
               icon: Icons.wb_sunny_outlined,
               accentColor: accent,
-              title: 'Today',
+              title: 'Gift',
               subtitle:
                   'Your daily hub for gratitude,\nhabit check-ins, and spiritual consistency.',
             ),
@@ -61,7 +61,7 @@ class TodayHelpView extends StatelessWidget {
                 ),
                 HelpFeatureCard(
                   icon: Icons.add_circle_outline,
-                  iconColor: MyWalkColor.warmCoral,
+                  iconColor: GraceWayColor.warmCoral,
                   iconBg: Color(0x1AD4836B),
                   title: 'Add Habits',
                   description:
@@ -112,7 +112,7 @@ class TodayHelpView extends StatelessWidget {
             const HelpStep(
               number: 5,
               icon: Icons.add_circle_outline,
-              accentColor: MyWalkColor.warmCoral,
+              accentColor: GraceWayColor.warmCoral,
               title: 'Add a new habit',
               description:
                   'Tap the + button (bottom-right) to add a habit. Free plan allows 2 habits; upgrade for unlimited.',
@@ -134,9 +134,9 @@ class _ScreenDiagram extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: MyWalkColor.cardBorder),
+          border: Border.all(color: GraceWayColor.cardBorder),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -149,19 +149,19 @@ class _ScreenDiagram extends StatelessWidget {
             _divider(),
             _DiagramRow(
               icon: Icons.auto_awesome,
-              color: MyWalkColor.golden,
+              color: GraceWayColor.golden,
               label: 'Daily Gratitude card (golden)',
             ),
             _divider(),
             _DiagramRow(
               icon: Icons.check_circle_outline,
-              color: MyWalkColor.sage,
+              color: GraceWayColor.sage,
               label: 'Habit cards grouped by category',
             ),
             _divider(),
             _DiagramRow(
               icon: Icons.add_circle_outline,
-              color: MyWalkColor.warmCoral,
+              color: GraceWayColor.warmCoral,
               label: '+ FAB — add a new habit',
             ),
           ],
@@ -171,7 +171,7 @@ class _ScreenDiagram extends StatelessWidget {
   }
 
   Widget _divider() => Divider(
-        color: MyWalkColor.warmWhite.withValues(alpha: 0.07),
+        color: GraceWayColor.warmWhite.withValues(alpha: 0.07),
         height: 1,
       );
 }
@@ -204,7 +204,7 @@ class _DiagramRow extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.75),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.75),
                 fontSize: 13,
               ),
             ),

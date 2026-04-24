@@ -117,7 +117,7 @@ class AccountabilityProvider extends ChangeNotifier {
 
   /// Creates an invite and returns [InviteResult] with shareUrl, shortCode,
   /// and inAppSent flag. [recipientEmail] is optional — when provided and the
-  /// email belongs to a MyWalk user, an in-app notification is sent to them.
+  /// email belongs to a GraceWay user, an in-app notification is sent to them.
   Future<InviteResult> createInvite({
     required String habitId,
     required String habitName,

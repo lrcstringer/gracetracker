@@ -47,7 +47,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
       expand: false,
       builder: (context, scrollController) => Container(
         decoration: const BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -58,7 +58,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                 width: 36,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.3),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -76,21 +76,21 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                       focusNode: _focusNode,
                       onChanged: context.read<BibleProvider>().search,
                       style: const TextStyle(
-                          color: MyWalkColor.warmWhite, fontSize: 15),
-                      cursorColor: MyWalkColor.golden,
+                          color: GraceWayColor.warmWhite, fontSize: 15),
+                      cursorColor: GraceWayColor.golden,
                       decoration: InputDecoration(
                         hintText: 'Search Scripture…',
                         hintStyle: TextStyle(
-                          color: MyWalkColor.softGold.withValues(alpha: 0.5),
+                          color: GraceWayColor.softGold.withValues(alpha: 0.5),
                           fontSize: 15,
                         ),
                         prefixIcon: const Icon(Icons.search,
-                            color: MyWalkColor.golden, size: 20),
+                            color: GraceWayColor.golden, size: 20),
                         suffixIcon: _controller.text.isNotEmpty
                             ? IconButton(
                                 icon: const Icon(Icons.clear,
                                     size: 18,
-                                    color: MyWalkColor.softGold),
+                                    color: GraceWayColor.softGold),
                                 onPressed: () {
                                   _controller.clear();
                                   context.read<BibleProvider>().clearSearch();
@@ -98,7 +98,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                               )
                             : null,
                         filled: true,
-                        fillColor: MyWalkColor.charcoal,
+                        fillColor: GraceWayColor.charcoal,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -113,7 +113,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                     onPressed: () => Navigator.pop(context),
                     child: const Text('Cancel',
                         style: TextStyle(
-                            color: MyWalkColor.golden, fontSize: 14)),
+                            color: GraceWayColor.golden, fontSize: 14)),
                   ),
                 ],
               ),
@@ -121,7 +121,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
             const SizedBox(height: 8),
             Divider(
                 height: 1,
-                color: MyWalkColor.golden.withValues(alpha: 0.12)),
+                color: GraceWayColor.golden.withValues(alpha: 0.12)),
 
             // Results
             Expanded(
@@ -130,7 +130,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                   if (provider.isSearching) {
                     return const Center(
                       child: CircularProgressIndicator(
-                          color: MyWalkColor.golden, strokeWidth: 2),
+                          color: GraceWayColor.golden, strokeWidth: 2),
                     );
                   }
 
@@ -140,7 +140,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                       child: Text(
                         'Type to search all 31,102 verses',
                         style: TextStyle(
-                          color: MyWalkColor.softGold.withValues(alpha: 0.5),
+                          color: GraceWayColor.softGold.withValues(alpha: 0.5),
                           fontSize: 14,
                         ),
                       ),
@@ -152,7 +152,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                       child: Text(
                         'No results for "$query"',
                         style: TextStyle(
-                          color: MyWalkColor.softGold.withValues(alpha: 0.6),
+                          color: GraceWayColor.softGold.withValues(alpha: 0.6),
                           fontSize: 14,
                         ),
                       ),
@@ -167,7 +167,7 @@ class _BibleSearchSheetState extends State<BibleSearchSheet> {
                       height: 1,
                       indent: 16,
                       endIndent: 16,
-                      color: MyWalkColor.golden.withValues(alpha: 0.08),
+                      color: GraceWayColor.golden.withValues(alpha: 0.08),
                     ),
                     itemBuilder: (context, i) {
                       final verse = provider.searchResults[i];
@@ -215,7 +215,7 @@ class _SearchResultTile extends StatelessWidget {
       title: Text(
         verse.reference,
         style: const TextStyle(
-          color: MyWalkColor.golden,
+          color: GraceWayColor.golden,
           fontSize: 12,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.3,
@@ -244,7 +244,7 @@ class _HighlightedText extends StatelessWidget {
     if (query.isEmpty) {
       return Text(text,
           style: TextStyle(
-            color: MyWalkColor.warmWhite.withValues(alpha: 0.75),
+            color: GraceWayColor.warmWhite.withValues(alpha: 0.75),
             fontSize: 13,
             height: 1.5,
           ),
@@ -269,7 +269,7 @@ class _HighlightedText extends StatelessWidget {
       spans.add(TextSpan(
         text: text.substring(idx, idx + query.length),
         style: const TextStyle(
-          color: MyWalkColor.golden,
+          color: GraceWayColor.golden,
           fontWeight: FontWeight.w700,
         ),
       ));
@@ -279,7 +279,7 @@ class _HighlightedText extends StatelessWidget {
     return Text.rich(
       TextSpan(
         style: TextStyle(
-          color: MyWalkColor.warmWhite.withValues(alpha: 0.75),
+          color: GraceWayColor.warmWhite.withValues(alpha: 0.75),
           fontSize: 13,
           height: 1.5,
         ),

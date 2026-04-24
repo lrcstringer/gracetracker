@@ -81,20 +81,20 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         title: const Text(
           'Edit Profile',
-          style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 18, fontWeight: FontWeight.w600),
+          style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: MyWalkColor.warmWhite),
+          icon: const Icon(Icons.arrow_back_rounded, color: GraceWayColor.warmWhite),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: _loading
-          ? const Center(child: CircularProgressIndicator(color: MyWalkColor.golden))
+          ? const Center(child: CircularProgressIndicator(color: GraceWayColor.golden))
           : SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
               child: Column(
@@ -143,7 +143,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                   if (_error != null) ...[
                     Text(
                       _error!,
-                      style: const TextStyle(fontSize: 13, color: MyWalkColor.warmCoral),
+                      style: const TextStyle(fontSize: 13, color: GraceWayColor.warmCoral),
                     ),
                     const SizedBox(height: 10),
                   ],
@@ -152,9 +152,9 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                     child: ElevatedButton(
                       onPressed: _saving ? null : _save,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: MyWalkColor.golden,
-                        disabledBackgroundColor: MyWalkColor.golden.withValues(alpha: 0.4),
-                        foregroundColor: MyWalkColor.charcoal,
+                        backgroundColor: GraceWayColor.golden,
+                        disabledBackgroundColor: GraceWayColor.golden.withValues(alpha: 0.4),
+                        foregroundColor: GraceWayColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         elevation: 0,
@@ -165,7 +165,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                               height: 18,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: MyWalkColor.charcoal,
+                                color: GraceWayColor.charcoal,
                               ),
                             )
                           : const Text(
@@ -203,10 +203,10 @@ class _ProfileEditViewState extends State<ProfileEditView> {
           controller: controller,
           textCapitalization: textCapitalization,
           keyboardType: keyboardType,
-          style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite),
+          style: const TextStyle(fontSize: 14, color: GraceWayColor.warmWhite),
           decoration: InputDecoration(
             filled: true,
-            fillColor: MyWalkColor.cardBackground,
+            fillColor: GraceWayColor.cardBackground,
             hintText: hint,
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
             border: OutlineInputBorder(
@@ -215,7 +215,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: MyWalkColor.sage, width: 1),
+              borderSide: const BorderSide(color: GraceWayColor.sage, width: 1),
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           ),

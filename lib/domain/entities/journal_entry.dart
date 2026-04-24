@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
-import 'fruit.dart';
 
 class JournalEntry {
   final String id;
@@ -18,16 +17,13 @@ class JournalEntry {
   /// True while any local media file is still awaiting upload to Storage.
   final bool uploadPending;
 
-  /// Habit this entry was written from (null for fruit-linked or free entries).
+  /// Habit this entry was written from (null for free entries).
   final String? habitId;
 
   /// Denormalised habit name for display without re-loading habits.
   final String? habitName;
 
-  /// Fruit this entry is tagged with (set from habit tags or the Fruit screen).
-  final FruitType? fruitTag;
-
-  /// 'habit' | 'fruit' | 'free' | 'linked'
+  /// 'habit' | 'free' | 'linked'
   final String sourceType;
 
   /// Whether this entry is pinned to the top of the journal list.
@@ -43,7 +39,6 @@ class JournalEntry {
     this.uploadPending = false,
     this.habitId,
     this.habitName,
-    this.fruitTag,
     required this.sourceType,
     this.pinned = false,
   });
@@ -55,7 +50,6 @@ class JournalEntry {
     bool uploadPending = false,
     String? habitId,
     String? habitName,
-    FruitType? fruitTag,
     required String sourceType,
   }) {
     final now = DateTime.now();
@@ -69,7 +63,6 @@ class JournalEntry {
       uploadPending: uploadPending,
       habitId: habitId,
       habitName: habitName,
-      fruitTag: fruitTag,
       sourceType: sourceType,
     );
   }
@@ -81,7 +74,6 @@ class JournalEntry {
     bool? uploadPending,
     String? habitId,
     String? habitName,
-    Object? fruitTag = _keep,
     String? sourceType,
     DateTime? updatedAt,
     bool? pinned,
@@ -96,7 +88,6 @@ class JournalEntry {
       uploadPending: uploadPending ?? this.uploadPending,
       habitId: habitId ?? this.habitId,
       habitName: habitName ?? this.habitName,
-      fruitTag: fruitTag == _keep ? this.fruitTag : fruitTag as FruitType?,
       sourceType: sourceType ?? this.sourceType,
       pinned: pinned ?? this.pinned,
     );
@@ -112,7 +103,6 @@ class JournalEntry {
         'uploadPending': uploadPending,
         'habitId': habitId,
         'habitName': habitName,
-        'fruitTag': fruitTag?.name,
         'sourceType': sourceType,
         'pinned': pinned,
       };
@@ -128,9 +118,6 @@ class JournalEntry {
       uploadPending: (data['uploadPending'] as bool?) ?? false,
       habitId: data['habitId'] as String?,
       habitName: data['habitName'] as String?,
-      fruitTag: data['fruitTag'] != null
-          ? FruitType.fromString(data['fruitTag'] as String)
-          : null,
       sourceType: data['sourceType'] as String? ?? 'free',
       pinned: (data['pinned'] as bool?) ?? false,
     );

@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/journal_entry.dart';
 import '../../../domain/entities/journal_theme.dart';
-import '../../../domain/entities/fruit.dart';
-import '../../../domain/repositories/user_preferences_repository.dart';
 import '../../providers/journal_provider.dart';
-import '../../providers/journal_theme_provider.dart';
 import '../../theme/app_theme.dart';
 import 'journal_entry_composer.dart';
 import 'journal_entry_detail_view.dart';
-import 'journal_theme_picker.dart';
 import '../shared/appbar_actions.dart';
 import '../help/journal_help_view.dart';
 
@@ -22,69 +18,6 @@ class JournalTab extends StatefulWidget {
 
 class _JournalTabState extends State<JournalTab> {
   final _searchCtrl = TextEditingController();
-  bool _initialized = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_initialized) {
-      _initialized = true;
-      _checkFirstVisit();
-    }
-  }
-
-  Future<void> _checkFirstVisit() async {
-    final prefs = context.read<UserPreferencesRepository>();
-    final seen = await prefs.getBool('journal_intro_seen') ?? false;
-    if (seen || !mounted) return;
-    await showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) {
-        final theme = ctx.read<JournalThemeProvider>().theme;
-        return AlertDialog(
-          backgroundColor: theme.bgCard,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Row(
-            children: [
-              Icon(Icons.lock_outline_rounded, color: theme.accentAction, size: 22),
-              const SizedBox(width: 10),
-              Text(
-                'Private & Secure',
-                style: TextStyle(
-                  color: theme.textPrimary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 17,
-                ),
-              ),
-            ],
-          ),
-          content: Text(
-            'All your journal entries and all your habit notes are encrypted on the server. '
-            'No one can read them. They are literally between you and God.',
-            style: TextStyle(
-              color: theme.textSecondary,
-              fontSize: 14,
-              height: 1.55,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(
-                'Got it',
-                style: TextStyle(
-                  color: theme.accentAction,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-    await prefs.setBool('journal_intro_seen', true);
-  }
 
   @override
   void dispose() {
@@ -92,8 +25,8 @@ class _JournalTabState extends State<JournalTab> {
     super.dispose();
   }
 
-  void _showSortSheet(
-      BuildContext context, JournalProvider provider, JournalTheme theme) {
+  void _showSortSheet(BuildContext context, JournalProvider provider) {
+    const theme = JournalTheme.parchment;
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: theme.bgCard,
@@ -147,15 +80,13 @@ class _JournalTabState extends State<JournalTab> {
         return 'Oldest first';
       case JournalSortOrder.byHabit:
         return 'By habit';
-      case JournalSortOrder.byFruit:
-        return 'By fruit';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<JournalProvider>();
-    final theme = context.watch<JournalThemeProvider>().theme;
+    const theme = JournalTheme.parchment;
     final entries = provider.filteredEntries;
 
     return Scaffold(
@@ -179,7 +110,7 @@ class _JournalTabState extends State<JournalTab> {
             pinned: true,
             automaticallyImplyLeading: false,
             title: Text(
-              'MyWalk',
+              'GraceWay',
               style: TextStyle(
                 color: theme.textPrimary,
                 fontWeight: FontWeight.bold,
@@ -231,14 +162,8 @@ class _JournalTabState extends State<JournalTab> {
                   color: theme.textPrimary),
               bibleBrowserAction(context, theme.textPrimary),
               IconButton(
-                icon: Icon(Icons.palette_outlined,
-                    size: 26, color: theme.textPrimary),
-                onPressed: () => showJournalThemePicker(context),
-                tooltip: 'Theme',
-              ),
-              IconButton(
                 icon: Icon(Icons.sort, size: 26, color: theme.textPrimary),
-                onPressed: () => _showSortSheet(context, provider, theme),
+                onPressed: () => _showSortSheet(context, provider),
                 tooltip: 'Sort',
               ),
             ],
@@ -401,8 +326,6 @@ class _JournalTabState extends State<JournalTab> {
   }
 }
 
-// ── Entry Card ───────────────────────────────────────────────────────────────
-
 // ── Section Label ────────────────────────────────────────────────────────────
 
 class _SectionLabel extends StatelessWidget {
@@ -440,7 +363,7 @@ class _SectionLabel extends StatelessWidget {
 // ── Pin sheet ────────────────────────────────────────────────────────────────
 
 void _showPinSheet(BuildContext context, JournalEntry entry, JournalProvider provider) {
-  final theme = context.read<JournalThemeProvider>().theme;
+  const theme = JournalTheme.parchment;
   showModalBottomSheet<void>(
     context: context,
     backgroundColor: theme.bgCard,
@@ -604,11 +527,8 @@ class _SourceChip extends StatelessWidget {
     String label;
 
     if (entry.habitName != null) {
-      chipColor = MyWalkColor.golden;
+      chipColor = GraceWayColor.golden;
       label = entry.habitName!;
-    } else if (entry.fruitTag != null) {
-      chipColor = entry.fruitTag!.color;
-      label = entry.fruitTag!.label;
     } else {
       chipColor = theme.textSecondary;
       label = 'Journal';

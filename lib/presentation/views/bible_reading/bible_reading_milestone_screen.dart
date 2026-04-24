@@ -61,7 +61,7 @@ class _BibleReadingMilestoneScreenState
     final info = _milestoneInfo(widget.weekIndex);
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: GestureDetector(
         onTap: () => Navigator.of(context).pop(),
         child: Stack(
@@ -93,16 +93,16 @@ class _BibleReadingMilestoneScreenState
                             height: 72,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: MyWalkColor.golden.withValues(alpha: 0.15),
+                              color: GraceWayColor.golden.withValues(alpha: 0.15),
                               border: Border.all(
-                                color: MyWalkColor.golden.withValues(alpha: 0.4),
+                                color: GraceWayColor.golden.withValues(alpha: 0.4),
                                 width: 1.5,
                               ),
                             ),
                             child: const Center(
                               child: Icon(
                                 Icons.menu_book_rounded,
-                                color: MyWalkColor.golden,
+                                color: GraceWayColor.golden,
                                 size: 34,
                               ),
                             ),
@@ -111,7 +111,7 @@ class _BibleReadingMilestoneScreenState
                           Text(
                             info.label.toUpperCase(),
                             style: TextStyle(
-                              color: MyWalkColor.softGold.withValues(alpha: 0.7),
+                              color: GraceWayColor.softGold.withValues(alpha: 0.7),
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                               letterSpacing: 1.8,
@@ -122,7 +122,7 @@ class _BibleReadingMilestoneScreenState
                             info.message,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              color: MyWalkColor.warmWhite,
+                              color: GraceWayColor.warmWhite,
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               height: 1.45,
@@ -136,7 +136,7 @@ class _BibleReadingMilestoneScreenState
                               info.scripture,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: MyWalkColor.softGold.withValues(alpha: 0.75),
+                                color: GraceWayColor.softGold.withValues(alpha: 0.75),
                                 fontSize: 13,
                                 fontStyle: FontStyle.italic,
                                 height: 1.5,
@@ -150,7 +150,7 @@ class _BibleReadingMilestoneScreenState
                             child: Text(
                               'Tap anywhere to continue',
                               style: TextStyle(
-                                color: MyWalkColor.softGold.withValues(alpha: 0.4),
+                                color: GraceWayColor.softGold.withValues(alpha: 0.4),
                                 fontSize: 12,
                               ),
                             ),
@@ -263,7 +263,7 @@ class _LightRaysPainter extends CustomPainter {
       final halfAngle = i.isEven ? 0.055 : 0.025;
       final opacity = (i.isEven ? 0.07 : 0.04) * progress;
 
-      paint.color = MyWalkColor.golden.withValues(alpha: opacity);
+      paint.color = GraceWayColor.golden.withValues(alpha: opacity);
 
       final path = Path();
       path.moveTo(center.dx, center.dy);
@@ -283,8 +283,8 @@ class _LightRaysPainter extends CustomPainter {
     final glowPaint = Paint()
       ..shader = RadialGradient(
         colors: [
-          MyWalkColor.golden.withValues(alpha: 0.18 * progress),
-          MyWalkColor.golden.withValues(alpha: 0.06 * progress),
+          GraceWayColor.golden.withValues(alpha: 0.18 * progress),
+          GraceWayColor.golden.withValues(alpha: 0.06 * progress),
           Colors.transparent,
         ],
         stops: const [0.0, 0.3, 1.0],

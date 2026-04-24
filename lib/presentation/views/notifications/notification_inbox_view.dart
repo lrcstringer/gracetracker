@@ -13,10 +13,10 @@ class NotificationInboxView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         title: const Text('Notifications'),
         centerTitle: false,
         actions: [
@@ -25,7 +25,7 @@ class NotificationInboxView extends StatelessWidget {
             child: Text(
               'Enter code',
               style: TextStyle(
-                  color: MyWalkColor.sage.withValues(alpha: 0.85), fontSize: 13),
+                  color: GraceWayColor.sage.withValues(alpha: 0.85), fontSize: 13),
             ),
           ),
         ],
@@ -34,8 +34,8 @@ class NotificationInboxView extends StatelessWidget {
         builder: (context, provider, _) {
           if (provider.notifications.isEmpty && provider.error == null) {
             return RefreshIndicator(
-              color: MyWalkColor.golden,
-              backgroundColor: MyWalkColor.cardBackground,
+              color: GraceWayColor.golden,
+              backgroundColor: GraceWayColor.cardBackground,
               onRefresh: provider.refresh,
               child: ListView(
                 children: [
@@ -47,12 +47,12 @@ class NotificationInboxView extends StatelessWidget {
                         children: [
                           Icon(Icons.notifications_none,
                               size: 56,
-                              color: MyWalkColor.warmWhite.withValues(alpha: 0.3)),
+                              color: GraceWayColor.warmWhite.withValues(alpha: 0.3)),
                           const SizedBox(height: 16),
                           Text(
                             'No notifications yet',
                             style: TextStyle(
-                                color: MyWalkColor.warmWhite.withValues(alpha: 0.5),
+                                color: GraceWayColor.warmWhite.withValues(alpha: 0.5),
                                 fontSize: 16),
                           ),
                         ],
@@ -65,8 +65,8 @@ class NotificationInboxView extends StatelessWidget {
           }
           if (provider.error != null) {
             return RefreshIndicator(
-              color: MyWalkColor.golden,
-              backgroundColor: MyWalkColor.cardBackground,
+              color: GraceWayColor.golden,
+              backgroundColor: GraceWayColor.cardBackground,
               onRefresh: provider.refresh,
               child: ListView(
                 children: [
@@ -76,7 +76,7 @@ class NotificationInboxView extends StatelessWidget {
                       child: Text(
                         'Could not load notifications',
                         style: TextStyle(
-                            color: MyWalkColor.warmWhite.withValues(alpha: 0.5),
+                            color: GraceWayColor.warmWhite.withValues(alpha: 0.5),
                             fontSize: 15),
                       ),
                     ),
@@ -86,15 +86,15 @@ class NotificationInboxView extends StatelessWidget {
             );
           }
           return RefreshIndicator(
-            color: MyWalkColor.golden,
-            backgroundColor: MyWalkColor.cardBackground,
+            color: GraceWayColor.golden,
+            backgroundColor: GraceWayColor.cardBackground,
             onRefresh: provider.refresh,
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: provider.notifications.length,
               separatorBuilder: (_, _) => Divider(
                 height: 1,
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.06),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.06),
               ),
               itemBuilder: (context, i) {
                 final notif = provider.notifications[i];
@@ -116,10 +116,10 @@ class NotificationInboxView extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         title: const Text('Enter invite code',
             style: TextStyle(
-                color: MyWalkColor.warmWhite,
+                color: GraceWayColor.warmWhite,
                 fontWeight: FontWeight.w600,
                 fontSize: 16)),
         content: Column(
@@ -129,7 +129,7 @@ class NotificationInboxView extends StatelessWidget {
             const Text(
               'Enter the 6-character code from your partner\'s invitation.',
               style: TextStyle(
-                  color: MyWalkColor.warmWhite, fontSize: 13, height: 1.5),
+                  color: GraceWayColor.warmWhite, fontSize: 13, height: 1.5),
             ),
             const SizedBox(height: 14),
             TextField(
@@ -137,22 +137,22 @@ class NotificationInboxView extends StatelessWidget {
               textCapitalization: TextCapitalization.characters,
               maxLength: 6,
               style: const TextStyle(
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 4),
               decoration: InputDecoration(
                 hintText: 'ABC123',
                 hintStyle: TextStyle(
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.3),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.3),
                     letterSpacing: 4,
                     fontWeight: FontWeight.w400),
                 counterText: '',
                 enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.2))),
+                        color: GraceWayColor.warmWhite.withValues(alpha: 0.2))),
                 focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: MyWalkColor.sage)),
+                    borderSide: BorderSide(color: GraceWayColor.sage)),
               ),
             ),
           ],
@@ -162,7 +162,7 @@ class NotificationInboxView extends StatelessWidget {
             onPressed: () => Navigator.pop(ctx),
             child: Text('Cancel',
                 style: TextStyle(
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.5))),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.5))),
           ),
           TextButton(
             onPressed: () async {
@@ -189,7 +189,7 @@ class NotificationInboxView extends StatelessWidget {
               ));
             },
             child: const Text('Find invite',
-                style: TextStyle(color: MyWalkColor.sage)),
+                style: TextStyle(color: GraceWayColor.sage)),
           ),
         ],
       ),
@@ -275,7 +275,7 @@ class _NotificationTileState extends State<_NotificationTile> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
         color: isUnread
-            ? MyWalkColor.warmWhite.withValues(alpha: 0.04)
+            ? GraceWayColor.warmWhite.withValues(alpha: 0.04)
             : Colors.transparent,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +311,7 @@ class _NotificationTileState extends State<_NotificationTile> {
                         timeStr,
                         style: TextStyle(
                           fontSize: 11,
-                          color: MyWalkColor.warmWhite.withValues(alpha: 0.4),
+                          color: GraceWayColor.warmWhite.withValues(alpha: 0.4),
                         ),
                       ),
                     ],
@@ -324,7 +324,7 @@ class _NotificationTileState extends State<_NotificationTile> {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: MyWalkColor.warmWhite.withValues(alpha: 0.8),
+                      color: GraceWayColor.warmWhite.withValues(alpha: 0.8),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -332,7 +332,7 @@ class _NotificationTileState extends State<_NotificationTile> {
                     n.message,
                     style: TextStyle(
                       fontSize: 13,
-                      color: MyWalkColor.warmWhite.withValues(alpha: 0.65),
+                      color: GraceWayColor.warmWhite.withValues(alpha: 0.65),
                       height: 1.45,
                     ),
                   ),
@@ -376,13 +376,13 @@ class _NotificationTileState extends State<_NotificationTile> {
       case CircleNotificationType.sos:
         return const Color(0xFFE05555);
       case CircleNotificationType.prayerRequest:
-        return MyWalkColor.softGold;
+        return GraceWayColor.softGold;
       case CircleNotificationType.announcement:
         return const Color(0xFF5B8DEF);
       case CircleNotificationType.partnershipInvite:
       case CircleNotificationType.partnerMessage:
       case CircleNotificationType.partnershipAccepted:
-        return MyWalkColor.sage;
+        return GraceWayColor.sage;
     }
   }
 
@@ -456,12 +456,12 @@ class _PartnerActionRow extends StatelessWidget {
           ? Icons.check_circle_outline
           : Icons.cancel_outlined;
       return Row(children: [
-        Icon(icon, size: 14, color: MyWalkColor.sage.withValues(alpha: 0.7)),
+        Icon(icon, size: 14, color: GraceWayColor.sage.withValues(alpha: 0.7)),
         const SizedBox(width: 4),
         Text(label,
             style: TextStyle(
                 fontSize: 12,
-                color: MyWalkColor.sage.withValues(alpha: 0.7),
+                color: GraceWayColor.sage.withValues(alpha: 0.7),
                 fontStyle: FontStyle.italic)),
       ]);
     }
@@ -471,20 +471,20 @@ class _PartnerActionRow extends StatelessWidget {
           height: 20,
           width: 20,
           child: CircularProgressIndicator(
-              strokeWidth: 2, color: MyWalkColor.sage));
+              strokeWidth: 2, color: GraceWayColor.sage));
     }
 
     return Row(children: [
       _ActionButton(
           label: 'Accept',
           icon: Icons.check_rounded,
-          color: MyWalkColor.sage,
+          color: GraceWayColor.sage,
           onTap: onAccept),
       const SizedBox(width: 8),
       _ActionButton(
           label: 'Decline',
           icon: Icons.close_rounded,
-          color: MyWalkColor.warmWhite.withValues(alpha: 0.4),
+          color: GraceWayColor.warmWhite.withValues(alpha: 0.4),
           onTap: onDecline),
     ]);
   }
@@ -506,12 +506,12 @@ class _CircleActionRow extends StatelessWidget {
           actionTaken == NotificationAction.pray ? 'Prayed' : "I'm Here — sent";
       return Row(children: [
         Icon(Icons.check_circle_outline,
-            size: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7)),
+            size: 14, color: GraceWayColor.softGold.withValues(alpha: 0.7)),
         const SizedBox(width: 4),
         Text(label,
             style: TextStyle(
                 fontSize: 12,
-                color: MyWalkColor.softGold.withValues(alpha: 0.7),
+                color: GraceWayColor.softGold.withValues(alpha: 0.7),
                 fontStyle: FontStyle.italic)),
       ]);
     }
@@ -520,13 +520,13 @@ class _CircleActionRow extends StatelessWidget {
       _ActionButton(
           label: 'Pray',
           icon: Icons.favorite_border_rounded,
-          color: MyWalkColor.warmWhite.withValues(alpha: 0.7),
+          color: GraceWayColor.warmWhite.withValues(alpha: 0.7),
           onTap: () => onAction(NotificationAction.pray)),
       const SizedBox(width: 8),
       _ActionButton(
           label: "I'm Here",
           icon: Icons.handshake_outlined,
-          color: MyWalkColor.warmWhite.withValues(alpha: 0.7),
+          color: GraceWayColor.warmWhite.withValues(alpha: 0.7),
           onTap: () => onAction(NotificationAction.imHere)),
     ]);
   }
@@ -553,10 +553,10 @@ class _ActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: MyWalkColor.warmWhite.withValues(alpha: 0.08),
+          color: GraceWayColor.warmWhite.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.15), width: 0.5),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.15), width: 0.5),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

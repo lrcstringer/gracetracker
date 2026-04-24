@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mywalk/domain/repositories/iap_repository.dart';
-import 'package:mywalk/presentation/providers/store_provider.dart';
+import 'package:graceway/domain/repositories/iap_repository.dart';
+import 'package:graceway/presentation/providers/store_provider.dart';
 
 // ── Mocks (mockable non-sealed classes) ───────────────────────────────────
 
@@ -63,8 +63,8 @@ class _FakePurchase extends PurchaseDetails {
 // ── Helpers ───────────────────────────────────────────────────────────────
 
 const _uid = 'user-test-123';
-const _monthly = MyWalkProducts.monthly;
-const _annual = MyWalkProducts.annual;
+const _monthly = GraceWayProducts.monthly;
+const _annual = GraceWayProducts.annual;
 
 // ── Setup helpers ─────────────────────────────────────────────────────────
 

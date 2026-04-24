@@ -12,7 +12,6 @@ export {
   circleShareGratitude,
   circleDeleteGratitude,
   circleSubmitHeatmapData,
-  circleUpdateSettings,
   circleUpdateMemberRole,
   circleUpdate,
   circleDelete,
@@ -23,19 +22,6 @@ export {
   prayerRequestMarkAnswered,
   expirePrayerRequests,
 } from './callables/prayer';
-export {
-  circleFetchBiblePassage,
-  circleSetScriptureFocus,
-  circleSubmitReflection,
-} from './callables/scripture';
-export {
-  circleCreateHabit,
-  circleUpdateHabit,
-  circleDeleteHabit,
-  circleDeactivateHabit,
-  circleCompleteHabitAggregation,
-  circleHabitMilestoneCheck,
-} from './callables/circle_habits';
 export {
   circleSendEncouragement,
   circleGetEncouragements,
@@ -58,9 +44,7 @@ export {
   circleDeleteEvent,
   sendEventReminders,
 } from './callables/events';
-export { resetWeeklyFruitPortfolio } from './callables/fruit';
 export { seedHabitCategories } from './callables/habit_categories';
-export { chunkText, generateTts } from './callables/memorization';
 export {
   accountabilityCreateInvite,
   accountabilityAcceptInvite,
@@ -68,15 +52,6 @@ export {
   accountabilityNotifyParticipant,
   accountabilityEndForHabit,
 } from './callables/accountability';
-export { scheduleReviewReminder, cancelReviewReminder, sweepDueReminders } from './callables/memorization_notify';
-export {
-  rpDailyCheckInReminder,
-  rpMissed3DaysReminder,
-  rpWeeklyCompassReminder,
-  rpLapseUnlocksM5,
-  rpQuarterlyReviewReminder,
-  rpM2UnlockReminder,
-} from './callables/recovery_path_notify';
 export { deleteAccount } from './callables/account';
 
 // ── TEMP: Grant premium to all new users (remove before production launch) ──

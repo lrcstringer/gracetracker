@@ -1,77 +1,41 @@
-# WIP: Offline Journal Support
-
-## Goal
-Make journals fully offline-capable: read cached entries offline, create/edit offline (sync when back online).
-
-## Approach
-Leverage Firestore's existing offline persistence (CACHE_SIZE_UNLIMITED already enabled) by:
-1. Switching from `.get()` (fails offline) to `.snapshots()` stream (returns cache immediately)
-2. Making writes fire-and-forget with `.ignore()` — Firestore queues internally and syncs when online
-
-## Files
-- `lib/domain/repositories/journal_repository.dart` — add `watchEntries()` abstract method
-- `lib/data/repositories/firestore_journal_repository.dart` — implement stream, make writes fire-and-forget
-- `lib/presentation/providers/journal_provider.dart` — subscribe to stream, remove manual _entries updates
-
-## Progress
-- [x] Update domain repository interface
-- [x] Implement watchEntries() + fire-and-forget writes in Firestore repo
-- [x] Refactor provider to use stream subscription
-- [x] dart analyze clean — DONE
-
+---
+task: Rename project from GraceWay to GraceWay
+started: 2026-04-24
+status: in_progress
 ---
 
-# Previous WIP: Scripture Discussion Threads
+## What we're doing
+Full project rename: GraceWay → GraceWay across all code, config, assets, and docs.
 
-## What we're building
-Replace the `ScriptureFocus`/`ScriptureReflection` model with a full discussion thread system.
+## Approved changes (user confirmed all YES)
+- App display name: `GraceWay` → `GraceWay`
+- Dart package name: `graceway` → `graceway` (pubspec.yaml + all imports)
+- Bundle/package ID: `com.graceway.faith` → `com.graceway.faith`
+- Domain: `graceway.faith` → `graceway.faith`
+- URL scheme: `graceway://` → `graceway://`
+- Class names: `GraceWayApp` → `GraceWayApp`, etc.
+- File renames: `graceway_*.dart`, `*.iml`, docs files
 
-## Spec
-- Multiple threads per circle (not one-per-week)
-- Thread = scripture passage + open comment feed
-- One-level replies (top-level comment + replies to it, no deeper)
-- Comments are plain text
-- Passage text uses Quill Delta JSON (already done in SetScriptureFocusSheet)
-- Real-time via Firestore streams
-- `scriptureFocusPermission` gates who can CREATE a thread
-- Users can delete their own comments
-- Admin can close thread (hides from members, visible to admin only), delete thread, delete any comment
+## Steps
+- [ ] 1. Bulk text replacement via sed (all text files, excluding binaries/build/.git)
+- [ ] 2. Rename: graceway.iml → graceway.iml
+- [ ] 3. Rename: android/graceway_android.iml → android/graceway_android.iml
+- [ ] 4. Rename: lib/presentation/views/shared/graceway_paywall_view.dart → graceway_paywall_view.dart
+- [ ] 5. Rename Android Kotlin dir: com/graceway/faith/ → com/graceway/faith/
+- [ ] 6. Rename docs files (md, html, pdf filenames)
+- [ ] 7. Verify — grep for remaining graceway occurrences
 
-## Data model
-```
-circles/{circleId}/scripture_threads/{threadId}
-  id, circleId, createdById, createdByDisplayName
-  reference, passageText (Delta JSON), translation
-  status: 'open' | 'closed'
-  createdAt, closedAt?
-  commentCount (denormalized)
+## Sed replacement order (most specific first)
+1. com.graceway.faith → com.graceway.faith
+2. com.graceway → com.graceway
+3. package:graceway/ → package:graceway/
+4. graceway.faith → graceway.faith
+5. graceway:// → graceway://
+6. GraceWayApp → GraceWayApp
+7. GraceWay → GraceWay
+8. graceway → graceway (catches remaining: binary names, strings, etc.)
 
-circles/{circleId}/scripture_threads/{threadId}/comments/{commentId}
-  id, threadId, authorId, authorDisplayName
-  text (plain), parentId? (null=top-level, set=reply)
-  createdAt, deletedAt? (soft delete)
-```
-
-## Files to create/modify
-1. `lib/domain/entities/circle.dart` — remove ScriptureFocus/ScriptureReflection, add ScriptureThread/ScriptureComment
-2. `lib/domain/repositories/circle_repository.dart` — swap scripture methods
-3. `lib/data/repositories/firestore_circle_repository.dart` — new stream-based implementations
-4. `lib/presentation/providers/scripture_thread_provider.dart` — NEW (replaces scripture_focus_provider.dart)
-5. `lib/presentation/providers/scripture_focus_provider.dart` — DELETE (replaced)
-6. `lib/presentation/views/circles/scripture_threads_tab.dart` — NEW thread list tab
-7. `lib/presentation/views/circles/scripture_thread_detail_view.dart` — NEW thread detail + comments
-8. `lib/presentation/views/circles/scripture_focus_tab.dart` — DELETE (replaced)
-9. `lib/app.dart` — swap provider registration
-10. `lib/presentation/views/circles/circle_detail_view.dart` — swap tab widget
-
-## Progress
-- [ ] Read necessary existing files
-- [ ] Update circle.dart entities
-- [ ] Update repository interface
-- [ ] Update Firestore repository implementation
-- [ ] Create ScriptureThreadProvider
-- [ ] Create scripture_threads_tab.dart
-- [ ] Create scripture_thread_detail_view.dart
-- [ ] Update app.dart
-- [ ] Update circle_detail_view.dart
-- [ ] dart analyze clean
+## Files excluded from sed
+- .git/, build/, node_modules/, .dart_tool/
+- *.pdf, *.png, *.jpg, *.ico, *.gif, *.ttf, *.otf, *.woff, *.woff2
+- pubspec.lock

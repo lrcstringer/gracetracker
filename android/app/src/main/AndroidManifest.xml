@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
     <application
-        android:label="MyWalk"
+        android:label="GraceWay"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -34,33 +34,33 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- Custom URL scheme: mywalk://join?code=XXXX -->
+            <!-- Custom URL scheme: graceway://join?code=XXXX -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="mywalk" android:host="join"/>
+                <data android:scheme="graceway" android:host="join"/>
             </intent-filter>
-            <!-- HTTPS App Link: https://mywalk.faith/join?code=XXXX -->
+            <!-- HTTPS App Link: https://graceway.faith/join?code=XXXX -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="mywalk.faith" android:pathPrefix="/join"/>
+                <data android:scheme="https" android:host="graceway.faith" android:pathPrefix="/join"/>
             </intent-filter>
-            <!-- Custom URL scheme: mywalk://accountability/accept?token=TOKEN -->
+            <!-- Custom URL scheme: graceway://accountability/accept?token=TOKEN -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="mywalk" android:host="accountability"/>
+                <data android:scheme="graceway" android:host="accountability"/>
             </intent-filter>
-            <!-- HTTPS App Link: https://mywalk.faith/accountability/accept/TOKEN -->
+            <!-- HTTPS App Link: https://graceway.faith/accountability/accept/TOKEN -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="mywalk.faith" android:pathPrefix="/accountability/accept"/>
+                <data android:scheme="https" android:host="graceway.faith" android:pathPrefix="/accountability/accept"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

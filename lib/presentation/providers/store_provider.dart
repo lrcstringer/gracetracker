@@ -9,7 +9,7 @@ import '../../data/datasources/remote/auth_service.dart';
 import '../../domain/repositories/iap_repository.dart';
 
 /// Product IDs — must match Google Play Console / App Store Connect exactly.
-class MyWalkProducts {
+class GraceWayProducts {
   static const monthly = 'monthlysub';
   static const annual = 'annualsub';
   static const lifetime = 'lifetimeonetime';
@@ -65,9 +65,9 @@ class StoreProvider extends ChangeNotifier with WidgetsBindingObserver {
 
   // ── Getters ───────────────────────────────────────────────────────────────
 
-  ProductDetails? get monthlyProduct => _products[MyWalkProducts.monthly];
-  ProductDetails? get annualProduct => _products[MyWalkProducts.annual];
-  ProductDetails? get lifetimeProduct => _products[MyWalkProducts.lifetime];
+  ProductDetails? get monthlyProduct => _products[GraceWayProducts.monthly];
+  ProductDetails? get annualProduct => _products[GraceWayProducts.annual];
+  ProductDetails? get lifetimeProduct => _products[GraceWayProducts.lifetime];
 
   /// Returns e.g. "Save 33%" when annual is cheaper than 12× monthly.
   /// Returns null when either product is unavailable or there is no savings.
@@ -172,7 +172,7 @@ class StoreProvider extends ChangeNotifier with WidgetsBindingObserver {
 
   Future<void> _loadProducts() async {
     try {
-      final response = await _iap.queryProductDetails(MyWalkProducts.all);
+      final response = await _iap.queryProductDetails(GraceWayProducts.all);
       _products = {for (final p in response.productDetails) p.id: p};
     } catch (e) {
       error = e.toString();

@@ -9,7 +9,7 @@ import '../../providers/habit_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../theme/app_theme.dart';
 import '../habits/all_habits_heatmap_view.dart';
-import '../shared/mywalk_paywall_view.dart';
+import '../shared/graceway_paywall_view.dart';
 import '../shared/appbar_actions.dart';
 import '../help/progress_help_view.dart';
 
@@ -73,17 +73,17 @@ class ProgressView extends StatelessWidget {
     final imageHeight = MediaQuery.of(context).size.width * (2.0 / 3.0);
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor: MyWalkColor.charcoal,
-              foregroundColor: MyWalkColor.warmWhite,
+              backgroundColor: GraceWayColor.charcoal,
+              foregroundColor: GraceWayColor.warmWhite,
               expandedHeight: imageHeight,
               pinned: true,
               automaticallyImplyLeading: false,
               title: const Text(
-                'MyWalk',
+                'GraceWay',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class ProgressView extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     Image.asset(
-                      'assets/progress.webp',
+                      'assets/progress.png',
                       fit: BoxFit.cover,
                     ),
                     Container(
@@ -109,8 +109,8 @@ class ProgressView extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            MyWalkColor.charcoal.withValues(alpha: 0.5),
-                            MyWalkColor.charcoal,
+                            GraceWayColor.charcoal.withValues(alpha: 0.5),
+                            GraceWayColor.charcoal,
                           ],
                           stops: const [0.0, 0.55, 1.0],
                         ),
@@ -128,7 +128,7 @@ class ProgressView extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.w700,
-                              color: MyWalkColor.warmWhite,
+                              color: GraceWayColor.warmWhite,
                               height: 1.1,
                             ),
                           ),
@@ -138,7 +138,7 @@ class ProgressView extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 12,
                               fontStyle: FontStyle.italic,
-                              color: MyWalkColor.softGold,
+                              color: GraceWayColor.softGold,
                               height: 1.45,
                             ),
                           ),
@@ -147,7 +147,7 @@ class ProgressView extends StatelessWidget {
                             'Philippians 1:6',
                             style: TextStyle(
                               fontSize: 11,
-                              color: MyWalkColor.golden,
+                              color: GraceWayColor.golden,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -215,10 +215,10 @@ class ProgressView extends StatelessWidget {
         const SizedBox(height: 8),
         Text('$days',
             style: const TextStyle(
-                fontSize: 56, fontWeight: FontWeight.w800, color: MyWalkColor.golden, height: 1.0)),
+                fontSize: 56, fontWeight: FontWeight.w800, color: GraceWayColor.golden, height: 1.0)),
         const SizedBox(height: 6),
         Text(days == 1 ? 'day of giving' : 'days of giving',
-            style: const TextStyle(fontSize: 16, color: MyWalkColor.softGold)),
+            style: const TextStyle(fontSize: 16, color: GraceWayColor.softGold)),
         const SizedBox(height: 8),
       ],
     );
@@ -226,11 +226,11 @@ class ProgressView extends StatelessWidget {
 
   Widget _statCardsRow(int gratitudeDays, int checkIns, int milestones) {
     return Row(children: [
-      Expanded(child: _statCard(Icons.auto_awesome, '$gratitudeDays', 'gratitude days', MyWalkColor.golden)),
+      Expanded(child: _statCard(Icons.auto_awesome, '$gratitudeDays', 'gratitude days', GraceWayColor.golden)),
       const SizedBox(width: 12),
-      Expanded(child: _statCard(Icons.check_circle_rounded, '$checkIns', 'total check-ins', MyWalkColor.sage)),
+      Expanded(child: _statCard(Icons.check_circle_rounded, '$checkIns', 'total check-ins', GraceWayColor.sage)),
       const SizedBox(width: 12),
-      Expanded(child: _statCard(Icons.star_rounded, '$milestones', 'milestones', MyWalkColor.golden)),
+      Expanded(child: _statCard(Icons.star_rounded, '$milestones', 'milestones', GraceWayColor.golden)),
     ]);
   }
 
@@ -239,23 +239,23 @@ class ProgressView extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       decoration: BoxDecoration(
-        color: MyWalkColor.sage.withValues(alpha: 0.07),
+        color: GraceWayColor.sage.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.sage.withValues(alpha: 0.2), width: 0.5),
+        border: Border.all(color: GraceWayColor.sage.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Row(children: [
-        Icon(Icons.volunteer_activism_rounded, size: 20, color: MyWalkColor.sage),
+        Icon(Icons.volunteer_activism_rounded, size: 20, color: GraceWayColor.sage),
         const SizedBox(width: 14),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('$count',
               style: const TextStyle(
-                  fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+                  fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
           Text(count == 1 ? 'prayer answered' : 'prayers answered',
               style: TextStyle(
-                  fontSize: 11, fontWeight: FontWeight.w500, color: MyWalkColor.sage.withValues(alpha: 0.8))),
+                  fontSize: 11, fontWeight: FontWeight.w500, color: GraceWayColor.sage.withValues(alpha: 0.8))),
         ]),
         const Spacer(),
-        Text('Testimony', style: TextStyle(fontSize: 11, color: MyWalkColor.sage.withValues(alpha: 0.5))),
+        Text('Testimony', style: TextStyle(fontSize: 11, color: GraceWayColor.sage.withValues(alpha: 0.5))),
       ]),
     );
   }
@@ -264,16 +264,16 @@ class ProgressView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+        border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
       ),
       child: Column(children: [
         Icon(icon, size: 18, color: color),
         const SizedBox(height: 8),
         Text(value,
             style: const TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+                fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
         const SizedBox(height: 4),
         Text(label,
             textAlign: TextAlign.center,
@@ -301,9 +301,9 @@ class ProgressView extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(_tierLabel(tier),
                 style: const TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+                    fontSize: 18, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
             Text(weekCycleManager.graceMessage(completed, possible),
-                style: const TextStyle(fontSize: 12, color: MyWalkColor.sage)),
+                style: const TextStyle(fontSize: 12, color: GraceWayColor.sage)),
           ]),
         ),
       ]),
@@ -323,14 +323,14 @@ class ProgressView extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.6), width: 2),
+            border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.6), width: 2),
           ),
-          child: Center(child: Icon(Icons.check, size: 16, color: MyWalkColor.golden.withValues(alpha: 0.7))),
+          child: Center(child: Icon(Icons.check, size: 16, color: GraceWayColor.golden.withValues(alpha: 0.7))),
         );
       case DayTier.substantial:
         return Container(
-          decoration: const BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden),
-          child: const Center(child: Icon(Icons.check, size: 18, color: MyWalkColor.charcoal)),
+          decoration: const BoxDecoration(shape: BoxShape.circle, color: GraceWayColor.golden),
+          child: const Center(child: Icon(Icons.check, size: 18, color: GraceWayColor.charcoal)),
         );
       case DayTier.full:
         return Stack(alignment: Alignment.center, children: [
@@ -338,20 +338,20 @@ class ProgressView extends StatelessWidget {
             width: 64, height: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.45), width: 1.5),
+              border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.45), width: 1.5),
             ),
           ),
           Container(
             width: 52, height: 52,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: MyWalkColor.golden,
+              color: GraceWayColor.golden,
               boxShadow: [
-                BoxShadow(color: MyWalkColor.golden.withValues(alpha: 0.7), blurRadius: 14),
-                BoxShadow(color: MyWalkColor.golden.withValues(alpha: 0.35), blurRadius: 5),
+                BoxShadow(color: GraceWayColor.golden.withValues(alpha: 0.7), blurRadius: 14),
+                BoxShadow(color: GraceWayColor.golden.withValues(alpha: 0.35), blurRadius: 5),
               ],
             ),
-            child: const Center(child: Icon(Icons.check, size: 18, color: MyWalkColor.charcoal)),
+            child: const Center(child: Icon(Icons.check, size: 18, color: GraceWayColor.charcoal)),
           ),
         ]);
     }
@@ -370,9 +370,9 @@ class ProgressView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.04),
+        color: GraceWayColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.12), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,16 +381,16 @@ class ProgressView extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Icon(Icons.auto_awesome, size: 11, color: MyWalkColor.golden),
+              const Icon(Icons.auto_awesome, size: 11, color: GraceWayColor.golden),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(habit.name,
                       style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+                          fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
                   Text(preview,
                       style: TextStyle(
-                          fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.7))),
+                          fontSize: 11, color: GraceWayColor.softGold.withValues(alpha: 0.7))),
                 ]),
               ),
             ]),
@@ -406,19 +406,19 @@ class ProgressView extends StatelessWidget {
     if (habits.isEmpty) return const SizedBox.shrink();
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(
         children: habits.map((h) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: Row(children: [
               Icon(_habitIcon(h), size: 14, color: h.trackingType == HabitTrackingType.abstain
-                  ? MyWalkColor.sage : MyWalkColor.golden),
+                  ? GraceWayColor.sage : GraceWayColor.golden),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(h.name,
                     style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite),
+                        fontSize: 13, fontWeight: FontWeight.w500, color: GraceWayColor.warmWhite),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis),
               ),
@@ -434,7 +434,7 @@ class ProgressView extends StatelessWidget {
                   final score = isActive ? _scoreService.habitScore(h, date) : -1.0;
                   final tileTier = _scoreService.tierForScore(score.clamp(0.0, 1.0));
                   final accent = h.trackingType == HabitTrackingType.abstain
-                      ? MyWalkColor.sage : MyWalkColor.golden;
+                      ? GraceWayColor.sage : GraceWayColor.golden;
 
                   return Padding(
                     padding: const EdgeInsets.only(left: 3),
@@ -442,7 +442,7 @@ class ProgressView extends StatelessWidget {
                       Text(_dayLabels[e.key],
                           style: TextStyle(
                               fontSize: 9,
-                              color: isToday ? MyWalkColor.softGold : Colors.white.withValues(alpha: 0.3))),
+                              color: isToday ? GraceWayColor.softGold : Colors.white.withValues(alpha: 0.3))),
                       const SizedBox(height: 4),
                       _dot(isActive, isFuture, isToday, tileTier, accent),
                     ]),
@@ -473,7 +473,7 @@ class ProgressView extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: isToday ? MyWalkColor.golden.withValues(alpha: 0.4) : Colors.white.withValues(alpha: 0.08),
+              color: isToday ? GraceWayColor.golden.withValues(alpha: 0.4) : Colors.white.withValues(alpha: 0.08),
               width: isToday ? 1.5 : 1,
             ),
           ),
@@ -491,7 +491,7 @@ class ProgressView extends StatelessWidget {
         return Container(
           width: size, height: size,
           decoration: BoxDecoration(shape: BoxShape.circle, color: accent),
-          child: const Center(child: Icon(Icons.check, size: 11, color: MyWalkColor.charcoal)),
+          child: const Center(child: Icon(Icons.check, size: 11, color: GraceWayColor.charcoal)),
         );
       case DayTier.full:
         return Container(
@@ -501,7 +501,7 @@ class ProgressView extends StatelessWidget {
             color: accent,
             boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.6), blurRadius: 6)],
           ),
-          child: const Center(child: Icon(Icons.check, size: 11, color: MyWalkColor.charcoal)),
+          child: const Center(child: Icon(Icons.check, size: 11, color: GraceWayColor.charcoal)),
         );
     }
   }
@@ -512,12 +512,12 @@ class ProgressView extends StatelessWidget {
     if (isPremium) {
       return Container(
         padding: const EdgeInsets.all(16),
-        decoration: MyWalkDecorations.card,
+        decoration: GraceWayDecorations.card,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            Text('Year in MyWalk',
+            Text('Year in GraceWay',
                 style: const TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
+                    fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
             const Spacer(),
             Text('52 weeks',
                 style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
@@ -535,24 +535,24 @@ class ProgressView extends StatelessWidget {
         onTap: () => _openPaywall(context),
         child: Container(
           padding: const EdgeInsets.all(16),
-          decoration: MyWalkDecorations.card,
+          decoration: GraceWayDecorations.card,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Text('Year in MyWalk',
+              Text('Year in GraceWay',
                   style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+                      fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: MyWalkColor.golden.withValues(alpha: 0.15),
+                  color: GraceWayColor.golden.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(children: [
-                  const Icon(Icons.workspace_premium, size: 10, color: MyWalkColor.golden),
+                  const Icon(Icons.workspace_premium, size: 10, color: GraceWayColor.golden),
                   const SizedBox(width: 3),
                   const Text('PRO',
-                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
+                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: GraceWayColor.golden)),
                 ]),
               ),
             ]),
@@ -568,10 +568,10 @@ class ProgressView extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Row(children: [
-              const Icon(Icons.lock_outline, size: 13, color: MyWalkColor.golden),
+              const Icon(Icons.lock_outline, size: 13, color: GraceWayColor.golden),
               const SizedBox(width: 6),
-              const Text('Unlock with MyWalk Pro',
-                  style: TextStyle(fontSize: 12, color: MyWalkColor.softGold)),
+              const Text('Unlock with GraceWay Pro',
+                  style: TextStyle(fontSize: 12, color: GraceWayColor.softGold)),
               const Spacer(),
               Icon(Icons.chevron_right, size: 13, color: Colors.white.withValues(alpha: 0.3)),
             ]),
@@ -581,12 +581,12 @@ class ProgressView extends StatelessWidget {
       const SizedBox(height: 16),
       Container(
         padding: const EdgeInsets.all(16),
-        decoration: MyWalkDecorations.card,
+        decoration: GraceWayDecorations.card,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
             Text('Recent Activity',
                 style: const TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+                    fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
             const Spacer(),
             Text('4 weeks',
                 style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
@@ -602,13 +602,13 @@ class ProgressView extends StatelessWidget {
 
   Widget _heatmapLegend() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      _legendItem(MyWalkColor.surfaceOverlay, 'None'),
+      _legendItem(GraceWayColor.surfaceOverlay, 'None'),
       const SizedBox(width: 16),
-      _legendItem(MyWalkColor.golden.withValues(alpha: 0.12), 'Some', hasBorder: true),
+      _legendItem(GraceWayColor.golden.withValues(alpha: 0.12), 'Some', hasBorder: true),
       const SizedBox(width: 16),
-      _legendItem(MyWalkColor.golden.withValues(alpha: 0.55), 'Strong'),
+      _legendItem(GraceWayColor.golden.withValues(alpha: 0.55), 'Strong'),
       const SizedBox(width: 16),
-      _legendItem(MyWalkColor.golden.withValues(alpha: 0.8), 'Full'),
+      _legendItem(GraceWayColor.golden.withValues(alpha: 0.8), 'Full'),
     ]);
   }
 
@@ -620,7 +620,7 @@ class ProgressView extends StatelessWidget {
           color: color,
           borderRadius: BorderRadius.circular(2),
           border: hasBorder
-              ? Border.all(color: MyWalkColor.golden.withValues(alpha: 0.5), width: 0.5)
+              ? Border.all(color: GraceWayColor.golden.withValues(alpha: 0.5), width: 0.5)
               : null,
         ),
       ),
@@ -655,8 +655,8 @@ class ProgressView extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
-      builder: (_) => const MyWalkPaywallView(),
+      backgroundColor: GraceWayColor.charcoal,
+      builder: (_) => const GraceWayPaywallView(),
     );
   }
 }

@@ -60,7 +60,7 @@ export const accountabilityCreateInvite = onCall(
       createdAt: now,
     });
 
-    // If a recipient email was provided, look up whether they have a MyWalk account
+    // If a recipient email was provided, look up whether they have a GraceWay account
     // and write a partnership_invite notification directly to their inbox.
     let inAppSent = false;
     if (recipientEmail?.trim()) {
@@ -86,7 +86,7 @@ export const accountabilityCreateInvite = onCall(
           // Also send a push nudge so the notification bell lights up.
           sendPushToUsers([recipientUid], {
             title: `${ownerDisplayName ?? 'Someone'} invited you to walk with them`,
-            body: `Open MyWalk to accept their support partner request.`,
+            body: `Open GraceWay to accept their support partner request.`,
             data: { type: 'partnership_invite', partnershipId, channel: 'partnerships' },
             channelId: 'partnerships',
           }).catch(() => {});
@@ -98,7 +98,7 @@ export const accountabilityCreateInvite = onCall(
 
     return {
       partnershipId,
-      shareUrl: `https://mywalk.faith/accountability/accept/${token}`,
+      shareUrl: `https://graceway.faith/accountability/accept/${token}`,
       shortCode,
       inAppSent,
     };

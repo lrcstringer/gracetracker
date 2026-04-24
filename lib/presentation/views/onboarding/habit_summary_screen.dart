@@ -44,7 +44,7 @@ class _HabitSummaryScreenState extends State<HabitSummaryScreen> {
   }
 
   Color get _accentColor =>
-      widget.habitCategory == HabitCategory.abstain ? MyWalkColor.warmCoral : MyWalkColor.golden;
+      widget.habitCategory == HabitCategory.abstain ? GraceWayColor.warmCoral : GraceWayColor.golden;
 
   String get _trackingDescription {
     switch (widget.trackingType) {
@@ -89,8 +89,8 @@ class _HabitSummaryScreenState extends State<HabitSummaryScreen> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('Your MyWalk habits',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+            const Text('Your GraceWay habits',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
             const SizedBox(height: 10),
             Text('Looks good? You can change any of this later.',
                 style: TextStyle(fontSize: 15, color: Colors.white.withValues(alpha: 0.5))),
@@ -106,10 +106,10 @@ class _HabitSummaryScreenState extends State<HabitSummaryScreen> {
                   name: 'Daily Gratitude',
                   trackingText: 'Check-in',
                   purposeText: 'Already completed today',
-                  purposeColor: MyWalkColor.golden.withValues(alpha: 0.7),
-                  accent: MyWalkColor.golden,
-                  accentBg: MyWalkColor.golden.withValues(alpha: 0.06),
-                  borderColor: MyWalkColor.golden.withValues(alpha: 0.2),
+                  purposeColor: GraceWayColor.golden.withValues(alpha: 0.7),
+                  accent: GraceWayColor.golden,
+                  accentBg: GraceWayColor.golden.withValues(alpha: 0.06),
+                  borderColor: GraceWayColor.golden.withValues(alpha: 0.2),
                   showCheck: true,
                 ),
               ),
@@ -128,8 +128,8 @@ class _HabitSummaryScreenState extends State<HabitSummaryScreen> {
                   purposeText: widget.purposeStatement,
                   purposeColor: Colors.white.withValues(alpha: 0.5),
                   accent: _accentColor,
-                  accentBg: MyWalkColor.cardBackground,
-                  borderColor: MyWalkColor.cardBorder,
+                  accentBg: GraceWayColor.cardBackground,
+                  borderColor: GraceWayColor.cardBorder,
                   showCheck: false,
                   activeDaysSummary: widget.activeDays.length < 7 ? _activeDaysSummary : null,
                 ),
@@ -148,8 +148,8 @@ class _HabitSummaryScreenState extends State<HabitSummaryScreen> {
             label: const Text("Let\u2019s go",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyWalkColor.golden,
-              foregroundColor: MyWalkColor.charcoal,
+              backgroundColor: GraceWayColor.golden,
+              foregroundColor: GraceWayColor.charcoal,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -195,14 +195,14 @@ class _HabitSummaryScreenState extends State<HabitSummaryScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
               Text(name,
-                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
               if (showCheck) ...[
                 const SizedBox(width: 8),
-                const Icon(Icons.check_circle_rounded, size: 16, color: MyWalkColor.golden),
+                const Icon(Icons.check_circle_rounded, size: 16, color: GraceWayColor.golden),
               ],
             ]),
             const SizedBox(height: 4),
-            Text(trackingText, style: const TextStyle(fontSize: 12, color: MyWalkColor.sage)),
+            Text(trackingText, style: const TextStyle(fontSize: 12, color: GraceWayColor.sage)),
             const SizedBox(height: 2),
             Text(purposeText,
                 maxLines: 2,
@@ -211,7 +211,7 @@ class _HabitSummaryScreenState extends State<HabitSummaryScreen> {
             if (activeDaysSummary != null) ...[
               const SizedBox(height: 2),
               Text(activeDaysSummary,
-                  style: TextStyle(fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.5))),
+                  style: TextStyle(fontSize: 11, color: GraceWayColor.softGold.withValues(alpha: 0.5))),
             ],
           ]),
         ),

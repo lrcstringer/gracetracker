@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../domain/entities/fruit.dart';
 import '../../../domain/entities/habit.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/journal_provider.dart';
@@ -10,8 +9,7 @@ import '../../providers/store_provider.dart';
 import '../../../domain/services/milestone_service.dart';
 import '../../../domain/services/week_cycle_manager.dart';
 import '../../theme/app_theme.dart';
-import '../fruit/fruit_library_view.dart';
-import 'mywalk_paywall_view.dart';
+import 'graceway_paywall_view.dart';
 
 class WeekLookBackView extends StatefulWidget {
   final WeekCycleManager weekCycleManager;
@@ -34,7 +32,6 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
   bool _showTile = false;
   bool _showHabits = false;
   bool _showMilestones = false;
-  bool _showFruitSection = false;
   bool _showMessage = false;
   bool _showReflection = false;
   bool _showButton = false;
@@ -75,9 +72,6 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
     Future.delayed(const Duration(milliseconds: 1800), () {
       if (mounted) setState(() => _showMilestones = true);
     });
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      if (mounted) setState(() => _showFruitSection = true);
-    });
     Future.delayed(const Duration(milliseconds: 2400), () {
       if (mounted) setState(() => _showMessage = true);
     });
@@ -104,18 +98,18 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
     final ratio = totalPossible > 0 ? totalCompleted / totalPossible : 0.0;
 
     final tileColor = ratio >= 1.0
-        ? MyWalkColor.golden
+        ? GraceWayColor.golden
         : ratio >= 0.7
-            ? MyWalkColor.golden.withValues(alpha: 0.8)
+            ? GraceWayColor.golden.withValues(alpha: 0.8)
             : ratio >= 0.4
-                ? MyWalkColor.softGold
-                : MyWalkColor.mutedSage;
+                ? GraceWayColor.softGold
+                : GraceWayColor.mutedSage;
 
     final weekMilestones = habits.expand((h) =>
         _milestoneService.milestonesHitDuringWeek(h, prevWeekDates).map((m) => (h, m))).toList();
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: SafeArea(
         child: Column(
           children: [
@@ -136,13 +130,13 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                             Text('Last Week',
                                 style: TextStyle(
                                     fontSize: 12,
-                                    color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+                                    color: GraceWayColor.softGold.withValues(alpha: 0.6))),
                             const SizedBox(height: 6),
                             const Text('Your Week in Review',
                                 style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
-                                    color: MyWalkColor.warmWhite)),
+                                    color: GraceWayColor.warmWhite)),
                           ],
                         ),
                       ),
@@ -187,18 +181,6 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                       ),
                     ],
 
-                    // Fruit summary
-                    AnimatedOpacity(
-                      opacity: _showFruitSection ? 1 : 0,
-                      duration: const Duration(milliseconds: 500),
-                      child: AnimatedSlide(
-                        offset: _showFruitSection ? Offset.zero : const Offset(0, 0.15),
-                        duration: const Duration(milliseconds: 500),
-                        child: _fruitSummarySection(habits.toList(), prevWeekDates),
-                      ),
-                    ),
-                    const SizedBox(height: 28),
-
                     // Grace message
                     AnimatedOpacity(
                       opacity: _showMessage ? 1 : 0,
@@ -227,37 +209,37 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                           padding: const EdgeInsets.all(12),
                           margin: const EdgeInsets.only(bottom: 12),
                           decoration: BoxDecoration(
-                            color: MyWalkColor.golden.withValues(alpha: 0.04),
+                            color: GraceWayColor.golden.withValues(alpha: 0.04),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                                color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
+                                color: GraceWayColor.golden.withValues(alpha: 0.12), width: 0.5),
                           ),
                           child: Row(
                             children: [
                               const Icon(Icons.bar_chart_rounded,
-                                  size: 14, color: MyWalkColor.golden),
+                                  size: 14, color: GraceWayColor.golden),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text('See your progress over months',
                                     style: TextStyle(
-                                        fontSize: 12, color: MyWalkColor.softGold)),
+                                        fontSize: 12, color: GraceWayColor.softGold)),
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                                 decoration: BoxDecoration(
-                                  color: MyWalkColor.golden.withValues(alpha: 0.15),
+                                  color: GraceWayColor.golden.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
                                   children: [
                                     Icon(Icons.workspace_premium,
-                                        size: 9, color: MyWalkColor.golden),
+                                        size: 9, color: GraceWayColor.golden),
                                     const SizedBox(width: 2),
                                     Text('PRO',
                                         style: TextStyle(
                                             fontSize: 9,
                                             fontWeight: FontWeight.w700,
-                                            color: MyWalkColor.golden)),
+                                            color: GraceWayColor.golden)),
                                   ],
                                 ),
                               ),
@@ -293,15 +275,15 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                                 height: 18,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  color: MyWalkColor.charcoal,
+                                  color: GraceWayColor.charcoal,
                                 ),
                               )
                             : const Icon(Icons.arrow_forward, size: 18),
                         label: const Text('Dedicate this week',
                             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyWalkColor.golden,
-                          foregroundColor: MyWalkColor.charcoal,
+                          backgroundColor: GraceWayColor.golden,
+                          foregroundColor: GraceWayColor.charcoal,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14)),
@@ -313,159 +295,6 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
               ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _fruitSummarySection(List<Habit> habits, List<DateTime> weekDates) {
-    final fruitedHabits = habits.where((h) => h.fruitTags.isNotEmpty).toList();
-
-    // No fruit-tagged habits yet — show an intro nudge.
-    if (fruitedHabits.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: MyWalkColor.sage.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: MyWalkColor.sage.withValues(alpha: 0.15)),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(Icons.eco_outlined, size: 16, color: MyWalkColor.sage.withValues(alpha: 0.7)),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Connect your habits to the Fruit of the Spirit to see how you\'re growing.',
-                    style: TextStyle(
-                        fontSize: 13, color: MyWalkColor.warmWhite.withValues(alpha: 0.75), height: 1.5),
-                  ),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const FruitLibraryView())),
-                    child: Text(
-                      'Learn more →',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: MyWalkColor.sage,
-                          decoration: TextDecoration.underline,
-                          decorationColor: MyWalkColor.sage.withValues(alpha: 0.5)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // Build completions map.
-    final Map<FruitType, int> completionsByFruit = {};
-    for (final habit in fruitedHabits) {
-      final weekCompletions = habit.entries
-          .where((e) =>
-              weekDates.any((d) =>
-                  d.year == e.date.year && d.month == e.date.month && d.day == e.date.day) &&
-              e.isCompleted)
-          .length;
-      for (final fruit in habit.fruitTags) {
-        completionsByFruit[fruit] = (completionsByFruit[fruit] ?? 0) + weekCompletions;
-      }
-    }
-
-    // Fruits with and without completions this week.
-    final cultivated = completionsByFruit.entries
-        .where((e) => e.value > 0)
-        .toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    final dominant = cultivated.isNotEmpty ? cultivated.first.key : null;
-    final totalMoments = completionsByFruit.values.fold(0, (s, v) => s + v);
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: MyWalkColor.sage.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.sage.withValues(alpha: 0.15)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.eco, size: 13, color: MyWalkColor.sage.withValues(alpha: 0.7)),
-              const SizedBox(width: 6),
-              Text(
-                'THE FRUIT GROWING IN YOU',
-                style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.8,
-                    color: MyWalkColor.sage.withValues(alpha: 0.6)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-
-          if (cultivated.isNotEmpty) ...[
-            Row(
-              children: [
-                ...cultivated.take(5).map((e) => Padding(
-                      padding: const EdgeInsets.only(right: 6),
-                      child: Container(
-                        width: 28,
-                        height: 28,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: e.key.color.withValues(alpha: 0.15),
-                          border: Border.all(color: e.key.color.withValues(alpha: 0.4)),
-                        ),
-                        child: Icon(e.key.icon, size: 14, color: e.key.color),
-                      ),
-                    )),
-                if (cultivated.length > 5)
-                  Text('+${cultivated.length - 5}',
-                      style: TextStyle(
-                          fontSize: 12, color: MyWalkColor.softGold.withValues(alpha: 0.5))),
-              ],
-            ),
-            const SizedBox(height: 10),
-            if (dominant != null)
-              Text(
-                '${dominant.label} was your focus this week. Keep tending that soil.',
-                style: TextStyle(
-                    fontSize: 13,
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.8),
-                    height: 1.5),
-              ),
-            const SizedBox(height: 6),
-            Text(
-              '$totalMoments ${totalMoments == 1 ? 'moment' : 'moments'} of intentional practice',
-              style: TextStyle(fontSize: 12, color: MyWalkColor.softGold.withValues(alpha: 0.55)),
-            ),
-          ] else
-            Text(
-              'No fruit-connected check-ins this week — but the soil is still good.',
-              style: TextStyle(
-                  fontSize: 13, color: MyWalkColor.warmWhite.withValues(alpha: 0.6), height: 1.5),
-            ),
-
-          const SizedBox(height: 10),
-          Text(
-            "This isn't a score — it's a story of growth. The fruit is forming, even when you can't see it.",
-            style: TextStyle(
-              fontSize: 11,
-              fontStyle: FontStyle.italic,
-              color: MyWalkColor.softGold.withValues(alpha: 0.4),
-              height: 1.5,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -540,9 +369,9 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: allDone
-                      ? MyWalkColor.golden
+                      ? GraceWayColor.golden
                       : anyDone
-                          ? MyWalkColor.softGold.withValues(alpha: 0.4)
+                          ? GraceWayColor.softGold.withValues(alpha: 0.4)
                           : Colors.white.withValues(alpha: 0.08),
                 ),
               ),
@@ -558,16 +387,16 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
       children: habits.map((h) {
         final completed = widget.weekCycleManager.completedDays(h, prevWeekDates);
         final isAbstain = h.trackingType == HabitTrackingType.abstain;
-        final accent = isAbstain ? MyWalkColor.sage : MyWalkColor.golden;
+        final accent = isAbstain ? GraceWayColor.sage : GraceWayColor.golden;
 
         return Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
             decoration: BoxDecoration(
-              color: MyWalkColor.cardBackground,
+              color: GraceWayColor.cardBackground,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+              border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
             ),
             child: Row(
               children: [
@@ -575,15 +404,15 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(h.name,
-                      style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
+                      style: const TextStyle(fontSize: 14, color: GraceWayColor.warmWhite)),
                 ),
                 Text('$completed/7',
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: completed >= 5
-                            ? MyWalkColor.golden
-                            : MyWalkColor.softGold.withValues(alpha: 0.5))),
+                            ? GraceWayColor.golden
+                            : GraceWayColor.softGold.withValues(alpha: 0.5))),
               ],
             ),
           ),
@@ -596,23 +425,23 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.04),
+        color: GraceWayColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(14),
         border:
-            Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
+            Border.all(color: GraceWayColor.golden.withValues(alpha: 0.12), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.star_rounded, size: 13, color: MyWalkColor.golden),
+              const Icon(Icons.star_rounded, size: 13, color: GraceWayColor.golden),
               const SizedBox(width: 6),
               Text('Milestones This Week',
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: MyWalkColor.softGold)),
+                      color: GraceWayColor.softGold)),
             ],
           ),
           const SizedBox(height: 12),
@@ -622,12 +451,12 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
                 children: [
-                  Icon(_habitIcon(habit), size: 13, color: MyWalkColor.golden),
+                  Icon(_habitIcon(habit), size: 13, color: GraceWayColor.golden),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(milestone.message,
                         maxLines: 2,
-                        style: const TextStyle(fontSize: 12, color: MyWalkColor.warmWhite)),
+                        style: const TextStyle(fontSize: 12, color: GraceWayColor.warmWhite)),
                   ),
                 ],
               ),
@@ -653,12 +482,12 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
-                  color: MyWalkColor.cardBackground,
+                  color: GraceWayColor.cardBackground,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: _reflectionExpanded
-                        ? MyWalkColor.golden.withValues(alpha: 0.4)
-                        : MyWalkColor.cardBorder,
+                        ? GraceWayColor.golden.withValues(alpha: 0.4)
+                        : GraceWayColor.cardBorder,
                   ),
                 ),
                 child: Row(
@@ -666,7 +495,7 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                     Icon(
                       Icons.edit_note_rounded,
                       size: 18,
-                      color: MyWalkColor.golden.withValues(alpha: 0.7),
+                      color: GraceWayColor.golden.withValues(alpha: 0.7),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -674,14 +503,14 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
                         'Add a weekly reflection (optional)',
                         style: TextStyle(
                           fontSize: 14,
-                          color: MyWalkColor.softGold.withValues(alpha: 0.75),
+                          color: GraceWayColor.softGold.withValues(alpha: 0.75),
                         ),
                       ),
                     ),
                     Icon(
                       _reflectionExpanded ? Icons.expand_less : Icons.expand_more,
                       size: 18,
-                      color: MyWalkColor.softGold.withValues(alpha: 0.4),
+                      color: GraceWayColor.softGold.withValues(alpha: 0.4),
                     ),
                   ],
                 ),
@@ -706,9 +535,9 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
       margin: const EdgeInsets.only(top: 8),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.25)),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.25)),
       ),
       child: TextField(
         controller: _reflectionController,
@@ -716,7 +545,7 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
         minLines: 4,
         style: const TextStyle(
           fontSize: 14,
-          color: MyWalkColor.warmWhite,
+          color: GraceWayColor.warmWhite,
           height: 1.6,
         ),
         decoration: InputDecoration(
@@ -724,7 +553,7 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
               'What stood out this week? What are you grateful for? What do you want to carry into the week ahead?',
           hintStyle: TextStyle(
             fontSize: 13,
-            color: MyWalkColor.softGold.withValues(alpha: 0.3),
+            color: GraceWayColor.softGold.withValues(alpha: 0.3),
             height: 1.5,
           ),
           border: InputBorder.none,
@@ -742,7 +571,7 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
         Text(
           msg,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16, color: MyWalkColor.softGold, height: 1.6),
+          style: const TextStyle(fontSize: 16, color: GraceWayColor.softGold, height: 1.6),
         ),
         const SizedBox(height: 16),
         Text(
@@ -751,13 +580,13 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
           style: TextStyle(
               fontSize: 13,
               fontStyle: FontStyle.italic,
-              color: MyWalkColor.softGold.withValues(alpha: 0.5),
+              color: GraceWayColor.softGold.withValues(alpha: 0.5),
               height: 1.6),
         ),
         const SizedBox(height: 6),
         Text('Lamentations 3:22\u201323',
             style: TextStyle(
-                fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.4))),
+                fontSize: 11, color: GraceWayColor.golden.withValues(alpha: 0.4))),
       ],
     );
   }
@@ -788,8 +617,8 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
-      builder: (_) => const MyWalkPaywallView(),
+      backgroundColor: GraceWayColor.charcoal,
+      builder: (_) => const GraceWayPaywallView(),
     );
   }
 }

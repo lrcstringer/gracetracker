@@ -45,11 +45,6 @@ export const eventsCol = (circleId: string) =>
 export const circleHabitMilestonesCol = (circleId: string) =>
   db.collection(`circles/${circleId}/circle_habit_milestones`);
 
-// ── Recovery paths ────────────────────────────────────────────────────────────
-export const recoveryPathsCol = () => db.collection('recovery_paths');
-export const recoverySessionsCol = (habitId: string) =>
-  db.collection(`recovery_paths/${habitId}/recovery_sessions`);
-
 // ── User notifications ────────────────────────────────────────────────────────
 export const userNotificationsCol = (uid: string) =>
   db.collection(`users/${uid}/notifications`);

@@ -47,7 +47,7 @@ class BibleReadingDayModal extends StatelessWidget {
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -59,7 +59,7 @@ class BibleReadingDayModal extends StatelessWidget {
                   width: 36,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: MyWalkColor.softGold.withValues(alpha: 0.25),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -76,7 +76,7 @@ class BibleReadingDayModal extends StatelessWidget {
                           Text(
                             'Week ${weekIndex + 1} — $dayName',
                             style: const TextStyle(
-                              color: MyWalkColor.warmWhite,
+                              color: GraceWayColor.warmWhite,
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
                             ),
@@ -85,7 +85,7 @@ class BibleReadingDayModal extends StatelessWidget {
                             const Text(
                               "Today's reading",
                               style: TextStyle(
-                                color: MyWalkColor.golden,
+                                color: GraceWayColor.golden,
                                 fontSize: 12,
                               ),
                             ),
@@ -95,14 +95,14 @@ class BibleReadingDayModal extends StatelessWidget {
                     // Journal button
                     IconButton(
                       icon: const Icon(Icons.edit_note,
-                          color: MyWalkColor.golden, size: 22),
+                          color: GraceWayColor.golden, size: 22),
                       tooltip: 'Add journal entry',
                       onPressed: () => _openJournal(context, weekIndex, dayIndex, dayName),
                     ),
                   ],
                 ),
               ),
-              const Divider(height: 1, color: MyWalkColor.cardBorder),
+              const Divider(height: 1, color: GraceWayColor.cardBorder),
               // Sections
               Expanded(
                 child: ListView(
@@ -232,13 +232,13 @@ class _SectionTileState extends State<_SectionTile>
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: isDone
-            ? MyWalkColor.sage.withValues(alpha: 0.1)
-            : MyWalkColor.surfaceOverlay,
+            ? GraceWayColor.sage.withValues(alpha: 0.1)
+            : GraceWayColor.surfaceOverlay,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isDone
-              ? MyWalkColor.sage.withValues(alpha: 0.3)
-              : MyWalkColor.cardBorder,
+              ? GraceWayColor.sage.withValues(alpha: 0.3)
+              : GraceWayColor.cardBorder,
           width: 0.5,
         ),
       ),
@@ -255,8 +255,8 @@ class _SectionTileState extends State<_SectionTile>
                     widget.section.label,
                     style: TextStyle(
                       color: isDone
-                          ? MyWalkColor.sage
-                          : MyWalkColor.softGold,
+                          ? GraceWayColor.sage
+                          : GraceWayColor.softGold,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
@@ -269,7 +269,7 @@ class _SectionTileState extends State<_SectionTile>
                           child: GestureDetector(
                             onTap: () => _toggle(isDone),
                             child: const Icon(Icons.check_circle,
-                                color: MyWalkColor.sage, size: 22),
+                                color: GraceWayColor.sage, size: 22),
                           ),
                         )
                       : GestureDetector(
@@ -278,18 +278,18 @@ class _SectionTileState extends State<_SectionTile>
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
                             decoration: BoxDecoration(
-                              color: MyWalkColor.golden.withValues(alpha: 0.12),
+                              color: GraceWayColor.golden.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
                                 color:
-                                    MyWalkColor.golden.withValues(alpha: 0.3),
+                                    GraceWayColor.golden.withValues(alpha: 0.3),
                                 width: 0.5,
                               ),
                             ),
                             child: const Text(
                               'Done',
                               style: TextStyle(
-                                color: MyWalkColor.golden,
+                                color: GraceWayColor.golden,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -351,17 +351,17 @@ class _RefChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
-          color: MyWalkColor.golden.withValues(alpha: 0.08),
+          color: GraceWayColor.golden.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-            color: MyWalkColor.golden.withValues(alpha: 0.2),
+            color: GraceWayColor.golden.withValues(alpha: 0.2),
             width: 0.5,
           ),
         ),
         child: Text(
           ref.label,
           style: const TextStyle(
-            color: MyWalkColor.golden,
+            color: GraceWayColor.golden,
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -385,7 +385,7 @@ class _JournalSection extends StatelessWidget {
         Text(
           'Journal entries',
           style: TextStyle(
-            color: MyWalkColor.softGold.withValues(alpha: 0.7),
+            color: GraceWayColor.softGold.withValues(alpha: 0.7),
             fontSize: 12,
             fontWeight: FontWeight.w600,
           ),
@@ -419,9 +419,9 @@ class _JournalEntryTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: MyWalkColor.surfaceOverlay,
+          color: GraceWayColor.surfaceOverlay,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+          border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
         ),
         child: Row(
           children: [
@@ -433,7 +433,7 @@ class _JournalEntryTile extends StatelessWidget {
                     Text(
                       entry.habitName!,
                       style: const TextStyle(
-                        color: MyWalkColor.warmWhite,
+                        color: GraceWayColor.warmWhite,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -444,7 +444,7 @@ class _JournalEntryTile extends StatelessWidget {
                     Text(
                       preview,
                       style: TextStyle(
-                        color: MyWalkColor.softGold.withValues(alpha: 0.65),
+                        color: GraceWayColor.softGold.withValues(alpha: 0.65),
                         fontSize: 11,
                       ),
                       maxLines: 2,
@@ -457,7 +457,7 @@ class _JournalEntryTile extends StatelessWidget {
             Text(
               dateStr,
               style: TextStyle(
-                color: MyWalkColor.softGold.withValues(alpha: 0.5),
+                color: GraceWayColor.softGold.withValues(alpha: 0.5),
                 fontSize: 10,
               ),
             ),

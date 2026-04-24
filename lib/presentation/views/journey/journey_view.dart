@@ -7,7 +7,7 @@ import '../../providers/store_provider.dart';
 import '../../../domain/services/milestone_service.dart';
 import '../../theme/app_theme.dart';
 import '../habits/all_habits_heatmap_view.dart';
-import '../shared/mywalk_paywall_view.dart';
+import '../shared/graceway_paywall_view.dart';
 
 class JourneyView extends StatefulWidget {
   const JourneyView({super.key});
@@ -46,15 +46,15 @@ class _JourneyViewState extends State<JourneyView> {
         _milestoneService.milestones(h).where((m) => m.isReached).map((m) => (h, m))).toList();
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor: MyWalkColor.charcoal,
+              backgroundColor: GraceWayColor.charcoal,
               title: const Text('Journey',
                   style: TextStyle(
-                      color: MyWalkColor.warmWhite,
+                      color: GraceWayColor.warmWhite,
                       fontSize: 22,
                       fontWeight: FontWeight.w700)),
               floating: true,
@@ -93,23 +93,23 @@ class _JourneyViewState extends State<JourneyView> {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: [
-                MyWalkColor.golden.withValues(alpha: 0.25),
-                MyWalkColor.golden.withValues(alpha: 0.04),
+                GraceWayColor.golden.withValues(alpha: 0.25),
+                GraceWayColor.golden.withValues(alpha: 0.04),
               ],
             ),
           ),
-          child: const Icon(Icons.local_fire_department, size: 36, color: MyWalkColor.golden),
+          child: const Icon(Icons.local_fire_department, size: 36, color: GraceWayColor.golden),
         ),
         const SizedBox(height: 12),
         Text(
           '$totalGivingDays',
           style: const TextStyle(
-              fontSize: 56, fontWeight: FontWeight.w800, color: MyWalkColor.golden, height: 1.0),
+              fontSize: 56, fontWeight: FontWeight.w800, color: GraceWayColor.golden, height: 1.0),
         ),
         const SizedBox(height: 6),
         Text(
           totalGivingDays == 1 ? 'day of giving' : 'days of giving',
-          style: const TextStyle(fontSize: 16, color: MyWalkColor.softGold),
+          style: const TextStyle(fontSize: 16, color: GraceWayColor.softGold),
         ),
         const SizedBox(height: 8),
       ],
@@ -119,11 +119,11 @@ class _JourneyViewState extends State<JourneyView> {
   Widget _statCardsRow(int gratitudeDays, int totalCheckIns, int milestoneCount) {
     return Row(
       children: [
-        Expanded(child: _statCard(Icons.auto_awesome, '$gratitudeDays', 'gratitude days', MyWalkColor.golden)),
+        Expanded(child: _statCard(Icons.auto_awesome, '$gratitudeDays', 'gratitude days', GraceWayColor.golden)),
         const SizedBox(width: 12),
-        Expanded(child: _statCard(Icons.check_circle_rounded, '$totalCheckIns', 'total check-ins', MyWalkColor.sage)),
+        Expanded(child: _statCard(Icons.check_circle_rounded, '$totalCheckIns', 'total check-ins', GraceWayColor.sage)),
         const SizedBox(width: 12),
-        Expanded(child: _statCard(Icons.star_rounded, '$milestoneCount', 'milestones', MyWalkColor.golden)),
+        Expanded(child: _statCard(Icons.star_rounded, '$milestoneCount', 'milestones', GraceWayColor.golden)),
       ],
     );
   }
@@ -132,9 +132,9 @@ class _JourneyViewState extends State<JourneyView> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+        border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
       ),
       child: Column(
         children: [
@@ -142,7 +142,7 @@ class _JourneyViewState extends State<JourneyView> {
           const SizedBox(height: 8),
           Text(value,
               style: const TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+                  fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
           const SizedBox(height: 4),
           Text(label,
               textAlign: TextAlign.center,
@@ -157,21 +157,21 @@ class _JourneyViewState extends State<JourneyView> {
     if (habits.isEmpty) return const SizedBox.shrink();
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
-            const Icon(Icons.bar_chart_rounded, size: 13, color: MyWalkColor.golden),
+            const Icon(Icons.bar_chart_rounded, size: 13, color: GraceWayColor.golden),
             const SizedBox(width: 6),
             Text('Habit Totals',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
           ]),
           const SizedBox(height: 14),
           ...habits.map((habit) {
             final stat = _milestoneService.lifetimeStat(habit);
             final isAbstain = habit.trackingType == HabitTrackingType.abstain;
-            final accent = isAbstain ? MyWalkColor.sage : MyWalkColor.golden;
+            final accent = isAbstain ? GraceWayColor.sage : GraceWayColor.golden;
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: Row(children: [
@@ -187,7 +187,7 @@ class _JourneyViewState extends State<JourneyView> {
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(habit.name,
-                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite)),
+                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: GraceWayColor.warmWhite)),
                     Text(stat.description,
                         style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
                     if (stat.detail != null)
@@ -227,15 +227,15 @@ class _JourneyViewState extends State<JourneyView> {
     if (isPremium) {
       return Container(
         padding: const EdgeInsets.all(16),
-        decoration: MyWalkDecorations.card,
+        decoration: GraceWayDecorations.card,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Text('Year in MyWalk',
+                Text('Year in GraceWay',
                     style: TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
+                        fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
                 const Spacer(),
                 Text('52 weeks',
                     style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
@@ -256,33 +256,33 @@ class _JourneyViewState extends State<JourneyView> {
           onTap: () => _openPaywall(context),
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Text('Year in MyWalk',
+                    Text('Year in GraceWay',
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
-                            color: MyWalkColor.softGold)),
+                            color: GraceWayColor.softGold)),
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: MyWalkColor.golden.withValues(alpha: 0.15),
+                        color: GraceWayColor.golden.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.workspace_premium, size: 10, color: MyWalkColor.golden),
+                          Icon(Icons.workspace_premium, size: 10, color: GraceWayColor.golden),
                           const SizedBox(width: 3),
                           Text('PRO',
                               style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
-                                  color: MyWalkColor.golden)),
+                                  color: GraceWayColor.golden)),
                         ],
                       ),
                     ),
@@ -301,10 +301,10 @@ class _JourneyViewState extends State<JourneyView> {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    Icon(Icons.lock_outline, size: 13, color: MyWalkColor.golden),
+                    Icon(Icons.lock_outline, size: 13, color: GraceWayColor.golden),
                     const SizedBox(width: 6),
-                    Text('Unlock with MyWalk Pro',
-                        style: TextStyle(fontSize: 12, color: MyWalkColor.softGold)),
+                    Text('Unlock with GraceWay Pro',
+                        style: TextStyle(fontSize: 12, color: GraceWayColor.softGold)),
                     const Spacer(),
                     Icon(Icons.chevron_right, size: 13, color: Colors.white.withValues(alpha: 0.3)),
                   ],
@@ -316,7 +316,7 @@ class _JourneyViewState extends State<JourneyView> {
         const SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: MyWalkDecorations.card,
+          decoration: GraceWayDecorations.card,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -326,7 +326,7 @@ class _JourneyViewState extends State<JourneyView> {
                       style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: MyWalkColor.softGold)),
+                          color: GraceWayColor.softGold)),
                   const Spacer(),
                   Text('4 weeks',
                       style:
@@ -348,13 +348,13 @@ class _JourneyViewState extends State<JourneyView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _legendItem(MyWalkColor.surfaceOverlay, 'None', hasBorder: false),
+        _legendItem(GraceWayColor.surfaceOverlay, 'None', hasBorder: false),
         const SizedBox(width: 16),
-        _legendItem(MyWalkColor.golden.withValues(alpha: 0.12), 'Some', hasBorder: true),
+        _legendItem(GraceWayColor.golden.withValues(alpha: 0.12), 'Some', hasBorder: true),
         const SizedBox(width: 16),
-        _legendItem(MyWalkColor.golden.withValues(alpha: 0.55), 'Strong'),
+        _legendItem(GraceWayColor.golden.withValues(alpha: 0.55), 'Strong'),
         const SizedBox(width: 16),
-        _legendItem(MyWalkColor.golden.withValues(alpha: 0.8), 'Full'),
+        _legendItem(GraceWayColor.golden.withValues(alpha: 0.8), 'Full'),
       ],
     );
   }
@@ -369,7 +369,7 @@ class _JourneyViewState extends State<JourneyView> {
             color: color,
             borderRadius: BorderRadius.circular(2),
             border: hasBorder
-                ? Border.all(color: MyWalkColor.golden.withValues(alpha: 0.5), width: 0.5)
+                ? Border.all(color: GraceWayColor.golden.withValues(alpha: 0.5), width: 0.5)
                 : null,
           ),
         ),
@@ -383,19 +383,19 @@ class _JourneyViewState extends State<JourneyView> {
   Widget _milestonesSection(List<(Habit, dynamic)> allMilestones) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.star_rounded, size: 13, color: MyWalkColor.golden),
+              const Icon(Icons.star_rounded, size: 13, color: GraceWayColor.golden),
               const SizedBox(width: 6),
               Text('Milestones Earned',
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: MyWalkColor.softGold)),
+                      color: GraceWayColor.softGold)),
             ],
           ),
           const SizedBox(height: 14),
@@ -418,7 +418,7 @@ class _JourneyViewState extends State<JourneyView> {
             ...allMilestones.map((item) {
               final (habit, milestone) = item;
               final isAbstain = habit.trackingType == HabitTrackingType.abstain;
-              final accent = isAbstain ? MyWalkColor.sage : MyWalkColor.golden;
+              final accent = isAbstain ? GraceWayColor.sage : GraceWayColor.golden;
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
@@ -441,7 +441,7 @@ class _JourneyViewState extends State<JourneyView> {
                           Text(milestone.message,
                               maxLines: 2,
                               style: const TextStyle(
-                                  fontSize: 12, color: MyWalkColor.warmWhite)),
+                                  fontSize: 12, color: GraceWayColor.warmWhite)),
                           Text(habit.name,
                               style: TextStyle(
                                   fontSize: 10, color: Colors.white.withValues(alpha: 0.4))),
@@ -464,8 +464,8 @@ class _JourneyViewState extends State<JourneyView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
-      builder: (_) => const MyWalkPaywallView(),
+      backgroundColor: GraceWayColor.charcoal,
+      builder: (_) => const GraceWayPaywallView(),
     );
   }
 }

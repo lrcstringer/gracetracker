@@ -4,19 +4,15 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/habit_category_model.dart';
-import '../../../domain/entities/fruit.dart';
-import '../../../domain/services/fruit_service.dart';
 import '../../utils/category_icons.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/habit_category_provider.dart';
-import '../../providers/fruit_portfolio_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../theme/app_theme.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../domain/entities/accountability_partnership.dart';
 import '../../providers/accountability_provider.dart';
-import '../shared/fruit_tag_chip.dart';
-import '../shared/mywalk_paywall_view.dart';
+import '../shared/graceway_paywall_view.dart';
 
 class EditHabitView extends StatefulWidget {
   final Habit habit;
@@ -32,7 +28,6 @@ class _EditHabitViewState extends State<EditHabitView> {
   late final TextEditingController _purposeController;
   late final TextEditingController _triggerController;
   late final TextEditingController _copingController;
-  late final TextEditingController _fruitPurposeController;
   late final QuillController _notesController;
   final FocusNode _notesFocusNode = FocusNode();
   final ScrollController _notesScrollController = ScrollController();
@@ -40,7 +35,6 @@ class _EditHabitViewState extends State<EditHabitView> {
   late double _dailyTarget;
   late String _targetUnit;
   late Set<int> _activeDays;
-  late List<FruitType> _fruitTags;
   late bool _hasPrayerItems;
   String? _categoryId;
   String? _subcategoryId;
@@ -57,7 +51,6 @@ class _EditHabitViewState extends State<EditHabitView> {
     _purposeController = TextEditingController(text: h.purposeStatement);
     _triggerController = TextEditingController(text: h.trigger);
     _copingController = TextEditingController(text: h.copingPlan);
-    _fruitPurposeController = TextEditingController(text: h.fruitPurposeStatement ?? '');
     if (h.notes.isNotEmpty) {
       try {
         _notesController = QuillController(
@@ -74,7 +67,6 @@ class _EditHabitViewState extends State<EditHabitView> {
     _dailyTarget = h.dailyTarget;
     _targetUnit = h.targetUnit;
     _activeDays = h.activeDaySet;
-    _fruitTags = List.from(h.fruitTags);
     _hasPrayerItems = h.hasPrayerItems;
     _categoryId = h.categoryId;
     _subcategoryId = h.subcategoryId;
@@ -88,7 +80,6 @@ class _EditHabitViewState extends State<EditHabitView> {
     _purposeController.dispose();
     _triggerController.dispose();
     _copingController.dispose();
-    _fruitPurposeController.dispose();
     _notesController.dispose();
     _notesFocusNode.dispose();
     _notesScrollController.dispose();
@@ -102,7 +93,6 @@ class _EditHabitViewState extends State<EditHabitView> {
     final trimmed = _nameController.text.trim();
     if (trimmed.isEmpty) return;
     final isPremium = context.read<StoreProvider>().isPremium;
-    final fruitPurpose = _fruitPurposeController.text.trim();
     final plainNotes = _notesController.document.toPlainText().trim();
     final notesJson = plainNotes.isEmpty
         ? ''
@@ -116,8 +106,6 @@ class _EditHabitViewState extends State<EditHabitView> {
       activeDays: (_activeDays.toList()..sort()).join(','),
       trigger: _triggerController.text,
       copingPlan: _copingController.text,
-      fruitTags: _fruitTags,
-      fruitPurposeStatement: fruitPurpose.isEmpty ? null : fruitPurpose,
       categoryId: _categoryId,
       subcategoryId: _subcategoryId,
       categoryName: _categoryName,
@@ -127,11 +115,6 @@ class _EditHabitViewState extends State<EditHabitView> {
       hasPrayerItems: _hasPrayerItems,
     );
     context.read<HabitProvider>().updateHabit(updated);
-    // Update portfolio habit counts for changed tags.
-    context.read<FruitPortfolioProvider>().onHabitTagsChanged(
-      widget.habit.fruitTags,
-      _fruitTags,
-    );
     Navigator.pop(context);
   }
 
@@ -169,15 +152,15 @@ class _EditHabitViewState extends State<EditHabitView> {
     final isAbstain = widget.habit.trackingType == HabitTrackingType.abstain;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         title: const Text('Edit Habit',
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel', style: TextStyle(color: MyWalkColor.softGold)),
+          child: const Text('Cancel', style: TextStyle(color: GraceWayColor.softGold)),
         ),
         leadingWidth: 80,
         actions: [
@@ -186,7 +169,7 @@ class _EditHabitViewState extends State<EditHabitView> {
             child: Text('Save',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  color: _nameEmpty ? Colors.white.withValues(alpha: 0.3) : MyWalkColor.golden,
+                  color: _nameEmpty ? Colors.white.withValues(alpha: 0.3) : GraceWayColor.golden,
                 )),
           ),
         ],
@@ -204,8 +187,6 @@ class _EditHabitViewState extends State<EditHabitView> {
           _nameSection(),
           const SizedBox(height: 20),
           _purposeSection(isPremium),
-          const SizedBox(height: 20),
-          _fruitSection(),
           if (widget.habit.trackingType == HabitTrackingType.timed) ...[
             const SizedBox(height: 20),
             _timedTargetSection(),
@@ -221,8 +202,6 @@ class _EditHabitViewState extends State<EditHabitView> {
           const SizedBox(height: 20),
           if (isAbstain) ...[
             _partnerSection(),
-            const SizedBox(height: 20),
-            _recoveryPathTeaserCard(),
             const SizedBox(height: 20),
           ],
           _notesSection(),
@@ -244,77 +223,6 @@ class _EditHabitViewState extends State<EditHabitView> {
     );
   }
 
-  Widget _fruitSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'SPIRITUAL GROWTH',
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w600,
-            color: MyWalkColor.softGold.withValues(alpha: 0.5),
-            letterSpacing: 0.8,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'What fruit is this habit cultivating?',
-          style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4)),
-        ),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: FruitType.values.map((fruit) {
-            return FruitTagChip(
-              fruit: fruit,
-              isSelected: _fruitTags.contains(fruit),
-              onTap: () => setState(() {
-                if (_fruitTags.contains(fruit)) {
-                  _fruitTags = _fruitTags.where((f) => f != fruit).toList();
-                } else {
-                  _fruitTags = [..._fruitTags, fruit];
-                  if (_fruitPurposeController.text.isEmpty) {
-                    _fruitPurposeController.text = FruitPurposeStatements.defaultFor(
-                      widget.habit.category,
-                      fruit,
-                    );
-                  }
-                }
-              }),
-            );
-          }).toList(),
-        ),
-        if (_fruitTags.isNotEmpty) ...[
-          const SizedBox(height: 12),
-          Text(
-            'Spiritual purpose (optional)',
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500,
-                color: MyWalkColor.softGold.withValues(alpha: 0.6)),
-          ),
-          const SizedBox(height: 6),
-          TextField(
-            controller: _fruitPurposeController,
-            maxLines: 3,
-            maxLength: 200,
-            style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite),
-            decoration: InputDecoration(
-              hintText: 'Why does this habit matter to you spiritually?',
-              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
-              filled: true,
-              fillColor: MyWalkColor.cardBackground,
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              contentPadding: const EdgeInsets.all(12),
-              counterStyle: TextStyle(color: Colors.white.withValues(alpha: 0.25), fontSize: 10),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
   Widget _notesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +232,7 @@ class _EditHabitViewState extends State<EditHabitView> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            color: GraceWayColor.softGold.withValues(alpha: 0.5),
             letterSpacing: 0.8,
           ),
         ),
@@ -336,10 +244,10 @@ class _EditHabitViewState extends State<EditHabitView> {
         const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: MyWalkColor.golden.withValues(alpha: 0.18),
+              color: GraceWayColor.golden.withValues(alpha: 0.18),
               width: 1,
             ),
           ),
@@ -386,12 +294,12 @@ class _EditHabitViewState extends State<EditHabitView> {
                     showDirection: false,
                     iconTheme: QuillIconTheme(
                       iconButtonUnselectedData: IconButtonData(
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.5),
+                        color: GraceWayColor.warmWhite.withValues(alpha: 0.5),
                         iconSize: 18,
                         visualDensity: VisualDensity.compact,
                       ),
                       iconButtonSelectedData: IconButtonData(
-                        color: MyWalkColor.golden,
+                        color: GraceWayColor.golden,
                         iconSize: 18,
                         visualDensity: VisualDensity.compact,
                       ),
@@ -400,7 +308,7 @@ class _EditHabitViewState extends State<EditHabitView> {
                 ),
                 Divider(
                   height: 1,
-                  color: MyWalkColor.golden.withValues(alpha: 0.12),
+                  color: GraceWayColor.golden.withValues(alpha: 0.12),
                 ),
                 QuillEditor.basic(
                   controller: _notesController,
@@ -436,7 +344,7 @@ class _EditHabitViewState extends State<EditHabitView> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            color: GraceWayColor.softGold.withValues(alpha: 0.5),
             letterSpacing: 0.8,
           ),
         ),
@@ -450,10 +358,10 @@ class _EditHabitViewState extends State<EditHabitView> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.07), width: 0.5),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.07), width: 0.5),
           ),
           child: partnership == null
               ? _inviteRow(accountability)
@@ -487,7 +395,7 @@ class _EditHabitViewState extends State<EditHabitView> {
       child: Row(children: [
         Icon(Icons.person_add_rounded,
             size: 16,
-            color: MyWalkColor.sage.withValues(alpha: 0.8)),
+            color: GraceWayColor.sage.withValues(alpha: 0.8)),
         const SizedBox(width: 10),
         Expanded(
           child: Text(
@@ -496,14 +404,14 @@ class _EditHabitViewState extends State<EditHabitView> {
                 : 'Invite a prayer partner',
             style: TextStyle(
                 fontSize: 14,
-                color: MyWalkColor.sage.withValues(alpha: 0.9),
+                color: GraceWayColor.sage.withValues(alpha: 0.9),
                 fontWeight: FontWeight.w500),
           ),
         ),
         if (!accountability.isLoading)
           Icon(Icons.chevron_right_rounded,
               size: 18,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.25)),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.25)),
       ]),
     );
   }
@@ -522,8 +430,8 @@ class _EditHabitViewState extends State<EditHabitView> {
         isActive ? Icons.handshake_rounded : Icons.hourglass_top_rounded,
         size: 16,
         color: isActive
-            ? MyWalkColor.sage
-            : MyWalkColor.warmWhite.withValues(alpha: 0.35),
+            ? GraceWayColor.sage
+            : GraceWayColor.warmWhite.withValues(alpha: 0.35),
       ),
       const SizedBox(width: 10),
       Expanded(
@@ -535,8 +443,8 @@ class _EditHabitViewState extends State<EditHabitView> {
             style: TextStyle(
                 fontSize: 14,
                 color: isActive
-                    ? MyWalkColor.warmWhite
-                    : MyWalkColor.warmWhite.withValues(alpha: 0.4),
+                    ? GraceWayColor.warmWhite
+                    : GraceWayColor.warmWhite.withValues(alpha: 0.4),
                 fontWeight: FontWeight.w500),
           ),
           if (isPending) ...[
@@ -557,7 +465,7 @@ class _EditHabitViewState extends State<EditHabitView> {
               child: Text('Resend invite',
                   style: TextStyle(
                       fontSize: 11,
-                      color: MyWalkColor.sage.withValues(alpha: 0.7))),
+                      color: GraceWayColor.sage.withValues(alpha: 0.7))),
             ),
           ],
         ]),
@@ -568,21 +476,21 @@ class _EditHabitViewState extends State<EditHabitView> {
             final confirmed = await showDialog<bool>(
               context: context,
               builder: (ctx) => AlertDialog(
-                backgroundColor: MyWalkColor.charcoal,
+                backgroundColor: GraceWayColor.charcoal,
                 title: Text(
                     isActive ? 'End partnership?' : 'Cancel invite?',
                     style: const TextStyle(
-                        color: MyWalkColor.warmWhite, fontSize: 16)),
+                        color: GraceWayColor.warmWhite, fontSize: 16)),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(ctx).pop(false),
                     child: const Text('Keep',
-                        style: TextStyle(color: MyWalkColor.softGold)),
+                        style: TextStyle(color: GraceWayColor.softGold)),
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(ctx).pop(true),
                     child: Text(isActive ? 'End' : 'Cancel',
-                        style: const TextStyle(color: MyWalkColor.warmCoral)),
+                        style: const TextStyle(color: GraceWayColor.warmCoral)),
                   ),
                 ],
               ),
@@ -596,60 +504,16 @@ class _EditHabitViewState extends State<EditHabitView> {
           },
           child: Icon(Icons.close_rounded,
               size: 16,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.25)),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.25)),
         ),
     ]);
   }
 
   Future<void> _sharePartnerLink(String url, String shortCode) async {
     await Share.share(
-        'Please walk with me on my journey — open MyWalk on your phone '
-        'and accept my prayer partner invite. If you don\'t have MyWalk, '
+        'Please walk with me on my journey — open GraceWay on your phone '
+        'and accept my prayer partner invite. If you don\'t have GraceWay, '
         'download it and tap this link: $url\n\nOr enter code $shortCode in the app.');
-  }
-
-  // ── Recovery Path teaser card ─────────────────────────────────────────────
-
-  Widget _recoveryPathTeaserCard() {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFF6B4FA0).withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-            color: const Color(0xFF6B4FA0).withValues(alpha: 0.2), width: 0.5),
-      ),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: const Color(0xFF6B4FA0).withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(Icons.route_rounded,
-              size: 16, color: Color(0xFFB39DDB)),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('Recovery Path',
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFB39DDB))),
-            const SizedBox(height: 3),
-            Text(
-              'A guided programme to understand your patterns, anchor to your values, and build guardrails.',
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white.withValues(alpha: 0.5),
-                  height: 1.4),
-            ),
-          ]),
-        ),
-      ]),
-    );
   }
 
   Widget _referenceUrlSection() {
@@ -661,7 +525,7 @@ class _EditHabitViewState extends State<EditHabitView> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            color: GraceWayColor.softGold.withValues(alpha: 0.5),
             letterSpacing: 0.8,
           ),
         ),
@@ -675,10 +539,10 @@ class _EditHabitViewState extends State<EditHabitView> {
           controller: _referenceUrlController,
           keyboardType: TextInputType.url,
           autocorrect: false,
-          style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite),
+          style: const TextStyle(fontSize: 14, color: GraceWayColor.warmWhite),
           decoration: InputDecoration(
             filled: true,
-            fillColor: MyWalkColor.cardBackground,
+            fillColor: GraceWayColor.cardBackground,
             hintText: 'https://…',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
             border: OutlineInputBorder(
@@ -687,11 +551,11 @@ class _EditHabitViewState extends State<EditHabitView> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: MyWalkColor.sage, width: 1),
+              borderSide: const BorderSide(color: GraceWayColor.sage, width: 1),
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             prefixIcon: Icon(Icons.link_rounded,
-                size: 18, color: MyWalkColor.softGold.withValues(alpha: 0.5)),
+                size: 18, color: GraceWayColor.softGold.withValues(alpha: 0.5)),
           ),
         ),
       ],
@@ -704,12 +568,12 @@ class _EditHabitViewState extends State<EditHabitView> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: _hasPrayerItems
-                ? MyWalkColor.golden.withValues(alpha: 0.3)
-                : MyWalkColor.cardBorder,
+                ? GraceWayColor.golden.withValues(alpha: 0.3)
+                : GraceWayColor.cardBorder,
             width: 0.5,
           ),
         ),
@@ -717,7 +581,7 @@ class _EditHabitViewState extends State<EditHabitView> {
           Icon(Icons.format_list_bulleted_rounded,
               size: 18,
               color: _hasPrayerItems
-                  ? MyWalkColor.golden
+                  ? GraceWayColor.golden
                   : Colors.white.withValues(alpha: 0.4)),
           const SizedBox(width: 12),
           Expanded(
@@ -727,7 +591,7 @@ class _EditHabitViewState extends State<EditHabitView> {
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: _hasPrayerItems
-                          ? MyWalkColor.warmWhite
+                          ? GraceWayColor.warmWhite
                           : Colors.white.withValues(alpha: 0.6))),
               const SizedBox(height: 2),
               Text('Track up to 10 prayer items with status on the detail screen.',
@@ -742,7 +606,7 @@ class _EditHabitViewState extends State<EditHabitView> {
             height: 22,
             decoration: BoxDecoration(
               color: _hasPrayerItems
-                  ? MyWalkColor.golden
+                  ? GraceWayColor.golden
                   : Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(11),
             ),
@@ -772,14 +636,14 @@ class _EditHabitViewState extends State<EditHabitView> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: MyWalkColor.softGold.withValues(alpha: 0.06),
+          color: GraceWayColor.softGold.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: MyWalkColor.softGold.withValues(alpha: 0.25), width: 0.5),
+          border: Border.all(color: GraceWayColor.softGold.withValues(alpha: 0.25), width: 0.5),
         ),
         child: const Center(
           child: Text(
             'Archive',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: MyWalkColor.softGold),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: GraceWayColor.softGold),
           ),
         ),
       ),
@@ -790,11 +654,11 @@ class _EditHabitViewState extends State<EditHabitView> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
+        backgroundColor: GraceWayColor.cardBackground,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text(
           'Archive habit?',
-          style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
+          style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
         ),
         content: Text(
           '"${widget.habit.name}" will be hidden from your active habits. '
@@ -804,11 +668,11 @@ class _EditHabitViewState extends State<EditHabitView> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel', style: TextStyle(color: MyWalkColor.softGold)),
+            child: const Text('Cancel', style: TextStyle(color: GraceWayColor.softGold)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Archive', style: TextStyle(color: MyWalkColor.softGold, fontWeight: FontWeight.w600)),
+            child: const Text('Archive', style: TextStyle(color: GraceWayColor.softGold, fontWeight: FontWeight.w600)),
           ),
         ],
       ),
@@ -835,14 +699,14 @@ class _EditHabitViewState extends State<EditHabitView> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: MyWalkColor.warmCoral.withValues(alpha: 0.08),
+          color: GraceWayColor.warmCoral.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.25), width: 0.5),
+          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.25), width: 0.5),
         ),
         child: const Center(
           child: Text(
             'Delete Habit',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: MyWalkColor.warmCoral),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: GraceWayColor.warmCoral),
           ),
         ),
       ),
@@ -855,11 +719,11 @@ class _EditHabitViewState extends State<EditHabitView> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
+        backgroundColor: GraceWayColor.cardBackground,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text(
           'Delete habit?',
-          style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
+          style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
         ),
         content: Text(
           checkIns == 0
@@ -870,11 +734,11 @@ class _EditHabitViewState extends State<EditHabitView> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel', style: TextStyle(color: MyWalkColor.softGold)),
+            child: const Text('Cancel', style: TextStyle(color: GraceWayColor.softGold)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete', style: TextStyle(color: MyWalkColor.warmCoral, fontWeight: FontWeight.w600)),
+            child: const Text('Delete', style: TextStyle(color: GraceWayColor.warmCoral, fontWeight: FontWeight.w600)),
           ),
         ],
       ),
@@ -898,7 +762,7 @@ class _EditHabitViewState extends State<EditHabitView> {
     final isAbstain = widget.habit.trackingType == HabitTrackingType.abstain;
     return Row(children: [
       Icon(_categoryIcon(), size: 18,
-          color: isAbstain ? MyWalkColor.warmCoral : MyWalkColor.golden),
+          color: isAbstain ? GraceWayColor.warmCoral : GraceWayColor.golden),
       const SizedBox(width: 10),
       Text(widget.habit.subcategoryName?.isNotEmpty == true
               ? widget.habit.subcategoryName!
@@ -907,19 +771,19 @@ class _EditHabitViewState extends State<EditHabitView> {
                   : widget.habit.category.rawValue),
           style: TextStyle(
             fontSize: 15,
-            color: MyWalkColor.softGold.withValues(alpha: 0.7),
+            color: GraceWayColor.softGold.withValues(alpha: 0.7),
           )),
       const Spacer(),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           _trackingLabel(widget.habit.trackingType),
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: MyWalkColor.softGold.withValues(alpha: 0.5)),
+              color: GraceWayColor.softGold.withValues(alpha: 0.5)),
         ),
       ),
     ]);
@@ -938,29 +802,29 @@ class _EditHabitViewState extends State<EditHabitView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Habit Name',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       if (widget.habit.isBuiltIn)
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(_nameController.text,
-              style: TextStyle(fontSize: 16, color: MyWalkColor.warmWhite.withValues(alpha: 0.6))),
+              style: TextStyle(fontSize: 16, color: GraceWayColor.warmWhite.withValues(alpha: 0.6))),
         )
       else
         TextField(
           controller: _nameController,
           onChanged: (_) => setState(() {}),
-          style: const TextStyle(fontSize: 16, color: MyWalkColor.warmWhite),
+          style: const TextStyle(fontSize: 16, color: GraceWayColor.warmWhite),
           decoration: InputDecoration(
             hintText: 'Habit name',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
             filled: true,
-            fillColor: MyWalkColor.cardBackground,
+            fillColor: GraceWayColor.cardBackground,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
             contentPadding: const EdgeInsets.all(12),
           ),
@@ -973,7 +837,7 @@ class _EditHabitViewState extends State<EditHabitView> {
       Row(children: [
         Text('Your Why',
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-                color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+                color: GraceWayColor.softGold.withValues(alpha: 0.6))),
         if (!isPremium) ...[
           const Spacer(),
           GestureDetector(
@@ -981,8 +845,8 @@ class _EditHabitViewState extends State<EditHabitView> {
               context: context,
               isScrollControlled: true,
               useSafeArea: true,
-              backgroundColor: MyWalkColor.charcoal,
-              builder: (_) => const MyWalkPaywallView(
+              backgroundColor: GraceWayColor.charcoal,
+              builder: (_) => const GraceWayPaywallView(
                 contextTitle: 'Custom purpose statements',
                 contextMessage: "Write your own \u2018why\u2019 for each habit. Make it personal and God-centred.",
               ),
@@ -990,14 +854,14 @@ class _EditHabitViewState extends State<EditHabitView> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: MyWalkColor.golden.withValues(alpha: 0.12),
+                color: GraceWayColor.golden.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                const Icon(Icons.workspace_premium_rounded, size: 8, color: MyWalkColor.golden),
+                const Icon(Icons.workspace_premium_rounded, size: 8, color: GraceWayColor.golden),
                 const SizedBox(width: 3),
                 const Text('Customise',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: MyWalkColor.golden)),
+                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: GraceWayColor.golden)),
               ]),
             ),
           ),
@@ -1008,12 +872,12 @@ class _EditHabitViewState extends State<EditHabitView> {
         TextField(
           controller: _purposeController,
           maxLines: 4,
-          style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
+          style: const TextStyle(fontSize: 15, color: GraceWayColor.warmWhite),
           decoration: InputDecoration(
             hintText: 'Why does this matter to you and to God?',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
             filled: true,
-            fillColor: MyWalkColor.cardBackground,
+            fillColor: GraceWayColor.cardBackground,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
             contentPadding: const EdgeInsets.all(12),
           ),
@@ -1023,11 +887,11 @@ class _EditHabitViewState extends State<EditHabitView> {
           width: double.infinity,
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(_purposeController.text,
-              style: TextStyle(fontSize: 15, color: MyWalkColor.softGold.withValues(alpha: 0.7))),
+              style: TextStyle(fontSize: 15, color: GraceWayColor.softGold.withValues(alpha: 0.7))),
         ),
     ]);
   }
@@ -1037,7 +901,7 @@ class _EditHabitViewState extends State<EditHabitView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Daily Goal (minutes)',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Row(
         children: minuteOptions.map((mins) {
@@ -1050,14 +914,14 @@ class _EditHabitViewState extends State<EditHabitView> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
+                    color: selected ? GraceWayColor.golden : GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: Text('${mins.toInt()}',
                         style: TextStyle(
                           fontSize: 15, fontWeight: FontWeight.w500,
-                          color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+                          color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
                         )),
                   ),
                 ),
@@ -1073,20 +937,20 @@ class _EditHabitViewState extends State<EditHabitView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Daily Goal',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Row(children: [
         Text('${_dailyTarget.toInt()}',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.golden)),
         const SizedBox(width: 12),
         Column(children: [
           GestureDetector(
             onTap: () => setState(() => _dailyTarget = (_dailyTarget + 1).clamp(1, 100)),
-            child: const Icon(Icons.keyboard_arrow_up, color: MyWalkColor.golden),
+            child: const Icon(Icons.keyboard_arrow_up, color: GraceWayColor.golden),
           ),
           GestureDetector(
             onTap: () => setState(() => _dailyTarget = (_dailyTarget - 1).clamp(1, 100)),
-            child: const Icon(Icons.keyboard_arrow_down, color: MyWalkColor.golden),
+            child: const Icon(Icons.keyboard_arrow_down, color: GraceWayColor.golden),
           ),
         ]),
         const SizedBox(width: 12),
@@ -1094,12 +958,12 @@ class _EditHabitViewState extends State<EditHabitView> {
           child: TextField(
             controller: TextEditingController(text: _targetUnit),
             onChanged: (v) => _targetUnit = v,
-            style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
+            style: const TextStyle(fontSize: 15, color: GraceWayColor.warmWhite),
             decoration: InputDecoration(
               hintText: 'Unit',
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
               filled: true,
-              fillColor: MyWalkColor.cardBackground,
+              fillColor: GraceWayColor.cardBackground,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
               contentPadding: const EdgeInsets.all(10),
             ),
@@ -1115,7 +979,7 @@ class _EditHabitViewState extends State<EditHabitView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(label,
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1134,14 +998,14 @@ class _EditHabitViewState extends State<EditHabitView> {
               width: 38, height: 38,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
-                border: Border.all(color: selected ? MyWalkColor.golden : MyWalkColor.cardBorder, width: 0.5),
+                color: selected ? GraceWayColor.golden : GraceWayColor.cardBackground,
+                border: Border.all(color: selected ? GraceWayColor.golden : GraceWayColor.cardBorder, width: 0.5),
               ),
               child: Center(
                 child: Text(dayLabels[i],
                     style: TextStyle(
                       fontSize: 12, fontWeight: FontWeight.w600,
-                      color: selected ? MyWalkColor.charcoal : Colors.white.withValues(alpha: 0.4),
+                      color: selected ? GraceWayColor.charcoal : Colors.white.withValues(alpha: 0.4),
                     )),
               ),
             ),
@@ -1156,7 +1020,7 @@ class _EditHabitViewState extends State<EditHabitView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('When will you do this?',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -1170,13 +1034,13 @@ class _EditHabitViewState extends State<EditHabitView> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
+                    color: selected ? GraceWayColor.golden : GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(chip,
                       style: TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w500,
-                        color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+                        color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
                       )),
                 ),
               ),
@@ -1188,12 +1052,12 @@ class _EditHabitViewState extends State<EditHabitView> {
       TextField(
         controller: _triggerController,
         onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
+        style: const TextStyle(fontSize: 15, color: GraceWayColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'Or type your own trigger\u2026',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: MyWalkColor.cardBackground,
+          fillColor: GraceWayColor.cardBackground,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(12),
         ),
@@ -1226,19 +1090,19 @@ class _EditHabitViewState extends State<EditHabitView> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.5), width: 0.5),
+          border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.5), width: 0.5),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               label,
-              style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.9)),
+              style: TextStyle(fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.9)),
             ),
             const SizedBox(width: 4),
-            Icon(Icons.edit_outlined, size: 11, color: MyWalkColor.golden.withValues(alpha: 0.6)),
+            Icon(Icons.edit_outlined, size: 11, color: GraceWayColor.golden.withValues(alpha: 0.6)),
           ],
         ),
       ),
@@ -1252,7 +1116,7 @@ class _EditHabitViewState extends State<EditHabitView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -1275,7 +1139,7 @@ class _EditHabitViewState extends State<EditHabitView> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('When I feel tempted, I will\u2026',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -1289,13 +1153,13 @@ class _EditHabitViewState extends State<EditHabitView> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? MyWalkColor.warmCoral : MyWalkColor.cardBackground,
+                    color: selected ? GraceWayColor.warmCoral : GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(s,
                       style: TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w500,
-                        color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+                        color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
                       )),
                 ),
               ),
@@ -1307,12 +1171,12 @@ class _EditHabitViewState extends State<EditHabitView> {
       TextField(
         controller: _copingController,
         onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
+        style: const TextStyle(fontSize: 15, color: GraceWayColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'Or write your own plan\u2026',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: MyWalkColor.cardBackground,
+          fillColor: GraceWayColor.cardBackground,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(12),
         ),
@@ -1407,12 +1271,12 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
         children: [
           if (_step == 2)
             IconButton(
-              icon: const Icon(Icons.arrow_back_ios, size: 18, color: MyWalkColor.warmWhite),
+              icon: const Icon(Icons.arrow_back_ios, size: 18, color: GraceWayColor.warmWhite),
               onPressed: () => setState(() => _step = 1),
             )
           else
             IconButton(
-              icon: const Icon(Icons.close, color: MyWalkColor.warmWhite),
+              icon: const Icon(Icons.close, color: GraceWayColor.warmWhite),
               onPressed: () => Navigator.pop(context),
             ),
           Expanded(
@@ -1421,7 +1285,7 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: MyWalkColor.warmWhite,
+                color: GraceWayColor.warmWhite,
               ),
             ),
           ),
@@ -1459,14 +1323,14 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+            border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(iconForKey(cat.iconKey), size: 24, color: MyWalkColor.golden),
+              Icon(iconForKey(cat.iconKey), size: 24, color: GraceWayColor.golden),
               const SizedBox(height: 8),
               Text(
                 cat.name,
@@ -1475,7 +1339,7 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                 ),
               ),
             ],
@@ -1502,16 +1366,16 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: MyWalkColor.cardBackground,
+              color: GraceWayColor.cardBackground,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+              border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Icon(iconForKey(sub.iconKey), size: 20, color: MyWalkColor.golden),
+                    Icon(iconForKey(sub.iconKey), size: 20, color: GraceWayColor.golden),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -1519,7 +1383,7 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
-                          color: MyWalkColor.warmWhite,
+                          color: GraceWayColor.warmWhite,
                         ),
                       ),
                     ),
@@ -1546,13 +1410,13 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
                   Row(
                     children: [
                       Icon(Icons.format_quote,
-                          size: 12, color: MyWalkColor.golden.withValues(alpha: 0.6)),
+                          size: 12, color: GraceWayColor.golden.withValues(alpha: 0.6)),
                       const SizedBox(width: 4),
                       Text(
                         sub.keyVerseRef!,
                         style: TextStyle(
                           fontSize: 11,
-                          color: MyWalkColor.golden.withValues(alpha: 0.7),
+                          color: GraceWayColor.golden.withValues(alpha: 0.7),
                           fontWeight: FontWeight.w500,
                         ),
                       ),

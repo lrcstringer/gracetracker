@@ -59,17 +59,17 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
     final firstName = auth.displayName?.split(' ').first ?? 'You';
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Center(
               child: Column(children: [
-                const Icon(Icons.favorite_rounded, size: 28, color: MyWalkColor.golden),
+                const Icon(Icons.favorite_rounded, size: 28, color: GraceWayColor.golden),
                 const SizedBox(height: 8),
                 const Text('Share Your Gratitude',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
               ]),
             ),
             const SizedBox(height: 24),
@@ -87,12 +87,12 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
                 onPressed: (_isSharing || (_hasMultipleCircles && _selectedIds.isEmpty)) ? null : _share,
                 icon: _isSharing
                     ? const SizedBox(width: 18, height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
+                        child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.charcoal))
                     : const Icon(Icons.arrow_forward_rounded, size: 18),
                 label: const Text('Share', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: MyWalkColor.golden,
-                  foregroundColor: MyWalkColor.charcoal,
+                  backgroundColor: GraceWayColor.golden,
+                  foregroundColor: GraceWayColor.charcoal,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
@@ -135,15 +135,15 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
+                    color: selected ? GraceWayColor.golden : GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: selected ? Colors.transparent : MyWalkColor.cardBorder, width: 0.5),
+                        color: selected ? Colors.transparent : GraceWayColor.cardBorder, width: 0.5),
                   ),
                   child: Text(circle.name,
                       style: TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500,
-                          color: selected ? MyWalkColor.charcoal : MyWalkColor.warmWhite)),
+                          color: selected ? GraceWayColor.charcoal : GraceWayColor.warmWhite)),
                 ),
               ),
             );
@@ -175,17 +175,17 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: selected ? MyWalkColor.golden.withValues(alpha: 0.06) : Colors.transparent,
+          color: selected ? GraceWayColor.golden.withValues(alpha: 0.06) : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-              color: selected ? MyWalkColor.golden.withValues(alpha: 0.2) : MyWalkColor.cardBorder,
+              color: selected ? GraceWayColor.golden.withValues(alpha: 0.2) : GraceWayColor.cardBorder,
               width: 0.5),
         ),
         child: Row(children: [
           Icon(selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-              size: 20, color: selected ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.4)),
+              size: 20, color: selected ? GraceWayColor.golden : Colors.white.withValues(alpha: 0.4)),
           const SizedBox(width: 10),
-          Text(label, style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
+          Text(label, style: const TextStyle(fontSize: 14, color: GraceWayColor.warmWhite)),
         ]),
       ),
     );
@@ -207,7 +207,7 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
         ),
         child: Text(text,
             style: TextStyle(fontSize: 14, height: 1.5,
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.8))),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.8))),
       ),
     ]);
   }

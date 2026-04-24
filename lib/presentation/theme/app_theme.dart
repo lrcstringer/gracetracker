@@ -10,7 +10,7 @@ class JournalColor {
   static const textSecondary = Color(0xFF7A6B5D);
 }
 
-class MyWalkColor {
+class GraceWayColor {
   static const charcoal = Color(0xFF1E1E2E);
   static const warmWhite = Color(0xFFFAF7F2);
   static const golden = Color(0xFFD4A843);
@@ -54,26 +54,26 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: MyWalkColor.charcoal,
+      scaffoldBackgroundColor: GraceWayColor.charcoal,
       colorScheme: const ColorScheme.dark(
-        primary: MyWalkColor.golden,
-        secondary: MyWalkColor.sage,
-        surface: MyWalkColor.cardBackground,
-        onPrimary: MyWalkColor.charcoal,
-        onSurface: MyWalkColor.warmWhite,
+        primary: GraceWayColor.golden,
+        secondary: GraceWayColor.sage,
+        surface: GraceWayColor.cardBackground,
+        onPrimary: GraceWayColor.charcoal,
+        onSurface: GraceWayColor.warmWhite,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: MyWalkColor.charcoal,
-        selectedItemColor: MyWalkColor.golden,
+        backgroundColor: GraceWayColor.charcoal,
+        selectedItemColor: GraceWayColor.golden,
         unselectedItemColor: Colors.white38,
         type: BottomNavigationBarType.fixed,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         elevation: 0,
       ),
-      textTheme: _buildTextTheme(MyWalkColor.warmWhite),
+      textTheme: _buildTextTheme(GraceWayColor.warmWhite),
     );
   }
 
@@ -81,50 +81,50 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: MyWalkColor.warmWhite,
+      scaffoldBackgroundColor: GraceWayColor.warmWhite,
       colorScheme: ColorScheme.light(
-        primary: MyWalkColor.golden,
-        secondary: MyWalkColor.sage,
+        primary: GraceWayColor.golden,
+        secondary: GraceWayColor.sage,
         surface: const Color(0xFFF0EDE8),
-        onPrimary: MyWalkColor.charcoal,
-        onSurface: MyWalkColor.charcoal,
+        onPrimary: GraceWayColor.charcoal,
+        onSurface: GraceWayColor.charcoal,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: MyWalkColor.warmWhite,
-        selectedItemColor: MyWalkColor.golden,
-        unselectedItemColor: MyWalkColor.charcoal.withValues(alpha: 0.4),
+        backgroundColor: GraceWayColor.warmWhite,
+        selectedItemColor: GraceWayColor.golden,
+        unselectedItemColor: GraceWayColor.charcoal.withValues(alpha: 0.4),
         type: BottomNavigationBarType.fixed,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: MyWalkColor.warmWhite,
-        foregroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.warmWhite,
+        foregroundColor: GraceWayColor.charcoal,
         elevation: 0,
       ),
-      textTheme: _buildTextTheme(MyWalkColor.charcoal),
+      textTheme: _buildTextTheme(GraceWayColor.charcoal),
     );
   }
 }
 
 // Reusable decoration helpers
-class MyWalkDecorations {
+class GraceWayDecorations {
   static BoxDecoration get card => BoxDecoration(
-    color: MyWalkColor.cardBackground,
+    color: GraceWayColor.cardBackground,
     borderRadius: BorderRadius.circular(16),
-    border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+    border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
   );
 
   static BoxDecoration get inputField => BoxDecoration(
-    color: MyWalkColor.inputBackground,
+    color: GraceWayColor.inputBackground,
     borderRadius: BorderRadius.circular(12),
   );
 }
 
 // Reusable button style
-class MyWalkButtonStyle {
-  static ButtonStyle primary({Color color = MyWalkColor.golden}) =>
+class GraceWayButtonStyle {
+  static ButtonStyle primary({Color color = GraceWayColor.golden}) =>
       ElevatedButton.styleFrom(
         backgroundColor: color,
-        foregroundColor: MyWalkColor.charcoal,
+        foregroundColor: GraceWayColor.charcoal,
         minimumSize: const Size(double.infinity, 48),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),

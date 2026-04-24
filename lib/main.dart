@@ -27,20 +27,9 @@ import 'domain/repositories/circle_repository.dart';
 import 'domain/repositories/user_repository.dart';
 import 'domain/services/week_cycle_manager.dart';
 import 'domain/services/engagement_service.dart';
-import 'presentation/providers/prayer_list_provider.dart';
-import 'presentation/providers/group_prayer_list_provider.dart';
-import 'presentation/providers/scripture_thread_provider.dart';
-import 'presentation/providers/circle_habits_provider.dart';
-import 'presentation/providers/encouragement_provider.dart';
-import 'presentation/providers/milestone_share_provider.dart';
-import 'presentation/providers/circle_habit_milestone_provider.dart';
 import 'presentation/providers/weekly_pulse_provider.dart';
-import 'presentation/providers/circle_events_provider.dart';
-import 'presentation/providers/fruit_portfolio_provider.dart';
 import 'presentation/providers/habit_category_provider.dart';
 import 'presentation/providers/journal_provider.dart';
-import 'presentation/providers/journal_theme_provider.dart';
-import 'data/repositories/firestore_fruit_portfolio_repository.dart';
 import 'data/repositories/local_habit_category_repository.dart';
 import 'data/repositories/firestore_journal_repository.dart';
 import 'data/services/media_upload_service.dart';
@@ -55,12 +44,6 @@ import 'data/repositories/firestore_bookmark_repository.dart';
 import 'domain/repositories/bible_repository.dart';
 import 'domain/repositories/bookmark_repository.dart';
 import 'presentation/providers/bible_provider.dart';
-import 'data/repositories/firestore_memorization_repository.dart';
-import 'domain/repositories/memorization_repository.dart';
-import 'presentation/providers/memorization_provider.dart';
-import 'data/repositories/firestore_recovery_path_repository.dart';
-import 'domain/repositories/recovery_path_repository.dart';
-import 'presentation/providers/recovery_path_provider.dart';
 import 'data/repositories/firestore_bible_reading_repository.dart';
 import 'presentation/providers/bible_reading_provider.dart';
 import 'app.dart';
@@ -91,23 +74,29 @@ void main() async {
   // Request FCM permission and register token.
   final fcm = FirebaseMessaging.instance;
   await fcm.requestPermission(alert: true, badge: true, sound: true);
+
+  // Keep the latest token so it can be re-registered after sign-in
+  // (new users aren't authenticated when getToken() first fires).
+  String? latestFcmToken;
+  void registerToken(String token) {
+    latestFcmToken = token;
+    APIService.shared.registerPushToken(token).catchError((_) {});
+  }
+
   // getToken() requires network and will hang indefinitely when offline.
   // Fire-and-forget: onTokenRefresh below handles registration once online.
   fcm.getToken().then((token) {
-    if (token != null) APIService.shared.registerPushToken(token).catchError((_) {});
+    if (token != null) registerToken(token);
   }).catchError((_) {});
-  fcm.onTokenRefresh.listen((token) {
-    APIService.shared.registerPushToken(token).catchError((_) {});
-  });
+  fcm.onTokenRefresh.listen(registerToken);
 
   // Show foreground notifications for incoming FCM messages.
   FirebaseMessaging.onMessage.listen((message) {
-    final channelId = message.data['channel'] as String? ?? 'circles';
     NotificationService.shared.showCircleNotification(
-      id: message.messageId ?? message.data['notifId'] ?? 'fg',
+      id: message.data['notifId'] ?? message.messageId ?? 'fg',
       title: message.notification?.title ?? 'Circle Notification',
       body: message.notification?.body ?? '',
-      channelId: channelId,
+      channelId: 'circles',
     );
   });
 
@@ -121,8 +110,15 @@ void main() async {
   );
   await userPrefs.init();
   // Re-sync on every sign-in (handles reinstall and new-device flows).
+  // Also re-register the FCM token — new users aren't authenticated when
+  // getToken() first fires, so the first registration attempt is a no-op.
   AuthService.shared.addListener(() {
-    if (AuthService.shared.isAuthenticated) userPrefs.init();
+    if (AuthService.shared.isAuthenticated) {
+      userPrefs.init();
+      if (latestFcmToken != null) {
+        APIService.shared.registerPushToken(latestFcmToken!).catchError((_) {});
+      }
+    }
   });
 
   final iapRepository = FirestoreIAPRepository();
@@ -140,8 +136,6 @@ void main() async {
 
   final bibleRepository = LocalBibleRepository(BibleDatabase.instance);
   final bookmarkRepository = FirestoreBookmarkRepository();
-  final memorizationRepository = FirestoreMemorizationRepository();
-  final recoveryPathRepository = FirestoreRecoveryPathRepository();
   final bibleReadingRepository = FirestoreBibleReadingRepository();
 
   runApp(
@@ -164,53 +158,20 @@ void main() async {
           create: (_) => HabitCategoryProvider(LocalHabitCategoryRepository())
             ..loadCategories(),
         ),
-        ChangeNotifierProvider<FruitPortfolioProvider>(
-          create: (_) => FruitPortfolioProvider(
-            FirestoreFruitPortfolioRepository(),
-          )..load(),
-        ),
         ChangeNotifierProvider(
           create: (context) => HabitProvider(
             habitRepository,
             () => AuthService.shared.isAuthenticated,
             context.read<CircleRepository>(),
-            context.read<FruitPortfolioProvider>(),
           )..loadHabits(),
         ),
         ChangeNotifierProvider<StoreProvider>.value(value: storeProvider),
         ChangeNotifierProvider.value(value: AuthService.shared),
-        ChangeNotifierProvider<PrayerListProvider>(
-          create: (context) => PrayerListProvider(context.read<CircleRepository>()),
-        ),
-        ChangeNotifierProvider<GroupPrayerListProvider>(
-          create: (context) => GroupPrayerListProvider(context.read<CircleRepository>()),
-        ),
-        ChangeNotifierProvider<ScriptureThreadProvider>(
-          create: (context) => ScriptureThreadProvider(context.read<CircleRepository>()),
-        ),
-        ChangeNotifierProvider<CircleHabitsProvider>(
-          create: (context) => CircleHabitsProvider(context.read<CircleRepository>()),
-        ),
-        ChangeNotifierProvider<EncouragementProvider>(
-          create: (context) => EncouragementProvider(context.read<CircleRepository>()),
-        ),
-        ChangeNotifierProvider<MilestoneShareProvider>(
-          create: (context) => MilestoneShareProvider(context.read<CircleRepository>()),
-        ),
-        ChangeNotifierProvider<CircleHabitMilestoneProvider>(
-          create: (context) => CircleHabitMilestoneProvider(context.read<CircleRepository>()),
-        ),
         ChangeNotifierProvider<WeeklyPulseProvider>(
           create: (context) => WeeklyPulseProvider(context.read<CircleRepository>()),
         ),
-        ChangeNotifierProvider<CircleEventsProvider>(
-          create: (context) => CircleEventsProvider(context.read<CircleRepository>()),
-        ),
         ChangeNotifierProvider<JournalProvider>(
           create: (_) => JournalProvider(journalRepository),
-        ),
-        ChangeNotifierProvider<JournalThemeProvider>(
-          create: (_) => JournalThemeProvider()..load(),
         ),
         Provider<PendingActionQueueService>.value(value: pendingActionQueue),
         Provider<NotificationRepository>.value(value: notificationRepository),
@@ -222,22 +183,11 @@ void main() async {
         ChangeNotifierProvider<BibleProvider>(
           create: (_) => BibleProvider(bibleRepository, bookmarkRepository),
         ),
-        Provider<MemorizationRepository>.value(value: memorizationRepository),
-        ChangeNotifierProvider<MemorizationProvider>(
-          create: (context) => MemorizationProvider(
-            memorizationRepository,
-            () => context.read<EngagementService>().isPremium,
-          ),
-        ),
-        Provider<RecoveryPathRepository>.value(value: recoveryPathRepository),
-        ChangeNotifierProvider<RecoveryPathProvider>(
-          create: (_) => RecoveryPathProvider(recoveryPathRepository),
-        ),
         ChangeNotifierProvider<BibleReadingProvider>(
           create: (_) => BibleReadingProvider(bibleReadingRepository),
         ),
       ],
-      child: const MyWalkApp(),
+      child: const GraceWayApp(),
     ),
   );
 

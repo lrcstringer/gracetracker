@@ -17,6 +17,6 @@ app.use(
   })
 );
 
-app.get('/', (c) => c.json({ status: 'ok', message: 'MyWalk API is running' }));
+app.get('/', (c) => c.json({ status: 'ok', message: 'GraceWay API is running' }));
 
 export default app;

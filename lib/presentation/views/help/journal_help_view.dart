@@ -8,14 +8,14 @@ class JournalHelpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const accentLight = Color(0xFFBFA88A);
-    const golden = MyWalkColor.golden;
+    const golden = GraceWayColor.golden;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
         title: const Text('Journal — Help'),
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -53,7 +53,7 @@ class JournalHelpView extends StatelessWidget {
                 ),
                 HelpFeatureCard(
                   icon: Icons.palette_outlined,
-                  iconColor: MyWalkColor.sage,
+                  iconColor: GraceWayColor.sage,
                   iconBg: Color(0x267A9E7E),
                   title: 'Journal Themes',
                   description:
@@ -103,7 +103,7 @@ class JournalHelpView extends StatelessWidget {
             const HelpStep(
               number: 4,
               icon: Icons.push_pin_outlined,
-              accentColor: MyWalkColor.warmCoral,
+              accentColor: GraceWayColor.warmCoral,
               title: 'Pin an important entry',
               description:
                   'Long-press any entry card and choose "Pin" to keep it at the top of your list.',
@@ -119,7 +119,7 @@ class JournalHelpView extends StatelessWidget {
             const HelpStep(
               number: 6,
               icon: Icons.palette_outlined,
-              accentColor: MyWalkColor.sage,
+              accentColor: GraceWayColor.sage,
               title: 'Change the theme',
               description:
                   'Tap the palette 🎨 icon in the top bar to switch between journal visual themes.',
@@ -141,9 +141,9 @@ class _EntryAnatomy extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: MyWalkColor.cardBorder),
+          border: Border.all(color: GraceWayColor.cardBorder),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -156,19 +156,19 @@ class _EntryAnatomy extends StatelessWidget {
             _divider(),
             _AnatomyRow(
               icon: Icons.push_pin_outlined,
-              color: MyWalkColor.warmCoral,
+              color: GraceWayColor.warmCoral,
               label: 'Pin icon (pinned entries appear at top)',
             ),
             _divider(),
             _AnatomyRow(
               icon: Icons.label_outline,
-              color: MyWalkColor.golden,
+              color: GraceWayColor.golden,
               label: 'Source chip: habit name, fruit, or "Journal"',
             ),
             _divider(),
             _AnatomyRow(
               icon: Icons.image_outlined,
-              color: MyWalkColor.sage,
+              color: GraceWayColor.sage,
               label: 'Media indicators: photo 📷 or voice 🎤',
             ),
             _divider(),
@@ -184,7 +184,7 @@ class _EntryAnatomy extends StatelessWidget {
   }
 
   Widget _divider() => Divider(
-        color: MyWalkColor.warmWhite.withValues(alpha: 0.07),
+        color: GraceWayColor.warmWhite.withValues(alpha: 0.07),
         height: 1,
       );
 }
@@ -217,7 +217,7 @@ class _AnatomyRow extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.75),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.75),
                 fontSize: 13,
               ),
             ),

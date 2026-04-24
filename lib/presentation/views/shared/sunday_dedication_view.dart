@@ -97,7 +97,7 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
     final habits = context.watch<HabitProvider>().sortedHabits;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: Stack(
         children: [
           // Animated glow background
@@ -107,8 +107,8 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   colors: [
-                    MyWalkColor.golden.withValues(alpha: _glowIntensity),
-                    MyWalkColor.softGold
+                    GraceWayColor.golden.withValues(alpha: _glowIntensity),
+                    GraceWayColor.softGold
                         .withValues(alpha: _glowIntensity * 0.4),
                     Colors.transparent,
                   ],
@@ -139,8 +139,8 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                         label: const Text('Dedicate this week to God',
                             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyWalkColor.golden,
-                          foregroundColor: MyWalkColor.charcoal,
+                          backgroundColor: GraceWayColor.golden,
+                          foregroundColor: GraceWayColor.charcoal,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14)),
@@ -159,8 +159,8 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                         label: const Text('Begin your week',
                             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyWalkColor.golden,
-                          foregroundColor: MyWalkColor.charcoal,
+                          backgroundColor: GraceWayColor.golden,
+                          foregroundColor: GraceWayColor.charcoal,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14)),
@@ -192,7 +192,7 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 12,
-                          color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+                          color: GraceWayColor.softGold.withValues(alpha: 0.6))),
                 const SizedBox(height: 6),
                 Text(
                   _isMidWeekStart
@@ -202,7 +202,7 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                   style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
-                      color: MyWalkColor.warmWhite),
+                      color: GraceWayColor.warmWhite),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -251,13 +251,13 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                 style: TextStyle(
                     fontSize: 13,
                     fontStyle: FontStyle.italic,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.6),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.6),
                     height: 1.6),
               ),
               const SizedBox(height: 6),
               Text('Lamentations 3:22\u201323',
                   style: TextStyle(
-                      fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.5))),
+                      fontSize: 11, color: GraceWayColor.golden.withValues(alpha: 0.5))),
             ],
           ),
         ),
@@ -284,24 +284,24 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        MyWalkColor.golden.withValues(alpha: 0.4),
-                        MyWalkColor.golden.withValues(alpha: 0.1),
+                        GraceWayColor.golden.withValues(alpha: 0.4),
+                        GraceWayColor.golden.withValues(alpha: 0.1),
                       ],
                     ),
                   ),
-                  child: const Icon(Icons.auto_awesome, size: 38, color: MyWalkColor.golden),
+                  child: const Icon(Icons.auto_awesome, size: 38, color: GraceWayColor.golden),
                 ),
                 const SizedBox(height: 24),
                 const Text('Your week is dedicated.',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: MyWalkColor.warmWhite)),
+                        color: GraceWayColor.warmWhite)),
                 const SizedBox(height: 8),
                 const Text(
                   'God is with you in the effort and in the rest.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 15, color: MyWalkColor.softGold),
+                  style: TextStyle(fontSize: 15, color: GraceWayColor.softGold),
                 ),
               ],
             ),
@@ -313,13 +313,13 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
 
   Widget _dedicationHabitTile(Habit habit) {
     final accent =
-        habit.trackingType == HabitTrackingType.abstain ? MyWalkColor.sage : MyWalkColor.golden;
+        habit.trackingType == HabitTrackingType.abstain ? GraceWayColor.sage : GraceWayColor.golden;
     final verse = ScriptureLibrary.anchorVerse(habit.category);
     final summary = widget.weekCycleManager.weekProjectionSummary(habit);
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -348,7 +348,7 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                         style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: MyWalkColor.warmWhite)),
+                            color: GraceWayColor.warmWhite)),
                     Text(habit.purposeStatement,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -361,17 +361,17 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                   style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
-                      color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+                      color: GraceWayColor.softGold.withValues(alpha: 0.6))),
             ],
           ),
           if (habit.isCompletedToday) ...[
             const SizedBox(height: 10),
             Row(
               children: [
-                Icon(Icons.check_circle_rounded, size: 13, color: MyWalkColor.golden),
+                Icon(Icons.check_circle_rounded, size: 13, color: GraceWayColor.golden),
                 const SizedBox(width: 6),
                 Text('Already completed today',
-                    style: const TextStyle(fontSize: 12, color: MyWalkColor.sage)),
+                    style: const TextStyle(fontSize: 12, color: GraceWayColor.sage)),
               ],
             ),
           ],
@@ -383,7 +383,7 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
             style: TextStyle(
                 fontSize: 12,
                 fontStyle: FontStyle.italic,
-                color: MyWalkColor.softGold.withValues(alpha: 0.5)),
+                color: GraceWayColor.softGold.withValues(alpha: 0.5)),
           ),
         ],
       ),
@@ -404,9 +404,9 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.04),
+        color: GraceWayColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.12), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -415,7 +415,7 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: MyWalkColor.softGold)),
+                  color: GraceWayColor.softGold)),
           const SizedBox(height: 12),
           ...previews.map((item) {
             final (habit, preview) = item;
@@ -424,7 +424,7 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.auto_awesome, size: 12, color: MyWalkColor.golden),
+                  const Icon(Icons.auto_awesome, size: 12, color: GraceWayColor.golden),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Column(
@@ -434,11 +434,11 @@ class _SundayDedicationViewState extends State<SundayDedicationView>
                             style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: MyWalkColor.warmWhite)),
+                                color: GraceWayColor.warmWhite)),
                         Text(preview,
                             style: TextStyle(
                                 fontSize: 11,
-                                color: MyWalkColor.softGold.withValues(alpha: 0.7))),
+                                color: GraceWayColor.softGold.withValues(alpha: 0.7))),
                       ],
                     ),
                   ),

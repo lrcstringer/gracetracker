@@ -11,7 +11,6 @@ class CircleSettingsView extends StatefulWidget {
   final String circleName;
   final String circleDescription;
   final String inviteCode;
-  final CircleSettings settings;
   final List<CircleMember> members;
   final String currentUserId;
 
@@ -21,7 +20,6 @@ class CircleSettingsView extends StatefulWidget {
     required this.circleName,
     required this.circleDescription,
     required this.inviteCode,
-    required this.settings,
     required this.members,
     required this.currentUserId,
   });
@@ -35,13 +33,6 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   late final TextEditingController _nameCtrl;
   late final TextEditingController _descCtrl;
 
-  // ── Feature toggles
-  late String _scriptureFocusPermission;
-  late bool _pulseEnabled;
-  late bool _eventsEnabled;
-  late bool _habitsEnabled;
-  late bool _encouragementsEnabled;
-
   bool _saving = false;
   bool _deleting = false;
   String? _error;
@@ -54,12 +45,6 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
     _descCtrl = TextEditingController(text: widget.circleDescription);
     _nameCtrl.addListener(_onTextChanged);
     _descCtrl.addListener(_onTextChanged);
-
-    _scriptureFocusPermission = widget.settings.scriptureFocusPermission;
-    _pulseEnabled = true;
-    _eventsEnabled = true;
-    _habitsEnabled = true;
-    _encouragementsEnabled = widget.settings.encouragementPromptsEnabled;
   }
 
   @override
@@ -80,15 +65,15 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         title: const Text('Circle Settings',
             style: TextStyle(
-                color: MyWalkColor.warmWhite,
+                color: GraceWayColor.warmWhite,
                 fontSize: 17,
                 fontWeight: FontWeight.w600)),
-        iconTheme: const IconThemeData(color: MyWalkColor.warmWhite),
+        iconTheme: const IconThemeData(color: GraceWayColor.warmWhite),
         actions: [
           if (_dirty)
             TextButton(
@@ -98,10 +83,10 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                       width: 16,
                       height: 16,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: MyWalkColor.golden))
+                          strokeWidth: 2, color: GraceWayColor.golden))
                   : const Text('Save',
                       style: TextStyle(
-                          color: MyWalkColor.golden,
+                          color: GraceWayColor.golden,
                           fontWeight: FontWeight.w600)),
             ),
         ],
@@ -128,62 +113,12 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
 
           const SizedBox(height: 24),
 
-          // ── Feature Toggles ─────────────────────────────────────────────
-          _sectionHeader('Features'),
-          const SizedBox(height: 8),
-          _settingCard(
-            title: 'Who can set Scripture focus?',
-            subtitle: 'Controls who can choose the weekly passage.',
-            child: _permissionToggle(
-              value: _scriptureFocusPermission,
-              onChanged: (v) => _updateToggle(() => _scriptureFocusPermission = v),
-            ),
-          ),
-          const SizedBox(height: 8),
-          _switchCard(
-            icon: Icons.people_rounded,
-            iconColor: _softPurple,
-            title: 'Weekly Pulse',
-            subtitle: 'Allow members to check in weekly.',
-            value: _pulseEnabled,
-            onChanged: (v) => _updateToggle(() => _pulseEnabled = v),
-          ),
-          const SizedBox(height: 8),
-          _switchCard(
-            icon: Icons.event_rounded,
-            iconColor: MyWalkColor.sage,
-            title: 'Events',
-            subtitle: 'Schedule events for your circle.',
-            value: _eventsEnabled,
-            onChanged: (v) => _updateToggle(() => _eventsEnabled = v),
-          ),
-          const SizedBox(height: 8),
-          _switchCard(
-            icon: Icons.check_circle_outline_rounded,
-            iconColor: MyWalkColor.golden,
-            title: 'Circle Habits',
-            subtitle: 'Create shared habits for your circle.',
-            value: _habitsEnabled,
-            onChanged: (v) => _updateToggle(() => _habitsEnabled = v),
-          ),
-          const SizedBox(height: 8),
-          _switchCard(
-            icon: Icons.favorite_rounded,
-            iconColor: MyWalkColor.warmCoral,
-            title: 'Encouragement Prompts',
-            subtitle: 'Sunday nudge to encourage a circle member.',
-            value: _encouragementsEnabled,
-            onChanged: (v) => _updateToggle(() => _encouragementsEnabled = v),
-          ),
-
-          const SizedBox(height: 24),
-
           // ── Invite ──────────────────────────────────────────────────────
           _sectionHeader('Invite'),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(14),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
                 'Share this code with anyone you want to invite:',
@@ -195,16 +130,16 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                     decoration: BoxDecoration(
-                      color: MyWalkColor.golden.withValues(alpha: 0.08),
+                      color: GraceWayColor.golden.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.25), width: 0.5),
+                      border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.25), width: 0.5),
                     ),
                     child: Text(
                       widget.inviteCode,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: MyWalkColor.golden,
+                        color: GraceWayColor.golden,
                         letterSpacing: 4,
                       ),
                       textAlign: TextAlign.center,
@@ -217,7 +152,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                     Clipboard.setData(ClipboardData(text: widget.inviteCode));
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Invite code copied'),
-                      backgroundColor: MyWalkColor.cardBackground,
+                      backgroundColor: GraceWayColor.cardBackground,
                       duration: Duration(seconds: 2),
                     ));
                   },
@@ -225,9 +160,9 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                     width: 44, height: 44,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: MyWalkColor.golden.withValues(alpha: 0.1),
+                      color: GraceWayColor.golden.withValues(alpha: 0.1),
                     ),
-                    child: const Icon(Icons.copy_rounded, size: 18, color: MyWalkColor.golden),
+                    child: const Icon(Icons.copy_rounded, size: 18, color: GraceWayColor.golden),
                   ),
                 ),
               ]),
@@ -236,8 +171,8 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    final text = 'Join my Prayer Circle "${widget.circleName}" on MyWalk!\n\n'
-                        'Tap to join: https://mywalk.faith/join?code=${widget.inviteCode}\n\n'
+                    final text = 'Join my Prayer Circle "${widget.circleName}" on GraceWay!\n\n'
+                        'Tap to join: https://graceway.faith/join?code=${widget.inviteCode}\n\n'
                         'Or enter invite code "${widget.inviteCode}" manually in the app.';
                     Share.share(text);
                   },
@@ -245,8 +180,8 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                   label: const Text('Share Invite Link',
                       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: MyWalkColor.golden,
-                    foregroundColor: MyWalkColor.charcoal,
+                    backgroundColor: GraceWayColor.golden,
+                    foregroundColor: GraceWayColor.charcoal,
                     padding: const EdgeInsets.symmetric(vertical: 13),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
@@ -282,12 +217,12 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
             const SizedBox(height: 16),
             Row(children: [
               const Icon(Icons.warning_amber_rounded,
-                  size: 14, color: MyWalkColor.warmCoral),
+                  size: 14, color: GraceWayColor.warmCoral),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(_error!,
                     style: const TextStyle(
-                        fontSize: 12, color: MyWalkColor.warmCoral)),
+                        fontSize: 12, color: GraceWayColor.warmCoral)),
               ),
             ]),
           ],
@@ -297,13 +232,6 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   }
 
   // ── Helpers ────────────────────────────────────────────────────────────────
-
-  void _updateToggle(VoidCallback fn) {
-    setState(() {
-      fn();
-      _dirty = true;
-    });
-  }
 
   Widget _sectionHeader(String title) => Text(title.toUpperCase(),
       style: TextStyle(
@@ -320,7 +248,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   }) {
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(label,
             style: TextStyle(
@@ -332,7 +260,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
         TextField(
           controller: controller,
           maxLines: maxLines,
-          style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
+          style: const TextStyle(fontSize: 15, color: GraceWayColor.warmWhite),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.25), fontSize: 15),
@@ -340,132 +268,21 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
             isDense: true,
             contentPadding: EdgeInsets.zero,
           ),
-          cursorColor: MyWalkColor.golden,
+          cursorColor: GraceWayColor.golden,
         ),
       ]),
-    );
-  }
-
-  Widget _settingCard({
-    required String title,
-    required String subtitle,
-    required Widget child,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: MyWalkDecorations.card,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title,
-            style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: MyWalkColor.warmWhite)),
-        const SizedBox(height: 3),
-        Text(subtitle,
-            style: TextStyle(
-                fontSize: 12, color: Colors.white.withValues(alpha: 0.45))),
-        const SizedBox(height: 12),
-        child,
-      ]),
-    );
-  }
-
-  Widget _switchCard({
-    required IconData icon,
-    required Color iconColor,
-    required String title,
-    required String subtitle,
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: MyWalkDecorations.card,
-      child: Row(children: [
-        Container(
-          width: 36, height: 36,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle, color: iconColor.withValues(alpha: 0.1)),
-          child: Icon(icon, size: 16, color: iconColor),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(title,
-                style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: MyWalkColor.warmWhite)),
-            Text(subtitle,
-                style: TextStyle(
-                    fontSize: 12, color: Colors.white.withValues(alpha: 0.45))),
-          ]),
-        ),
-        Switch(
-          value: value,
-          onChanged: onChanged,
-          activeThumbColor: MyWalkColor.golden,
-          activeTrackColor: MyWalkColor.golden.withValues(alpha: 0.4),
-          inactiveThumbColor: MyWalkColor.softGold,
-          inactiveTrackColor: Colors.white.withValues(alpha: 0.1),
-        ),
-      ]),
-    );
-  }
-
-  Widget _permissionToggle({
-    required String value,
-    required ValueChanged<String> onChanged,
-  }) {
-    return Row(children: [
-      _permissionChip('admin', 'Admins only', value, onChanged),
-      const SizedBox(width: 8),
-      _permissionChip('any_member', 'All members', value, onChanged),
-    ]);
-  }
-
-  Widget _permissionChip(
-    String optionValue,
-    String label,
-    String current,
-    ValueChanged<String> onChanged,
-  ) {
-    final selected = current == optionValue;
-    return GestureDetector(
-      onTap: () => onChanged(optionValue),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: BoxDecoration(
-          color: selected
-              ? MyWalkColor.golden.withValues(alpha: 0.12)
-              : MyWalkColor.inputBackground,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: selected
-                ? MyWalkColor.golden.withValues(alpha: 0.4)
-                : Colors.transparent,
-          ),
-        ),
-        child: Text(label,
-            style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: selected
-                    ? MyWalkColor.golden
-                    : Colors.white.withValues(alpha: 0.5))),
-      ),
     );
   }
 
   Widget _memberRow(CircleMember m) {
     final isSelf = m.userId == widget.currentUserId;
     final isAdmin = m.isAdmin;
-    final color = isAdmin ? MyWalkColor.golden : MyWalkColor.sage;
+    final color = isAdmin ? GraceWayColor.golden : GraceWayColor.sage;
     return GestureDetector(
       onTap: isSelf ? null : () => _showRoleDialog(m),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: MyWalkDecorations.card,
+        decoration: GraceWayDecorations.card,
         child: Row(children: [
           Container(
             width: 36, height: 36,
@@ -480,12 +297,12 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                 style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: MyWalkColor.warmWhite)),
+                    color: GraceWayColor.warmWhite)),
             Text(isAdmin ? 'Admin' : 'Member',
                 style: TextStyle(
                     fontSize: 11,
                     color: isAdmin
-                        ? MyWalkColor.golden
+                        ? GraceWayColor.golden
                         : Colors.white.withValues(alpha: 0.4))),
           ])),
           if (!isSelf)
@@ -508,23 +325,23 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
+          color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-              color: MyWalkColor.warmCoral.withValues(alpha: 0.2), width: 0.5),
+              color: GraceWayColor.warmCoral.withValues(alpha: 0.2), width: 0.5),
         ),
         child: Row(children: [
           Container(
             width: 36, height: 36,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: MyWalkColor.warmCoral.withValues(alpha: 0.12)),
+                color: GraceWayColor.warmCoral.withValues(alpha: 0.12)),
             child: loading
                 ? const Padding(
                     padding: EdgeInsets.all(10),
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: MyWalkColor.warmCoral))
-                : Icon(icon, size: 16, color: MyWalkColor.warmCoral),
+                        strokeWidth: 2, color: GraceWayColor.warmCoral))
+                : Icon(icon, size: 16, color: GraceWayColor.warmCoral),
           ),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -532,11 +349,11 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                 style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: MyWalkColor.warmCoral)),
+                    color: GraceWayColor.warmCoral)),
             Text(subtitle,
                 style: TextStyle(
                     fontSize: 12,
-                    color: MyWalkColor.warmCoral.withValues(alpha: 0.5))),
+                    color: GraceWayColor.warmCoral.withValues(alpha: 0.5))),
           ])),
         ]),
       ),
@@ -565,19 +382,11 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
           description: descChanged ? desc : null,
         );
       }
-      // Save feature settings
-      await repo.updateCircleSettings(
-        widget.circleId,
-        CircleSettings(
-          scriptureFocusPermission: _scriptureFocusPermission,
-          encouragementPromptsEnabled: _encouragementsEnabled,
-        ),
-      );
       if (mounted) {
         setState(() { _saving = false; _dirty = false; });
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Settings saved'),
-          backgroundColor: MyWalkColor.cardBackground,
+          backgroundColor: GraceWayColor.cardBackground,
         ));
         // Return updated name so the detail view can refresh its title
         Navigator.pop(context, name);
@@ -592,9 +401,9 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
+        backgroundColor: GraceWayColor.cardBackground,
         title: Text(isAdmin ? 'Remove Admin' : 'Make Admin',
-            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 16)),
+            style: const TextStyle(color: GraceWayColor.warmWhite, fontSize: 16)),
         content: Text(
           isAdmin
               ? 'Remove admin privileges from ${m.displayName}? They will become a regular member.'
@@ -614,7 +423,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
               );
             },
             child: Text(isAdmin ? 'Remove Admin' : 'Make Admin',
-                style: const TextStyle(color: MyWalkColor.golden)),
+                style: const TextStyle(color: GraceWayColor.golden)),
           ),
         ],
       ),
@@ -625,9 +434,9 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
+        backgroundColor: GraceWayColor.cardBackground,
         title: const Text('Delete Circle?',
-            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 16)),
+            style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 16)),
         content: Text(
           'This will permanently delete "${widget.circleName}" and all its data — '
           'prayer requests, scripture threads, habits, events, and member history. '
@@ -643,7 +452,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
           TextButton(
             onPressed: () { Navigator.pop(context); _deleteCircle(); },
             child: const Text('Delete Circle',
-                style: TextStyle(color: MyWalkColor.warmCoral, fontWeight: FontWeight.w600)),
+                style: TextStyle(color: GraceWayColor.warmCoral, fontWeight: FontWeight.w600)),
           ),
         ],
       ),
@@ -661,4 +470,3 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   }
 }
 
-const _softPurple = Color(0xFF9B8BB8);

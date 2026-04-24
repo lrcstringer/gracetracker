@@ -116,7 +116,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: MyWalkDecorations.card,
+          decoration: GraceWayDecorations.card,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             _header(),
             if (!_isCompleted) ...[
@@ -139,7 +139,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: MyWalkColor.golden.withValues(alpha: 0.06),
+                  color: GraceWayColor.golden.withValues(alpha: 0.06),
                 ),
               ),
             ),
@@ -155,17 +155,17 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: RadialGradient(colors: [
-            MyWalkColor.golden.withValues(alpha: _isCompleted ? 0.35 : 0.12),
-            MyWalkColor.golden.withValues(alpha: _isCompleted ? 0.15 : 0.04),
+            GraceWayColor.golden.withValues(alpha: _isCompleted ? 0.35 : 0.12),
+            GraceWayColor.golden.withValues(alpha: _isCompleted ? 0.15 : 0.04),
           ]),
         ),
-        child: const Icon(Icons.auto_awesome, size: 20, color: MyWalkColor.golden),
+        child: const Icon(Icons.auto_awesome, size: 20, color: GraceWayColor.golden),
       ),
       const SizedBox(width: 12),
       Expanded(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Daily Gratitude',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
           Text(
             _isCompleted
                 ? '${widget.habit.totalCompletedDays()} days of gratitude'
@@ -174,12 +174,12 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
                     : 'What\u2019s one thing you\u2019re grateful for?'),
             style: TextStyle(
                 fontSize: 12,
-                color: _isCompleted ? MyWalkColor.sage : MyWalkColor.softGold.withValues(alpha: 0.7)),
+                color: _isCompleted ? GraceWayColor.sage : GraceWayColor.softGold.withValues(alpha: 0.7)),
           ),
         ]),
       ),
       if (_isCompleted)
-        const Icon(Icons.check_circle_rounded, size: 24, color: MyWalkColor.golden),
+        const Icon(Icons.check_circle_rounded, size: 24, color: GraceWayColor.golden),
     ]);
   }
 
@@ -188,14 +188,14 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
       TextField(
         controller: _controller,
         maxLines: 3,
-        style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite),
+        style: const TextStyle(fontSize: 14, color: GraceWayColor.warmWhite),
         decoration: InputDecoration(
           hintText: widget.isRetroactive
               ? 'What were you grateful for?'
               : 'Thank God for something today...',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
           filled: true,
-          fillColor: MyWalkColor.cardBackground,
+          fillColor: GraceWayColor.cardBackground,
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none),
@@ -213,8 +213,8 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: MyWalkColor.golden,
-            foregroundColor: MyWalkColor.charcoal,
+            backgroundColor: GraceWayColor.golden,
+            foregroundColor: GraceWayColor.charcoal,
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -228,12 +228,12 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
       Text('\u201C${verse.text}\u201D',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6), height: 1.6)),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6), height: 1.6)),
       const SizedBox(height: 4),
       Align(
         alignment: Alignment.center,
         child: Text(verse.reference,
-            style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.4))),
+            style: TextStyle(fontSize: 11, color: GraceWayColor.golden.withValues(alpha: 0.4))),
       ),
     ]);
   }
@@ -242,7 +242,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
     if (_shareConfirmed) {
       return Center(
         child: Text('Shared \u2713',
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: MyWalkColor.sage)),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: GraceWayColor.sage)),
       );
     }
     return GestureDetector(
@@ -251,7 +251,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
         Text('Share with your circle?',
             style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.5))),
         const Spacer(),
-        const Icon(Icons.ios_share_rounded, size: 14, color: MyWalkColor.golden),
+        const Icon(Icons.ios_share_rounded, size: 14, color: GraceWayColor.golden),
       ]),
     );
   }
@@ -261,7 +261,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       builder: (_) => ShareGratitudeSheet(
         circles: _circles,
         gratitudeText: _lastCompletedText,

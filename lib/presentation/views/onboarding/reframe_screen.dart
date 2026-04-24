@@ -46,8 +46,8 @@ class _ReframeScreenState extends State<ReframeScreen> {
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
-              'MyWalk works\na bit differently.',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite, height: 1.3),
+              'GraceWay works\na bit differently.',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite, height: 1.3),
             ),
             const SizedBox(height: 28),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -68,24 +68,24 @@ class _ReframeScreenState extends State<ReframeScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         decoration: BoxDecoration(
-                          color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
+                          color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+                          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
                         ),
                         child: Column(children: [
                           Text('Day 47',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: MyWalkColor.warmCoral,
+                                color: GraceWayColor.warmCoral,
                                 decoration: TextDecoration.lineThrough,
-                                decorationColor: MyWalkColor.warmCoral,
+                                decorationColor: GraceWayColor.warmCoral,
                               )),
                           const SizedBox(height: 6),
                           Text('Streak broken.',
-                              style: TextStyle(fontSize: 12, color: MyWalkColor.warmCoral.withValues(alpha: 0.8))),
+                              style: TextStyle(fontSize: 12, color: GraceWayColor.warmCoral.withValues(alpha: 0.8))),
                           const SizedBox(height: 8),
-                          Icon(Icons.cancel_rounded, size: 28, color: MyWalkColor.warmCoral.withValues(alpha: 0.6)),
+                          Icon(Icons.cancel_rounded, size: 28, color: GraceWayColor.warmCoral.withValues(alpha: 0.6)),
                         ]),
                       ),
                     ]),
@@ -101,15 +101,15 @@ class _ReframeScreenState extends State<ReframeScreen> {
                     offset: _showRight ? Offset.zero : const Offset(0.3, 0),
                     duration: const Duration(milliseconds: 500),
                     child: Column(children: [
-                      const Text('MyWalk',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
+                      const Text('GraceWay',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
                       const SizedBox(height: 12),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         decoration: BoxDecoration(
-                          color: MyWalkColor.golden.withValues(alpha: 0.06),
+                          color: GraceWayColor.golden.withValues(alpha: 0.06),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
+                          border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
                         ),
                         child: Column(children: [
                           Row(
@@ -121,7 +121,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: i < 5
-                                      ? MyWalkColor.golden
+                                      ? GraceWayColor.golden
                                       : Colors.white.withValues(alpha: 0.08),
                                 ),
                               ),
@@ -129,9 +129,9 @@ class _ReframeScreenState extends State<ReframeScreen> {
                           ),
                           const SizedBox(height: 6),
                           const Text('5 out of 7',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
                           const SizedBox(height: 4),
-                          const Text('Great week.', style: TextStyle(fontSize: 12, color: MyWalkColor.sage)),
+                          const Text('Great week.', style: TextStyle(fontSize: 12, color: GraceWayColor.sage)),
                         ]),
                       ),
                     ]),
@@ -147,10 +147,10 @@ class _ReframeScreenState extends State<ReframeScreen> {
                 offset: _showPoints ? Offset.zero : const Offset(0, 0.2),
                 duration: const Duration(milliseconds: 500),
                 child: Column(children: [
-                  _reframePoint(Icons.favorite_rounded, 'Most apps track your performance. MyWalk tracks what you\u2019re giving to God.'),
+                  _reframePoint(Icons.favorite_rounded, 'Most apps track your performance. GraceWay tracks what you\u2019re giving to God.'),
                   _reframePoint(Icons.refresh_rounded, 'No streaks. Every week is a fresh start. 5 out of 7 is still a gift.'),
                   _reframePoint(Icons.back_hand_rounded, 'We\u2019ll never tell you that you failed. We\u2019ll meet you wherever you are.'),
-                  _reframePoint(Icons.explore_rounded, 'There\u2019s more to discover \u2014 journalling, Kingdom Life content, and community circles. Your walk starts with one step.'),
+
                 ]),
               ),
             ),
@@ -161,12 +161,12 @@ class _ReframeScreenState extends State<ReframeScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-                  color: MyWalkColor.softGold.withValues(alpha: 0.6),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 6),
               Text('Lamentations 3:22-23',
-                  style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
+                  style: TextStyle(fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.5))),
             ]),
           ]),
         ),
@@ -181,8 +181,8 @@ class _ReframeScreenState extends State<ReframeScreen> {
             label: const Text("Got it, let\u2019s get started",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyWalkColor.golden,
-              foregroundColor: MyWalkColor.charcoal,
+              backgroundColor: GraceWayColor.golden,
+              foregroundColor: GraceWayColor.charcoal,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -207,7 +207,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
           width: 20,
           child: Padding(
             padding: const EdgeInsets.only(top: 2),
-            child: Icon(icon, size: 14, color: MyWalkColor.golden),
+            child: Icon(icon, size: 14, color: GraceWayColor.golden),
           ),
         ),
         const SizedBox(width: 12),

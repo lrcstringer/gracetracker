@@ -55,11 +55,11 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         title: const Text('Weekly Summary',
-            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
+            style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -74,7 +74,7 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
 
   Widget _buildBody() {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(color: MyWalkColor.golden));
+      return const Center(child: CircularProgressIndicator(color: GraceWayColor.golden));
     }
     if (_summary == null) {
       return Center(
@@ -86,7 +86,7 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
           const SizedBox(height: 16),
           TextButton(
             onPressed: _loadSummary,
-            child: const Text('Retry', style: TextStyle(color: MyWalkColor.golden)),
+            child: const Text('Retry', style: TextStyle(color: GraceWayColor.golden)),
           ),
         ]),
       );
@@ -104,25 +104,25 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(colors: [
-              MyWalkColor.golden.withValues(alpha: 0.2),
-              MyWalkColor.golden.withValues(alpha: 0.05),
+              GraceWayColor.golden.withValues(alpha: 0.2),
+              GraceWayColor.golden.withValues(alpha: 0.05),
             ]),
           ),
-          child: const Icon(Icons.wb_sunny_rounded, size: 32, color: MyWalkColor.golden),
+          child: const Icon(Icons.wb_sunny_rounded, size: 32, color: GraceWayColor.golden),
         ),
         const SizedBox(height: 12),
         Text(widget.circleName,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
         const SizedBox(height: 4),
         Text("This week's faithfulness",
-            style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7))),
+            style: TextStyle(fontSize: 14, color: GraceWayColor.softGold.withValues(alpha: 0.7))),
         const SizedBox(height: 24),
         Row(children: [
-          Expanded(child: _statCard('${s.activeMembers}', 'Active', 'of ${s.totalMembers}', MyWalkColor.sage)),
+          Expanded(child: _statCard('${s.activeMembers}', 'Active', 'of ${s.totalMembers}', GraceWayColor.sage)),
           const SizedBox(width: 8),
-          Expanded(child: _statCard('${(s.averageScore * 100).toInt()}%', 'Avg Score', 'this week', MyWalkColor.golden)),
+          Expanded(child: _statCard('${(s.averageScore * 100).toInt()}%', 'Avg Score', 'this week', GraceWayColor.golden)),
           const SizedBox(width: 8),
-          Expanded(child: _statCard('${s.totalMembers}', 'Members', 'total', MyWalkColor.softGold)),
+          Expanded(child: _statCard('${s.totalMembers}', 'Members', 'total', GraceWayColor.softGold)),
         ]),
         if (s.averageScore > 0) ...[
           const SizedBox(height: 20),
@@ -141,11 +141,11 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
           '\u201CTherefore encourage one another and build one another up, just as you are doing.\u201D',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6), height: 1.6),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6), height: 1.6),
         ),
         const SizedBox(height: 6),
         Text('1 Thessalonians 5:11',
-            style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.5))),
+            style: TextStyle(fontSize: 11, color: GraceWayColor.golden.withValues(alpha: 0.5))),
       ]),
     );
   }
@@ -154,14 +154,14 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+        border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
       ),
       child: Column(children: [
         Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: color)),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
         Text(sublabel, style: TextStyle(fontSize: 10, color: Colors.white.withValues(alpha: 0.4))),
       ]),
     );
@@ -171,16 +171,16 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.04),
+        color: GraceWayColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.1), width: 0.5),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.1), width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.bar_chart_rounded, size: 14, color: MyWalkColor.golden),
+          const Icon(Icons.bar_chart_rounded, size: 14, color: GraceWayColor.golden),
           const SizedBox(width: 6),
           const Text('Circle Faithfulness',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
         ]),
         const SizedBox(height: 10),
         LayoutBuilder(builder: (_, constraints) {
@@ -188,14 +188,14 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
             Container(
               height: 12,
               decoration: BoxDecoration(
-                  color: MyWalkColor.cardBackground, borderRadius: BorderRadius.circular(6)),
+                  color: GraceWayColor.cardBackground, borderRadius: BorderRadius.circular(6)),
             ),
             Container(
               height: 12,
               width: constraints.maxWidth * score.clamp(0.0, 1.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [MyWalkColor.golden.withValues(alpha: 0.8), MyWalkColor.golden],
+                  colors: [GraceWayColor.golden.withValues(alpha: 0.8), GraceWayColor.golden],
                 ),
                 borderRadius: BorderRadius.circular(6),
               ),
@@ -213,15 +213,15 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: MyWalkColor.warmCoral.withValues(alpha: 0.04),
+        color: GraceWayColor.warmCoral.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.1), width: 0.5),
+        border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.1), width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Row(children: [
-          Icon(Icons.local_fire_department, size: 14, color: MyWalkColor.warmCoral),
+          Icon(Icons.local_fire_department, size: 14, color: GraceWayColor.warmCoral),
           SizedBox(width: 6),
-          Text('Top Streaks', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.warmCoral)),
+          Text('Top Streaks', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.warmCoral)),
         ]),
         const SizedBox(height: 12),
         ...streaks.take(5).toList().asMap().entries.map((e) {
@@ -235,27 +235,27 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
                 width: 20,
                 child: Text('${i + 1}',
                     style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700,
-                        color: isFirst ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.4))),
+                        color: isFirst ? GraceWayColor.golden : Colors.white.withValues(alpha: 0.4))),
               ),
               Container(
                 width: 28, height: 28,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: isFirst
-                        ? MyWalkColor.golden.withValues(alpha: 0.12)
-                        : MyWalkColor.sage.withValues(alpha: 0.1)),
+                        ? GraceWayColor.golden.withValues(alpha: 0.12)
+                        : GraceWayColor.sage.withValues(alpha: 0.1)),
                 child: Icon(Icons.person_rounded, size: 12,
-                    color: isFirst ? MyWalkColor.golden : MyWalkColor.sage),
+                    color: isFirst ? GraceWayColor.golden : GraceWayColor.sage),
               ),
               const SizedBox(width: 10),
               const Expanded(
-                child: Text('Member', style: TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
+                child: Text('Member', style: TextStyle(fontSize: 14, color: GraceWayColor.warmWhite)),
               ),
               Row(children: [
-                const Icon(Icons.local_fire_department, size: 11, color: MyWalkColor.warmCoral),
+                const Icon(Icons.local_fire_department, size: 11, color: GraceWayColor.warmCoral),
                 const SizedBox(width: 4),
                 Text('${streak.streak} days',
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: MyWalkColor.warmCoral)),
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: GraceWayColor.warmCoral)),
               ]),
             ]),
           );
@@ -268,28 +268,28 @@ class _CircleSundaySummaryViewState extends State<CircleSundaySummaryView> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.04),
+        color: GraceWayColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.1), width: 0.5),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.1), width: 0.5),
       ),
       child: Row(children: [
         Container(
           width: 36, height: 36,
           decoration: BoxDecoration(
-              shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.12)),
-          child: const Icon(Icons.favorite_rounded, size: 16, color: MyWalkColor.golden),
+              shape: BoxShape.circle, color: GraceWayColor.golden.withValues(alpha: 0.12)),
+          child: const Icon(Icons.favorite_rounded, size: 16, color: GraceWayColor.golden),
         ),
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Shared Gratitudes',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
           Text(
             '$_gratitudeWeekCount gratitude${_gratitudeWeekCount == 1 ? '' : 's'} shared this week',
             style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4)),
           ),
         ])),
         Text('$_gratitudeWeekCount',
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.golden)),
       ]),
     );
   }

@@ -88,10 +88,10 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         title: const Text('Support Partner Invite',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
         leading: _done
@@ -104,7 +104,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
       body: SafeArea(
         child: _loading
             ? const Center(
-                child: CircularProgressIndicator(color: MyWalkColor.golden))
+                child: CircularProgressIndicator(color: GraceWayColor.golden))
             : _done
                 ? _doneState()
                 : _errorMessage != null && _partnership == null
@@ -127,12 +127,12 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(colors: [
-                MyWalkColor.sage.withValues(alpha: 0.25),
-                MyWalkColor.sage.withValues(alpha: 0.06),
+                GraceWayColor.sage.withValues(alpha: 0.25),
+                GraceWayColor.sage.withValues(alpha: 0.06),
               ]),
             ),
             child: const Icon(Icons.handshake_rounded, size: 32,
-                color: MyWalkColor.sage),
+                color: GraceWayColor.sage),
           ),
         ),
         const SizedBox(height: 20),
@@ -142,7 +142,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
             textAlign: TextAlign.center,
             style: const TextStyle(
                 fontSize: 18, fontWeight: FontWeight.w600,
-                color: MyWalkColor.warmWhite, height: 1.3),
+                color: GraceWayColor.warmWhite, height: 1.3),
           ),
         ),
         const SizedBox(height: 8),
@@ -150,7 +150,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
           child: Text(
             'Habit: ${p.habitName}',
             style: TextStyle(
-                fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.8)),
+                fontSize: 14, color: GraceWayColor.softGold.withValues(alpha: 0.8)),
           ),
         ),
         const SizedBox(height: 28),
@@ -159,26 +159,26 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.08), width: 0.5),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.08), width: 0.5),
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
               const Icon(Icons.info_outline_rounded, size: 13,
-                  color: MyWalkColor.softGold),
+                  color: GraceWayColor.softGold),
               const SizedBox(width: 6),
               Text('Before you accept',
                   style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: MyWalkColor.softGold.withValues(alpha: 0.8))),
+                      color: GraceWayColor.softGold.withValues(alpha: 0.8))),
             ]),
             const SizedBox(height: 10),
             Text(
               'By accepting, you agree to:\n\n'
-              '• Receive messages from ${p.ownerDisplayName} through MyWalk when they need support.\n\n'
+              '• Receive messages from ${p.ownerDisplayName} through GraceWay when they need support.\n\n'
               '• Keep the contents of your conversations private and confidential.\n\n'
               '• Understand that this is a voluntary support relationship, not a professional '
               'counselling or crisis service. If you or ${p.ownerDisplayName} are in immediate '
@@ -187,7 +187,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
               style: TextStyle(
                   fontSize: 13,
                   height: 1.6,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.75)),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.75)),
             ),
           ]),
         ),
@@ -195,7 +195,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
         if (_errorMessage != null) ...[
           const SizedBox(height: 16),
           Text(_errorMessage!,
-              style: const TextStyle(fontSize: 13, color: MyWalkColor.warmCoral)),
+              style: const TextStyle(fontSize: 13, color: GraceWayColor.warmCoral)),
         ],
 
         const SizedBox(height: 32),
@@ -204,8 +204,8 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
           child: ElevatedButton(
             onPressed: _acting ? null : _accept,
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyWalkColor.sage,
-              foregroundColor: MyWalkColor.charcoal,
+              backgroundColor: GraceWayColor.sage,
+              foregroundColor: GraceWayColor.charcoal,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
@@ -213,7 +213,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
             child: _acting
                 ? const SizedBox(width: 20, height: 20,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: MyWalkColor.charcoal))
+                        strokeWidth: 2, color: GraceWayColor.charcoal))
                 : const Text('Accept',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
           ),
@@ -224,7 +224,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
           child: TextButton(
             onPressed: _acting ? null : _decline,
             style: TextButton.styleFrom(
-              foregroundColor: MyWalkColor.warmWhite.withValues(alpha: 0.45),
+              foregroundColor: GraceWayColor.warmWhite.withValues(alpha: 0.45),
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             child: const Text('Decline', style: TextStyle(fontSize: 15)),
@@ -244,7 +244,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
                 ? Icons.check_circle_rounded
                 : Icons.cancel_outlined,
             size: 64,
-            color: _accepted ? MyWalkColor.sage : MyWalkColor.warmWhite.withValues(alpha: 0.3),
+            color: _accepted ? GraceWayColor.sage : GraceWayColor.warmWhite.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 20),
           Text(
@@ -253,7 +253,7 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
                 : 'Invite declined',
             style: const TextStyle(
                 fontSize: 20, fontWeight: FontWeight.w700,
-                color: MyWalkColor.warmWhite),
+                color: GraceWayColor.warmWhite),
           ),
           const SizedBox(height: 10),
           Text(
@@ -262,15 +262,15 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
                 : 'You can always connect with people in your Prayer Circles.',
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7),
+                fontSize: 14, color: GraceWayColor.softGold.withValues(alpha: 0.7),
                 height: 1.5),
           ),
           const SizedBox(height: 32),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyWalkColor.golden.withValues(alpha: 0.15),
-              foregroundColor: MyWalkColor.softGold,
+              backgroundColor: GraceWayColor.golden.withValues(alpha: 0.15),
+              foregroundColor: GraceWayColor.softGold,
               elevation: 0,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
               shape: RoundedRectangleBorder(
@@ -289,19 +289,19 @@ class _PartnerAcceptanceScreenState extends State<PartnerAcceptanceScreen> {
         padding: const EdgeInsets.all(32),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.link_off_rounded, size: 56,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.25)),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.25)),
           const SizedBox(height: 20),
           Text(_errorMessage!,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 16,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.6),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.6),
                   height: 1.5)),
           const SizedBox(height: 32),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Go back',
-                style: TextStyle(color: MyWalkColor.softGold)),
+                style: TextStyle(color: GraceWayColor.softGold)),
           ),
         ]),
       ),

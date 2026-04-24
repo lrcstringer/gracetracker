@@ -27,7 +27,7 @@ export const inviteRouter = createTRPCRouter({
       const snap = await circlesCol().doc(input.circleId).get();
       const inviteCode = (snap.data()?.inviteCode as string) ?? '';
       return {
-        shareUrl: `https://mywalk.faith/join/${inviteCode}`,
+        shareUrl: `https://graceway.faith/join/${inviteCode}`,
         inviteCode,
       };
     }),

@@ -57,7 +57,7 @@ class WeekStripView extends StatelessWidget {
                   fontSize: 11,
                   fontWeight: isToday ? FontWeight.w700 : FontWeight.w400,
                   color: isToday
-                      ? MyWalkColor.golden
+                      ? GraceWayColor.golden
                       : Colors.white.withValues(alpha: 0.5),
                 ),
               ),
@@ -75,7 +75,7 @@ class WeekStripView extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 10,
                   color: isToday
-                      ? MyWalkColor.golden
+                      ? GraceWayColor.golden
                       : Colors.white.withValues(alpha: 0.35),
                 ),
               ),
@@ -106,13 +106,13 @@ class _DayTile extends StatelessWidget {
     if (isFuture) return Colors.white.withValues(alpha: 0.04);
     switch (tier) {
       case DayTier.nothing:
-        return MyWalkColor.surfaceOverlay;
+        return GraceWayColor.surfaceOverlay;
       case DayTier.partial:
-        return MyWalkColor.golden.withValues(alpha: 0.2);
+        return GraceWayColor.golden.withValues(alpha: 0.2);
       case DayTier.substantial:
-        return MyWalkColor.golden.withValues(alpha: 0.55);
+        return GraceWayColor.golden.withValues(alpha: 0.55);
       case DayTier.full:
-        return MyWalkColor.golden.withValues(alpha: 0.85);
+        return GraceWayColor.golden.withValues(alpha: 0.85);
     }
   }
 
@@ -128,12 +128,12 @@ class _DayTile extends StatelessWidget {
         shape: BoxShape.circle,
         color: color,
         border: isSelected
-            ? Border.all(color: MyWalkColor.golden, width: 2)
+            ? Border.all(color: GraceWayColor.golden, width: 2)
             : isToday && tier == DayTier.nothing
-                ? Border.all(color: MyWalkColor.golden.withValues(alpha: 0.4), width: 1)
+                ? Border.all(color: GraceWayColor.golden.withValues(alpha: 0.4), width: 1)
                 : null,
         boxShadow: tier == DayTier.full && !isFuture
-            ? [BoxShadow(color: MyWalkColor.golden.withValues(alpha: 0.4), blurRadius: 6)]
+            ? [BoxShadow(color: GraceWayColor.golden.withValues(alpha: 0.4), blurRadius: 6)]
             : null,
       ),
     );

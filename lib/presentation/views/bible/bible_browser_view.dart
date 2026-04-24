@@ -6,7 +6,6 @@ import 'package:share_plus/share_plus.dart';
 import '../../../domain/entities/bible_entities.dart';
 import '../../providers/bible_provider.dart';
 import '../../theme/app_theme.dart';
-import '../memorization/screens/memorization_input_screen.dart';
 import 'bible_book_picker_sheet.dart';
 import 'bible_bookmarks_sheet.dart';
 import 'bible_search_sheet.dart';
@@ -118,7 +117,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
           return _InitialisingScreen(progress: provider.initProgress);
         }
         return Scaffold(
-          backgroundColor: MyWalkColor.charcoal,
+          backgroundColor: GraceWayColor.charcoal,
           appBar: _buildAppBar(context, provider),
           body: _buildBody(context, provider),
         );
@@ -134,8 +133,8 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
         : 'Bible';
 
     return AppBar(
-      backgroundColor: MyWalkColor.charcoal,
-      foregroundColor: MyWalkColor.warmWhite,
+      backgroundColor: GraceWayColor.charcoal,
+      foregroundColor: GraceWayColor.warmWhite,
       elevation: 0,
       title: GestureDetector(
         onTap: () => _showBookPicker(context, provider),
@@ -147,12 +146,12 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: MyWalkColor.warmWhite,
+                color: GraceWayColor.warmWhite,
               ),
             ),
             const SizedBox(width: 4),
             const Icon(Icons.expand_more,
-                size: 18, color: MyWalkColor.softGold),
+                size: 18, color: GraceWayColor.softGold),
           ],
         ),
       ),
@@ -164,7 +163,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
         ),
         PopupMenuButton<_MenuAction>(
           icon: const Icon(Icons.more_vert, size: 22),
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           onSelected: (action) => _handleMenu(context, provider, action),
           itemBuilder: (_) => [
             _menuItem(_MenuAction.bookmarks, Icons.bookmark_outline,
@@ -185,11 +184,11 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
       value: action,
       child: Row(
         children: [
-          Icon(icon, size: 18, color: MyWalkColor.golden),
+          Icon(icon, size: 18, color: GraceWayColor.golden),
           const SizedBox(width: 10),
           Text(label,
               style: const TextStyle(
-                  color: MyWalkColor.warmWhite, fontSize: 14)),
+                  color: GraceWayColor.warmWhite, fontSize: 14)),
         ],
       ),
     );
@@ -210,7 +209,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
   Widget _buildBody(BuildContext context, BibleProvider provider) {
     if (provider.isChapterLoading) {
       return const Center(
-        child: CircularProgressIndicator(color: MyWalkColor.golden),
+        child: CircularProgressIndicator(color: GraceWayColor.golden),
       );
     }
 
@@ -218,7 +217,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
     if (chapter == null || chapter.isEmpty) {
       return const Center(
         child: Text('No content',
-            style: TextStyle(color: MyWalkColor.softGold)),
+            style: TextStyle(color: GraceWayColor.softGold)),
       );
     }
 
@@ -318,7 +317,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
         provider.isBookmarked(verse.bookNum, verse.chapter, verse.verseNum);
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: MyWalkColor.cardBackground,
+      backgroundColor: GraceWayColor.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -331,7 +330,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
               width: 36,
               height: 4,
               decoration: BoxDecoration(
-                color: MyWalkColor.softGold.withValues(alpha: 0.3),
+                color: GraceWayColor.softGold.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -341,7 +340,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
               child: Text(
                 verse.reference,
                 style: TextStyle(
-                  color: MyWalkColor.golden,
+                  color: GraceWayColor.golden,
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.5,
@@ -349,7 +348,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
               ),
             ),
             const Divider(
-                color: MyWalkColor.cardBackground, height: 1),
+                color: GraceWayColor.cardBackground, height: 1),
             _ActionTile(
               icon: Icons.copy_outlined,
               label: 'Copy Verse',
@@ -372,25 +371,10 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
                   : Icons.bookmark_border_outlined,
               label: isBookmarked ? 'Remove Bookmark' : 'Bookmark',
               iconColor:
-                  isBookmarked ? MyWalkColor.golden : MyWalkColor.softGold,
+                  isBookmarked ? GraceWayColor.golden : GraceWayColor.softGold,
               onTap: () {
                 Navigator.pop(context);
                 provider.toggleBookmark(verse);
-              },
-            ),
-            _ActionTile(
-              icon: Icons.psychology_outlined,
-              label: 'Memorize this verse',
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute(
-                    builder: (_) => MemorizationInputScreen(
-                      initialTitle: verse.reference,
-                      initialText: verse.text,
-                    ),
-                  ),
-                );
               },
             ),
             if (widget.onVerseSelected != null)
@@ -417,7 +401,7 @@ class _BibleBrowserViewState extends State<BibleBrowserView> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${verse.reference} copied'),
-        backgroundColor: MyWalkColor.cardBackground,
+        backgroundColor: GraceWayColor.cardBackground,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
       ),
@@ -438,7 +422,7 @@ class _InitialisingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 48),
@@ -446,13 +430,13 @@ class _InitialisingScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(Icons.menu_book_outlined,
-                  size: 56, color: MyWalkColor.golden),
+                  size: 56, color: GraceWayColor.golden),
               const SizedBox(height: 32),
               Text(
                 'Preparing Bible…',
                 style: GoogleFonts.dmSerifDisplay(
                   fontSize: 20,
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                 ),
               ),
               const SizedBox(height: 24),
@@ -461,8 +445,8 @@ class _InitialisingScreen extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: progress > 0 ? progress : null,
                   backgroundColor:
-                      MyWalkColor.cardBackground,
-                  valueColor: const AlwaysStoppedAnimation(MyWalkColor.golden),
+                      GraceWayColor.cardBackground,
+                  valueColor: const AlwaysStoppedAnimation(GraceWayColor.golden),
                   minHeight: 6,
                 ),
               ),
@@ -473,7 +457,7 @@ class _InitialisingScreen extends StatelessWidget {
                     : 'Loading…',
                 style: TextStyle(
                   fontSize: 13,
-                  color: MyWalkColor.softGold.withValues(alpha: 0.7),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.7),
                 ),
               ),
               const SizedBox(height: 8),
@@ -481,7 +465,7 @@ class _InitialisingScreen extends StatelessWidget {
                 'One-time setup',
                 style: TextStyle(
                   fontSize: 11,
-                  color: MyWalkColor.softGold.withValues(alpha: 0.45),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.45),
                 ),
               ),
             ],
@@ -511,7 +495,7 @@ class _ChapterHeader extends StatelessWidget {
             style: const TextStyle(
               fontSize: 11,
               letterSpacing: 3.5,
-              color: MyWalkColor.golden,
+              color: GraceWayColor.golden,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -522,12 +506,12 @@ class _ChapterHeader extends StatelessWidget {
             style: GoogleFonts.dmSerifDisplay(
               fontSize: 64,
               height: 1.0,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.9),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.9),
             ),
           ),
           const SizedBox(height: 16),
           Divider(
-            color: MyWalkColor.golden.withValues(alpha: 0.2),
+            color: GraceWayColor.golden.withValues(alpha: 0.2),
             thickness: 0.5,
           ),
           const SizedBox(height: 8),
@@ -563,13 +547,13 @@ class _VerseRow extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
         decoration: BoxDecoration(
           color: isHighlighted
-              ? MyWalkColor.golden.withValues(alpha: 0.08)
+              ? GraceWayColor.golden.withValues(alpha: 0.08)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: isHighlighted
               ? Border(
                   left: BorderSide(
-                    color: MyWalkColor.golden.withValues(alpha: 0.6),
+                    color: GraceWayColor.golden.withValues(alpha: 0.6),
                     width: 2.5,
                   ),
                 )
@@ -587,7 +571,7 @@ class _VerseRow extends StatelessWidget {
                   '${verse.verseNum}',
                   style: TextStyle(
                     fontSize: fontSize * 0.65,
-                    color: MyWalkColor.golden.withValues(
+                    color: GraceWayColor.golden.withValues(
                         alpha: isHighlighted ? 1.0 : 0.6),
                     fontWeight: FontWeight.w700,
                     height: 1.3,
@@ -605,8 +589,8 @@ class _VerseRow extends StatelessWidget {
                 style: GoogleFonts.dmSerifDisplay(
                   fontSize: fontSize,
                   color: isHighlighted
-                      ? MyWalkColor.warmWhite
-                      : MyWalkColor.warmWhite.withValues(alpha: 0.88),
+                      ? GraceWayColor.warmWhite
+                      : GraceWayColor.warmWhite.withValues(alpha: 0.88),
                   height: 1.75,
                 ),
                 textAlign: TextAlign.justify,
@@ -619,7 +603,7 @@ class _VerseRow extends StatelessWidget {
                 child: Icon(
                   Icons.bookmark,
                   size: 14,
-                  color: MyWalkColor.golden.withValues(alpha: 0.7),
+                  color: GraceWayColor.golden.withValues(alpha: 0.7),
                 ),
               ),
           ],
@@ -668,10 +652,10 @@ class _ChapterNavBar extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: MyWalkColor.charcoal,
+        color: GraceWayColor.charcoal,
         border: Border(
           top: BorderSide(
-            color: MyWalkColor.golden.withValues(alpha: 0.12),
+            color: GraceWayColor.golden.withValues(alpha: 0.12),
           ),
         ),
       ),
@@ -686,11 +670,11 @@ class _ChapterNavBar extends StatelessWidget {
                   ? TextButton.icon(
                       onPressed: provider.previousChapter,
                       icon: const Icon(Icons.chevron_left,
-                          size: 20, color: MyWalkColor.golden),
+                          size: 20, color: GraceWayColor.golden),
                       label: Text(
                         prevLabel,
                         style: const TextStyle(
-                          color: MyWalkColor.softGold,
+                          color: GraceWayColor.softGold,
                           fontSize: 13,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -710,13 +694,13 @@ class _ChapterNavBar extends StatelessWidget {
                       icon: Text(
                         nextLabel,
                         style: const TextStyle(
-                          color: MyWalkColor.softGold,
+                          color: GraceWayColor.softGold,
                           fontSize: 13,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                       label: const Icon(Icons.chevron_right,
-                          size: 20, color: MyWalkColor.golden),
+                          size: 20, color: GraceWayColor.golden),
                       iconAlignment: IconAlignment.end,
                       style: TextButton.styleFrom(
                         alignment: Alignment.centerRight,
@@ -749,10 +733,10 @@ class _ActionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(icon,
-          color: iconColor ?? MyWalkColor.softGold, size: 22),
+          color: iconColor ?? GraceWayColor.softGold, size: 22),
       title: Text(
         label,
-        style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 15),
+        style: const TextStyle(color: GraceWayColor.warmWhite, fontSize: 15),
       ),
       onTap: onTap,
     );

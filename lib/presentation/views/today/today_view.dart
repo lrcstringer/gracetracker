@@ -16,7 +16,7 @@ import '../habits/add_habit_view.dart';
 import '../habits/habit_check_in_card_view.dart';
 import '../shared/engagement_banner_view.dart';
 import '../shared/golden_pulse_view.dart';
-import '../shared/mywalk_paywall_view.dart';
+import '../shared/graceway_paywall_view.dart';
 import '../shared/appbar_actions.dart';
 import '../help/today_help_view.dart';
 import '../week/week_strip_view.dart';
@@ -108,8 +108,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     // habits may be empty during initial load — guard before any .first access.
     if (habits.isEmpty) {
       return const Scaffold(
-        backgroundColor: MyWalkColor.charcoal,
-        body: Center(child: CircularProgressIndicator(color: MyWalkColor.golden)),
+        backgroundColor: GraceWayColor.charcoal,
+        body: Center(child: CircularProgressIndicator(color: GraceWayColor.golden)),
       );
     }
     final gratitudeHabit = habits.firstWhere(
@@ -125,17 +125,17 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     return Stack(
       children: [
         Scaffold(
-          backgroundColor: MyWalkColor.charcoal,
+          backgroundColor: GraceWayColor.charcoal,
           body: CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  backgroundColor: MyWalkColor.charcoal,
-                  foregroundColor: MyWalkColor.warmWhite,
+                  backgroundColor: GraceWayColor.charcoal,
+                  foregroundColor: GraceWayColor.warmWhite,
                   expandedHeight: imageHeight,
                   pinned: true,
                   automaticallyImplyLeading: false,
                   title: const Text(
-                    'MyWalk',
+                    'GraceWay',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                       fit: StackFit.expand,
                       children: [
                         Image.asset(
-                          'assets/crossfeet.webp',
+                          'assets/icon1.png',
                           fit: BoxFit.cover,
                         ),
                         Container(
@@ -161,8 +161,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                MyWalkColor.charcoal.withValues(alpha: 0.5),
-                                MyWalkColor.charcoal,
+                                GraceWayColor.charcoal.withValues(alpha: 0.5),
+                                GraceWayColor.charcoal,
                               ],
                               stops: const [0.0, 0.55, 1.0],
                             ),
@@ -176,12 +176,12 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
-                                'MyWalk',
+                                'GraceWay',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
-                                  color: MyWalkColor.warmWhite,
+                                  color: GraceWayColor.warmWhite,
                                   height: 1.1,
                                 ),
                               ),
@@ -192,7 +192,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontStyle: FontStyle.italic,
-                                  color: MyWalkColor.softGold,
+                                  color: GraceWayColor.softGold,
                                   height: 1.45,
                                 ),
                               ),
@@ -202,7 +202,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: MyWalkColor.golden,
+                                  color: GraceWayColor.golden,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -305,7 +305,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       style: const TextStyle(
         fontSize: 17,
         fontWeight: FontWeight.w600,
-        color: MyWalkColor.warmWhite,
+        color: GraceWayColor.warmWhite,
       ),
     );
   }
@@ -317,26 +317,26 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
         margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
         padding: const EdgeInsets.fromLTRB(14, 10, 6, 10),
         decoration: BoxDecoration(
-          color: MyWalkColor.golden.withValues(alpha: 0.08),
+          color: GraceWayColor.golden.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
+          border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
         ),
         child: Row(
           children: [
-            const Icon(Icons.check_circle_outline, color: MyWalkColor.golden, size: 16),
+            const Icon(Icons.check_circle_outline, color: GraceWayColor.golden, size: 16),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 'New week, same habits. You\'re already on Day ${DateTime.now().weekday % 7 + 1}. Let\'s keep going.',
                 style: TextStyle(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.85),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.85),
                   fontSize: 12,
                 ),
               ),
             ),
             GestureDetector(
               onTap: widget.onDismissAutoCarry,
-              child: Icon(Icons.close, size: 14, color: MyWalkColor.softGold.withValues(alpha: 0.4)),
+              child: Icon(Icons.close, size: 14, color: GraceWayColor.softGold.withValues(alpha: 0.4)),
             ),
           ],
         ),
@@ -349,19 +349,19 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: MyWalkColor.softGold.withValues(alpha: 0.08),
+        color: GraceWayColor.softGold.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: MyWalkColor.softGold.withValues(alpha: 0.15), width: 0.5),
+        border: Border.all(color: GraceWayColor.softGold.withValues(alpha: 0.15), width: 0.5),
       ),
       child: Row(
         children: [
-          Icon(Icons.history, size: 14, color: MyWalkColor.softGold.withValues(alpha: 0.6)),
+          Icon(Icons.history, size: 14, color: GraceWayColor.softGold.withValues(alpha: 0.6)),
           const SizedBox(width: 6),
           Text(
             'Logging for $formatter',
             style: TextStyle(
               fontSize: 12,
-              color: MyWalkColor.softGold.withValues(alpha: 0.7),
+              color: GraceWayColor.softGold.withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -386,26 +386,26 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: MyWalkColor.golden.withValues(alpha: 0.06),
+              color: GraceWayColor.golden.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
+              border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
             ),
             child: Row(
               children: [
-                const Icon(Icons.workspace_premium, color: MyWalkColor.golden, size: 18),
+                const Icon(Icons.workspace_premium, color: GraceWayColor.golden, size: 18),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Unlock unlimited habits',
-                          style: TextStyle(fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite, fontSize: 13)),
+                          style: TextStyle(fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite, fontSize: 13)),
                       Text('Free plan includes $_freeHabitLimit habits. Upgrade to add more.',
-                          style: TextStyle(fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+                          style: TextStyle(fontSize: 11, color: GraceWayColor.softGold.withValues(alpha: 0.6))),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right, color: MyWalkColor.golden.withValues(alpha: 0.5), size: 16),
+                Icon(Icons.chevron_right, color: GraceWayColor.golden.withValues(alpha: 0.5), size: 16),
               ],
             ),
           ),
@@ -419,8 +419,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
   Widget _addHabitButton() {
     return FloatingActionButton.extended(
       onPressed: () => _showAddHabit(context),
-      backgroundColor: MyWalkColor.softGold.withValues(alpha: 0.12),
-      foregroundColor: MyWalkColor.softGold,
+      backgroundColor: GraceWayColor.softGold.withValues(alpha: 0.12),
+      foregroundColor: GraceWayColor.softGold,
       elevation: 0,
       icon: const Icon(Icons.add_rounded, size: 18),
       label: const Text('Add a habit', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
@@ -470,7 +470,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -489,8 +489,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
-      builder: (_) => const MyWalkPaywallView(),
+      backgroundColor: GraceWayColor.charcoal,
+      builder: (_) => const GraceWayPaywallView(),
     );
   }
 
@@ -648,7 +648,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -663,14 +663,14 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              MyWalkColor.golden.withValues(alpha: _isCompleted ? 0.35 : 0.12),
-                              MyWalkColor.golden.withValues(alpha: _isCompleted ? 0.15 : 0.04),
+                              GraceWayColor.golden.withValues(alpha: _isCompleted ? 0.35 : 0.12),
+                              GraceWayColor.golden.withValues(alpha: _isCompleted ? 0.15 : 0.04),
                             ],
                           ),
                         ),
                         child: Icon(
                           Icons.auto_awesome,
-                          color: _isCompleted ? MyWalkColor.golden : MyWalkColor.softGold,
+                          color: _isCompleted ? GraceWayColor.golden : GraceWayColor.softGold,
                           size: 20,
                         ),
                       ),
@@ -680,22 +680,22 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Daily Gratitude',
-                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: MyWalkColor.warmWhite)),
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: GraceWayColor.warmWhite)),
                             if (_isCompleted)
                               Text('${widget.habit.totalCompletedDays()} days of gratitude',
-                                  style: const TextStyle(fontSize: 11, color: MyWalkColor.sage))
+                                  style: const TextStyle(fontSize: 11, color: GraceWayColor.sage))
                             else
                               Text(
                                 widget.isRetroactive
                                     ? 'Were you grateful that day?'
                                     : 'What\u2019s one thing you\u2019re grateful for?',
-                                style: TextStyle(fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.7)),
+                                style: TextStyle(fontSize: 11, color: GraceWayColor.softGold.withValues(alpha: 0.7)),
                               ),
                           ],
                         ),
                       ),
                       if (_isCompleted)
-                        const Icon(Icons.check_circle_rounded, color: MyWalkColor.golden, size: 24)
+                        const Icon(Icons.check_circle_rounded, color: GraceWayColor.golden, size: 24)
                       else
                         Icon(Icons.expand_more, color: Colors.white.withValues(alpha: 0.3), size: 18),
                     ],
@@ -707,12 +707,12 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                     controller: _controller,
                     maxLines: 3,
                     minLines: 2,
-                    style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
+                    style: const TextStyle(color: GraceWayColor.warmWhite, fontSize: 14),
                     decoration: InputDecoration(
                       hintText: widget.isRetroactive ? 'What were you grateful for?' : 'Thank God for something today...',
                       hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
                       filled: true,
-                      fillColor: MyWalkColor.surfaceOverlay,
+                      fillColor: GraceWayColor.surfaceOverlay,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
@@ -727,8 +727,8 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                       icon: const Icon(Icons.favorite, size: 14),
                       label: Text(_controller.text.isEmpty ? 'Thank you, Lord' : 'Give thanks'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: MyWalkColor.golden,
-                        foregroundColor: MyWalkColor.charcoal,
+                        backgroundColor: GraceWayColor.golden,
+                        foregroundColor: GraceWayColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
@@ -744,8 +744,8 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                       icon: const Icon(Icons.favorite, size: 14),
                       label: const Text('Thank you, Lord'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: MyWalkColor.golden,
-                        foregroundColor: MyWalkColor.charcoal,
+                        backgroundColor: GraceWayColor.golden,
+                        foregroundColor: GraceWayColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
@@ -760,7 +760,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                     style: TextStyle(
                       fontSize: 11,
                       fontStyle: FontStyle.italic,
-                      color: MyWalkColor.softGold.withValues(alpha: 0.55),
+                      color: GraceWayColor.softGold.withValues(alpha: 0.55),
                       height: 1.5,
                     ),
                   ),
@@ -768,7 +768,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                   Center(
                     child: Text(
                       _verse!.reference,
-                      style: TextStyle(fontSize: 10, color: MyWalkColor.golden.withValues(alpha: 0.4)),
+                      style: TextStyle(fontSize: 10, color: GraceWayColor.golden.withValues(alpha: 0.4)),
                     ),
                   ),
                   if (_showSharePrompt && _userCircles != null) ...[
@@ -780,7 +780,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                           context: context,
                           isScrollControlled: true,
                           useSafeArea: true,
-                          backgroundColor: MyWalkColor.charcoal,
+                          backgroundColor: GraceWayColor.charcoal,
                           builder: (_) => ShareGratitudeSheet(
                             circles: _userCircles!,
                             gratitudeText: widget.habit.entryFor(widget.targetDate)?.gratitudeNote,
@@ -791,10 +791,10 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.share_outlined, size: 13, color: MyWalkColor.golden.withValues(alpha: 0.55)),
+                          Icon(Icons.share_outlined, size: 13, color: GraceWayColor.golden.withValues(alpha: 0.55)),
                           const SizedBox(width: 5),
                           Text('Share with your circle?',
-                              style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.55))),
+                              style: TextStyle(fontSize: 11, color: GraceWayColor.golden.withValues(alpha: 0.55))),
                         ],
                       ),
                     ),

@@ -86,7 +86,7 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
                 width: active ? 24 : 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: active ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.15),
+                  color: active ? GraceWayColor.golden : Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(4),
                 ),
               );
@@ -104,8 +104,8 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
                       child: ElevatedButton(
                         onPressed: widget.onNext,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyWalkColor.golden,
-                          foregroundColor: MyWalkColor.charcoal,
+                          backgroundColor: GraceWayColor.golden,
+                          foregroundColor: GraceWayColor.charcoal,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                         ),
@@ -119,7 +119,7 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
                     height: 48,
                     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text('Swipe to continue',
-                          style: TextStyle(fontSize: 15, color: MyWalkColor.softGold.withValues(alpha: 0.5))),
+                          style: TextStyle(fontSize: 15, color: GraceWayColor.softGold.withValues(alpha: 0.5))),
                       const SizedBox(width: 4),
                       AnimatedBuilder(
                         animation: _nudgeOffset,
@@ -128,7 +128,7 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
                           child: child,
                         ),
                         child: Icon(Icons.chevron_right, size: 14,
-                            color: MyWalkColor.softGold.withValues(alpha: 0.4)),
+                            color: GraceWayColor.softGold.withValues(alpha: 0.4)),
                       ),
                     ]),
                   ),
@@ -143,12 +143,12 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
       padding: const EdgeInsets.all(20),
       child: Column(children: [
         const SizedBox(height: 20),
-        const Icon(Icons.calendar_month_rounded, size: 56, color: MyWalkColor.golden),
+        const Icon(Icons.calendar_month_rounded, size: 56, color: GraceWayColor.golden),
         const SizedBox(height: 24),
         const Text(
           'Every week is an offering,\nnot a scorecard.',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.softGold),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.softGold),
         ),
         const SizedBox(height: 16),
         Text(
@@ -170,16 +170,16 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
       padding: const EdgeInsets.all(20),
       child: Column(children: [
         const SizedBox(height: 20),
-        const Icon(Icons.trending_up_rounded, size: 56, color: MyWalkColor.golden),
+        const Icon(Icons.trending_up_rounded, size: 56, color: GraceWayColor.golden),
         const SizedBox(height: 24),
         const Text(
           'Every minute counts.\nEvery day counts.',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.softGold),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.softGold),
         ),
         const SizedBox(height: 16),
         Text(
-          'MyWalk tracks everything you give \u2014 minutes, reps, days. Not just today, but all of it. Over weeks and months you\u2019ll see something amazing build up.',
+          'GraceWay tracks everything you give \u2014 minutes, reps, days. Not just today, but all of it. Over weeks and months you\u2019ll see something amazing build up.',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 16, color: Colors.white.withValues(alpha: 0.75), height: 1.6),
         ),
@@ -199,9 +199,9 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.15), width: 0.5),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.15), width: 0.5),
       ),
       child: Column(children: [
         TweenAnimationBuilder<int>(
@@ -212,12 +212,12 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
           builder: (context, value, _) => Text(
             '$value',
             style: const TextStyle(
-              fontSize: 48, fontWeight: FontWeight.w700, color: MyWalkColor.golden,
+              fontSize: 48, fontWeight: FontWeight.w700, color: GraceWayColor.golden,
             ),
           ),
         ),
         Text('minutes given',
-            style: TextStyle(fontSize: 15, color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+            style: TextStyle(fontSize: 15, color: GraceWayColor.softGold.withValues(alpha: 0.6))),
       ]),
     );
   }
@@ -227,14 +227,14 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
       padding: const EdgeInsets.all(20),
       child: Column(children: [
         const SizedBox(height: 20),
-        const Icon(Icons.groups_rounded, size: 48, color: MyWalkColor.golden),
+        const Icon(Icons.groups_rounded, size: 48, color: GraceWayColor.golden),
         const SizedBox(height: 24),
         Text(
           widget.givenName != null
               ? 'You\u2019re not doing\nthis alone, ${widget.givenName}.'
               : 'You\u2019re not doing\nthis alone.',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.softGold),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.softGold),
         ),
         const SizedBox(height: 16),
         Text(
@@ -266,13 +266,13 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen>
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 14, fontStyle: FontStyle.italic, height: 1.5,
-            color: MyWalkColor.softGold.withValues(alpha: 0.7),
+            color: GraceWayColor.softGold.withValues(alpha: 0.7),
           ),
         ),
         const SizedBox(height: 8),
         Text('\u2014 $reference',
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-                color: MyWalkColor.golden.withValues(alpha: 0.6))),
+                color: GraceWayColor.golden.withValues(alpha: 0.6))),
       ]),
     );
   }

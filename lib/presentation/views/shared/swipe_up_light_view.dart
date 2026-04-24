@@ -95,9 +95,9 @@ class _SwipeUpLightViewState extends State<SwipeUpLightView>
                             end: Alignment.topCenter,
                             colors: [
                               Colors.transparent,
-                              MyWalkColor.golden.withValues(alpha: 0.08),
-                              MyWalkColor.golden.withValues(alpha: 0.25),
-                              MyWalkColor.softGold.withValues(alpha: 0.55),
+                              GraceWayColor.golden.withValues(alpha: 0.08),
+                              GraceWayColor.golden.withValues(alpha: 0.25),
+                              GraceWayColor.softGold.withValues(alpha: 0.55),
                             ],
                             stops: const [0.0, 0.4, 0.75, 1.0],
                           ),
@@ -124,8 +124,8 @@ class _SwipeUpLightViewState extends State<SwipeUpLightView>
                             center: Alignment.topCenter,
                             radius: 1.0,
                             colors: [
-                              MyWalkColor.softGold.withValues(alpha: 0.8),
-                              MyWalkColor.golden.withValues(alpha: 0.4),
+                              GraceWayColor.softGold.withValues(alpha: 0.8),
+                              GraceWayColor.golden.withValues(alpha: 0.4),
                               Colors.transparent,
                             ],
                           ),
@@ -196,8 +196,8 @@ class _MiniSwipeUpLightViewState extends State<MiniSwipeUpLightView>
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(colors: [
-                MyWalkColor.golden.withValues(alpha: 0.35),
-                MyWalkColor.golden.withValues(alpha: 0.08),
+                GraceWayColor.golden.withValues(alpha: 0.35),
+                GraceWayColor.golden.withValues(alpha: 0.08),
                 Colors.transparent,
               ]),
             ),

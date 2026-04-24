@@ -3,26 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../data/datasources/remote/auth_service.dart';
 import '../../providers/store_provider.dart';
-import '../../providers/prayer_list_provider.dart';
-import '../../providers/circle_habits_provider.dart';
-import '../../providers/encouragement_provider.dart';
-import '../../providers/milestone_share_provider.dart';
-import '../../providers/circle_habit_milestone_provider.dart';
 import '../../providers/weekly_pulse_provider.dart';
-import '../../providers/circle_events_provider.dart';
-import '../../providers/group_prayer_list_provider.dart';
 import '../../../domain/repositories/circle_repository.dart';
 import '../../../domain/entities/circle.dart';
 import '../../theme/app_theme.dart';
 import 'circle_sunday_summary_view.dart';
 import 'gratitude_wall_view.dart' show GratitudeWallWidget;
-import 'circle_prayer_tab.dart';
-import 'scripture_threads_tab.dart';
-import 'circle_habits_tab.dart';
-import 'activity_tab.dart';
-import 'events_tab.dart';
 import 'circle_settings_view.dart';
 import 'announcement_compose_view.dart';
+import 'prayer_request_compose_view.dart';
 
 class CircleDetailView extends StatefulWidget {
   final String circleId;
@@ -32,8 +21,7 @@ class CircleDetailView extends StatefulWidget {
   State<CircleDetailView> createState() => _CircleDetailViewState();
 }
 
-class _CircleDetailViewState extends State<CircleDetailView>
-    with SingleTickerProviderStateMixin {
+class _CircleDetailViewState extends State<CircleDetailView> {
   CircleDetails? _detail;
   bool _isLoading = true;
   String? _error;
@@ -44,43 +32,18 @@ class _CircleDetailViewState extends State<CircleDetailView>
   CollectiveMilestones? _milestones;
   bool _milestonesFailed = false;
 
-  late final TabController _tabController;
-
-  static final _tabs = [
-    ('Overview', Icons.home_rounded),
-    ('Prayer', Icons.volunteer_activism_rounded),
-    ('Scripture', Icons.menu_book_rounded),
-    ('Habits', Icons.check_circle_outline_rounded),
-    ('Encouragement', Icons.favorite_rounded),
-    ('Events', Icons.event_rounded),
-  ];
-
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
     _loadDetail();
     _loadHeatmap();
     _loadMilestones();
     _loadProviders();
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
   void _loadProviders() {
     final uid = AuthService.shared.userId ?? '';
-    context.read<PrayerListProvider>().load(widget.circleId);
-    context.read<GroupPrayerListProvider>().load(widget.circleId);
-    context.read<CircleHabitsProvider>().load(widget.circleId);
-    context.read<EncouragementProvider>().load(widget.circleId);
-    context.read<MilestoneShareProvider>().load(widget.circleId);
-    context.read<CircleHabitMilestoneProvider>().load(widget.circleId);
     context.read<WeeklyPulseProvider>().load(widget.circleId, uid);
-    context.read<CircleEventsProvider>().load(widget.circleId);
   }
 
   Future<bool> _isOffline() async {
@@ -148,14 +111,14 @@ class _CircleDetailViewState extends State<CircleDetailView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(color: MyWalkColor.golden));
+      return const Center(child: CircularProgressIndicator(color: GraceWayColor.golden));
     }
     if (_detail == null) {
       return Center(
@@ -172,113 +135,70 @@ class _CircleDetailViewState extends State<CircleDetailView>
           ),
           const SizedBox(height: 16),
           TextButton(onPressed: _loadDetail,
-              child: const Text('Retry', style: TextStyle(color: MyWalkColor.golden))),
+              child: const Text('Retry', style: TextStyle(color: GraceWayColor.golden))),
         ]),
       );
     }
-    return _buildTabView(_detail!);
+    return _buildContent(_detail!);
   }
 
-  Widget _buildTabView(CircleDetails detail) {
+  Widget _buildContent(CircleDetails detail) {
     return SafeArea(
       top: false,
       child: NestedScrollView(
-      headerSliverBuilder: (context, _) => [
-        SliverAppBar(
-          backgroundColor: MyWalkColor.charcoal,
-          title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(detail.name,
-                style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 18, fontWeight: FontWeight.w700)),
-            Text('${detail.memberCount} members',
-                style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
-          ]),
-          actions: [
-            if (detail.members.any((m) => m.userId == AuthService.shared.userId && m.isAdmin))
-              IconButton(
-                icon: const Icon(Icons.campaign_rounded, size: 20, color: MyWalkColor.softGold),
-                tooltip: 'Announce',
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => AnnouncementComposeView(
-                      circleId: widget.circleId,
-                      circleName: detail.name,
+        headerSliverBuilder: (context, _) => [
+          SliverAppBar(
+            backgroundColor: GraceWayColor.charcoal,
+            title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(detail.name,
+                  style: const TextStyle(color: GraceWayColor.warmWhite, fontSize: 18, fontWeight: FontWeight.w700)),
+              Text('${detail.memberCount} members',
+                  style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
+            ]),
+            actions: [
+              if (detail.members.any((m) => m.userId == AuthService.shared.userId && m.isAdmin))
+                IconButton(
+                  icon: const Icon(Icons.campaign_rounded, size: 20, color: GraceWayColor.softGold),
+                  tooltip: 'Announce',
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => AnnouncementComposeView(
+                        circleId: widget.circleId,
+                        circleName: detail.name,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            if (detail.members.any((m) => m.userId == AuthService.shared.userId && m.isAdmin))
-              IconButton(
-                icon: const Icon(Icons.settings_rounded, size: 20, color: MyWalkColor.softGold),
-                onPressed: () => _openSettings(detail),
-              ),
-          ],
-          pinned: true,
-          bottom: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            labelColor: MyWalkColor.golden,
-            unselectedLabelColor: MyWalkColor.softGold,
-            indicatorColor: MyWalkColor.golden,
-            indicatorSize: TabBarIndicatorSize.label,
-            labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            unselectedLabelStyle: const TextStyle(fontSize: 12),
-            tabs: _tabs.map((t) => Tab(
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(t.$2, size: 14),
-                const SizedBox(width: 5),
-                Text(t.$1),
-              ]),
-            )).toList(),
-          ),
-        ),
-      ],
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _OverviewTab(
-            circleId: widget.circleId,
-            detail: detail,
-            heatmap: _heatmap,
-            heatmapFailed: _heatmapFailed,
-            milestones: _milestones,
-            milestonesFailed: _milestonesFailed,
-            onSummaryTap: () => _showSundaySummary(detail),
-            onLeaveTap: _confirmLeave,
-            isLeaving: _isLeaving,
-          ),
-          CirclePrayerTab(
-            circleId: widget.circleId,
-            isAdmin: detail.members.any(
-                (m) => m.userId == AuthService.shared.userId && m.isAdmin),
-            members: detail.members,
-          ),
-          ScriptureThreadsTab(
-            circleId: widget.circleId,
-            settings: detail.settings,
-            isAdmin: detail.members.any(
-                (m) => m.userId == AuthService.shared.userId && m.isAdmin),
-          ),
-          CircleHabitsTab(circleId: widget.circleId, isAdmin: detail.members.any(
-              (m) => m.userId == AuthService.shared.userId && m.isAdmin)),
-          ActivityTab(circleId: widget.circleId, members: detail.members),
-          EventsTab(
-            circleId: widget.circleId,
-            isAdmin: detail.members.any(
-                (m) => m.userId == AuthService.shared.userId && m.isAdmin),
-            settings: detail.settings,
+              if (detail.members.any((m) => m.userId == AuthService.shared.userId && m.isAdmin))
+                IconButton(
+                  icon: const Icon(Icons.settings_rounded, size: 20, color: GraceWayColor.softGold),
+                  onPressed: () => _openSettings(detail),
+                ),
+            ],
+            pinned: true,
           ),
         ],
+        body: _OverviewTab(
+          circleId: widget.circleId,
+          detail: detail,
+          heatmap: _heatmap,
+          heatmapFailed: _heatmapFailed,
+          milestones: _milestones,
+          milestonesFailed: _milestonesFailed,
+          onSummaryTap: () => _showSundaySummary(detail),
+          onPrayerRequestTap: () => _openPrayerRequest(detail),
+          onLeaveTap: _confirmLeave,
+          isLeaving: _isLeaving,
+        ),
       ),
-    ),
     );
   }
 
   void _showSundaySummary(CircleDetails detail) {
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       builder: (_) => CircleSundaySummaryView(circleId: widget.circleId, circleName: detail.name),
     );
   }
@@ -290,27 +210,40 @@ class _CircleDetailViewState extends State<CircleDetailView>
         circleName: detail.name,
         circleDescription: detail.description,
         inviteCode: detail.inviteCode,
-        settings: detail.settings,
         members: detail.members,
         currentUserId: AuthService.shared.userId ?? '',
       ),
     ));
     if (!mounted) return;
     if (result == 'deleted') {
-      // Circle was deleted — pop back to the circles list
       Navigator.pop(context);
     } else {
-      // Settings/name may have changed — reload
       _loadDetail();
     }
+  }
+
+  void _openPrayerRequest(CircleDetails detail) {
+    final currentUid = AuthService.shared.userId ?? '';
+    final otherMembers =
+        detail.members.where((m) => m.userId != currentUid).toList();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PrayerRequestComposeView(
+          circleId: widget.circleId,
+          circleName: detail.name,
+          otherMembers: otherMembers,
+        ),
+      ),
+    );
   }
 
   void _confirmLeave() {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
-        title: const Text('Leave Circle', style: TextStyle(color: MyWalkColor.warmWhite)),
+        backgroundColor: GraceWayColor.cardBackground,
+        title: const Text('Leave Circle', style: TextStyle(color: GraceWayColor.warmWhite)),
         content: Text(
           "You'll no longer receive prayer requests or see this circle's progress.",
           style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
@@ -322,7 +255,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
           ),
           TextButton(
             onPressed: () { Navigator.pop(context); _leaveCircle(); },
-            child: const Text('Leave', style: TextStyle(color: MyWalkColor.warmCoral)),
+            child: const Text('Leave', style: TextStyle(color: GraceWayColor.warmCoral)),
           ),
         ],
       ),
@@ -340,6 +273,7 @@ class _OverviewTab extends StatelessWidget {
   final CollectiveMilestones? milestones;
   final bool milestonesFailed;
   final VoidCallback onSummaryTap;
+  final VoidCallback onPrayerRequestTap;
   final VoidCallback onLeaveTap;
   final bool isLeaving;
 
@@ -351,6 +285,7 @@ class _OverviewTab extends StatelessWidget {
     required this.milestones,
     required this.milestonesFailed,
     required this.onSummaryTap,
+    required this.onPrayerRequestTap,
     required this.onLeaveTap,
     required this.isLeaving,
   });
@@ -370,10 +305,17 @@ class _OverviewTab extends StatelessWidget {
         _sectionHeader('Actions'),
         const SizedBox(height: 8),
         _actionRow(
-          icon: Icons.wb_sunny_rounded, iconColor: MyWalkColor.golden,
-          iconBg: MyWalkColor.golden.withValues(alpha: 0.12),
+          icon: Icons.wb_sunny_rounded, iconColor: GraceWayColor.golden,
+          iconBg: GraceWayColor.golden.withValues(alpha: 0.12),
           title: 'Weekly Summary', subtitle: "See your circle's faithfulness this week",
           onTap: onSummaryTap,
+        ),
+        const SizedBox(height: 8),
+        _actionRow(
+          icon: Icons.volunteer_activism_rounded, iconColor: GraceWayColor.sage,
+          iconBg: GraceWayColor.sage.withValues(alpha: 0.12),
+          title: 'Prayer Request', subtitle: 'Ask circle members to pray for you',
+          onTap: onPrayerRequestTap,
         ),
         const SizedBox(height: 16),
         _sectionHeader('Members (${detail.members.length})'),
@@ -391,13 +333,13 @@ class _OverviewTab extends StatelessWidget {
   Widget _collaborativeHeatmapSection(bool isPremium) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.grid_view_rounded, size: 13, color: MyWalkColor.golden),
+          const Icon(Icons.grid_view_rounded, size: 13, color: GraceWayColor.golden),
           const SizedBox(width: 6),
           Text('Circle Activity',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
           const Spacer(),
           Text('${detail.memberCount} members',
               style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
@@ -414,13 +356,13 @@ class _OverviewTab extends StatelessWidget {
         else if (heatmap == null)
           const SizedBox(height: 32,
             child: Center(child: SizedBox(width: 16, height: 16,
-              child: CircularProgressIndicator(strokeWidth: 1.5, color: MyWalkColor.golden))))
+              child: CircularProgressIndicator(strokeWidth: 1.5, color: GraceWayColor.golden))))
         else
           _CircleHeatmapGrid(heatmap: heatmap!, isPremium: isPremium),
         if (!isPremium) ...[
           const SizedBox(height: 8),
           Text('Upgrade to see your full 52-week circle history.',
-              style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 11, color: GraceWayColor.golden.withValues(alpha: 0.5))),
         ],
       ]),
     );
@@ -428,18 +370,15 @@ class _OverviewTab extends StatelessWidget {
 
   Widget _collectiveMilestonesSection(BuildContext context) {
     final ms = milestones;
-    final habitMilestones = context
-        .watch<CircleHabitMilestoneProvider>()
-        .milestonesFor(circleId);
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.star_rounded, size: 13, color: MyWalkColor.golden),
+          const Icon(Icons.star_rounded, size: 13, color: GraceWayColor.golden),
           const SizedBox(width: 6),
           Text('Circle Milestones',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
         ]),
         const SizedBox(height: 10),
         if (milestonesFailed)
@@ -448,47 +387,20 @@ class _OverviewTab extends StatelessWidget {
         else if (ms == null)
           const SizedBox(height: 32,
             child: Center(child: SizedBox(width: 16, height: 16,
-              child: CircularProgressIndicator(strokeWidth: 1.5, color: MyWalkColor.golden))))
+              child: CircularProgressIndicator(strokeWidth: 1.5, color: GraceWayColor.golden))))
         else ...[
           if (ms.totalGivingDays > 0 || ms.totalHours > 0 || ms.totalGratitudeDays > 0)
             _milestoneTotalsRow(ms),
           const SizedBox(height: 10),
-          if (ms.milestones.isEmpty && habitMilestones.isEmpty)
+          if (ms.milestones.isEmpty)
             Text('Keep going — your first circle milestone is on its way.',
                 style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4), height: 1.4))
-          else ...[
+          else
             ...ms.milestones.take(3).map((m) => Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: _milestoneTile(m),
             )),
-            ...habitMilestones.map((m) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: _habitMilestoneTile(m),
-            )),
-          ],
         ],
-      ]),
-    );
-  }
-
-  Widget _habitMilestoneTile(CircleHabitMilestone m) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.18), width: 0.5),
-      ),
-      child: Row(children: [
-        const Icon(Icons.groups_rounded, size: 16, color: MyWalkColor.golden),
-        const SizedBox(width: 10),
-        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('Circle habit milestone!',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
-          const SizedBox(height: 2),
-          Text(m.displayLabel,
-              style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.55))),
-        ])),
       ]),
     );
   }
@@ -505,7 +417,7 @@ class _OverviewTab extends StatelessWidget {
       children: items.map((item) => Expanded(
         child: Column(children: [
           Text(item.value,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.golden)),
           Text(item.label,
               style: TextStyle(fontSize: 10, color: Colors.white.withValues(alpha: 0.45))),
         ]),
@@ -517,16 +429,16 @@ class _OverviewTab extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.06),
+        color: GraceWayColor.golden.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.18), width: 0.5),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.18), width: 0.5),
       ),
       child: Row(children: [
-        const Icon(Icons.star_rounded, size: 16, color: MyWalkColor.golden),
+        const Icon(Icons.star_rounded, size: 16, color: GraceWayColor.golden),
         const SizedBox(width: 10),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(m.title,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
           const SizedBox(height: 2),
           Text(m.message,
               style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.5), height: 1.4)),
@@ -560,7 +472,7 @@ class _OverviewTab extends StatelessWidget {
             child: Icon(icon, size: 18, color: iconColor)),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+            Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
             Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
           ])),
           Icon(Icons.chevron_right, size: 14, color: Colors.white.withValues(alpha: 0.3)),
@@ -573,10 +485,10 @@ class _OverviewTab extends StatelessWidget {
     final currentUid = AuthService.shared.userId ?? '';
     final isSelf = m.userId == currentUid;
     final isAdmin = m.isAdmin;
-    final color = isAdmin ? MyWalkColor.golden : MyWalkColor.sage;
+    final color = isAdmin ? GraceWayColor.golden : GraceWayColor.sage;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Row(children: [
         Container(width: 36, height: 36,
           decoration: BoxDecoration(shape: BoxShape.circle, color: color.withValues(alpha: 0.12)),
@@ -584,10 +496,10 @@ class _OverviewTab extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(isSelf ? 'You' : m.displayName,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite)),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: GraceWayColor.warmWhite)),
           Text(isAdmin ? 'Admin' : 'Member',
               style: TextStyle(fontSize: 11,
-                  color: isAdmin ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.4))),
+                  color: isAdmin ? GraceWayColor.golden : Colors.white.withValues(alpha: 0.4))),
         ])),
       ]),
     );
@@ -599,18 +511,18 @@ class _OverviewTab extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
+          color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
         ),
         child: Row(children: [
-          const Icon(Icons.logout_rounded, size: 16, color: MyWalkColor.warmCoral),
+          const Icon(Icons.logout_rounded, size: 16, color: GraceWayColor.warmCoral),
           const SizedBox(width: 10),
           const Expanded(child: Text('Leave Circle',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmCoral))),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: GraceWayColor.warmCoral))),
           if (isLeaving)
             const SizedBox(width: 16, height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.warmCoral)),
+              child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.warmCoral)),
         ]),
       ),
     );
@@ -659,10 +571,10 @@ class _CircleHeatmapGrid extends StatelessWidget {
   }
 
   Color _cellColor(double intensity) {
-    if (intensity <= 0.0) return MyWalkColor.surfaceOverlay;
-    if (intensity <= 0.25) return MyWalkColor.golden.withValues(alpha: 0.15);
-    if (intensity <= 0.65) return MyWalkColor.golden.withValues(alpha: 0.50);
-    return MyWalkColor.golden.withValues(alpha: 0.85);
+    if (intensity <= 0.0) return GraceWayColor.surfaceOverlay;
+    if (intensity <= 0.25) return GraceWayColor.golden.withValues(alpha: 0.15);
+    if (intensity <= 0.65) return GraceWayColor.golden.withValues(alpha: 0.50);
+    return GraceWayColor.golden.withValues(alpha: 0.85);
   }
 
   @override
@@ -749,7 +661,7 @@ class _CircleHeatmapGrid extends StatelessWidget {
                           color: isFuture ? Colors.white.withValues(alpha: 0.02) : _cellColor(intensity),
                           borderRadius: BorderRadius.circular(2),
                           boxShadow: !isFuture && intensity > 0.65
-                              ? [BoxShadow(color: MyWalkColor.golden.withValues(alpha: 0.35), blurRadius: 3)]
+                              ? [BoxShadow(color: GraceWayColor.golden.withValues(alpha: 0.35), blurRadius: 3)]
                               : null,
                         ),
                       ),

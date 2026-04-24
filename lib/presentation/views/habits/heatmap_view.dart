@@ -51,7 +51,7 @@ class HeatmapView extends StatelessWidget {
   Widget build(BuildContext context) {
     final weeks = _buildWeeks();
     final isAbstain = habit.trackingType == HabitTrackingType.abstain;
-    final accent = isAbstain ? MyWalkColor.sage : MyWalkColor.golden;
+    final accent = isAbstain ? GraceWayColor.sage : GraceWayColor.golden;
 
     // Single week: render as a plain horizontal row.
     if (weeks.length == 1) {
@@ -170,7 +170,7 @@ class HeatmapView extends StatelessWidget {
     if (day.isFuture) return Colors.white.withValues(alpha: 0.02);
     switch (day.tier) {
       case DayTier.nothing:
-        return MyWalkColor.surfaceOverlay;
+        return GraceWayColor.surfaceOverlay;
       case DayTier.partial:
         return accent.withValues(alpha: 0.12);
       case DayTier.substantial:

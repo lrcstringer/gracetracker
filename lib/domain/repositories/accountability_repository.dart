@@ -15,7 +15,7 @@ class InviteResult {
 
 abstract class AccountabilityRepository {
   /// Creates a new partnership doc and returns invite details.
-  /// [recipientEmail] is optional — if the email belongs to a MyWalk user an
+  /// [recipientEmail] is optional — if the email belongs to a GraceWay user an
   /// in-app notification is written to their inbox automatically.
   Future<InviteResult> createInvite({
     required String habitId,

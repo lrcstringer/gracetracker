@@ -6,11 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 import '../../../data/services/local_voice_cache_service.dart';
-import '../../../domain/entities/fruit.dart';
 import '../../../domain/entities/journal_entry.dart';
 import '../../../domain/entities/journal_theme.dart';
 import '../../providers/journal_provider.dart';
-import '../../providers/journal_theme_provider.dart';
 import '../../theme/app_theme.dart';
 import 'journal_entry_composer.dart';
 
@@ -185,7 +183,7 @@ class _JournalEntryDetailViewState extends State<JournalEntryDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<JournalThemeProvider>().theme;
+    const theme = JournalTheme.parchment;
 
     final fresh = context.select<JournalProvider, JournalEntry?>(
       (p) => p.getEntry(widget.entry.id),
@@ -365,13 +363,9 @@ class _SourceChipRow extends StatelessWidget {
     IconData icon;
 
     if (entry.habitName != null) {
-      chipColor = MyWalkColor.golden;
+      chipColor = GraceWayColor.golden;
       label = entry.habitName!;
       icon = Icons.repeat;
-    } else if (entry.fruitTag != null) {
-      chipColor = entry.fruitTag!.color;
-      label = entry.fruitTag!.label;
-      icon = entry.fruitTag!.icon;
     } else {
       chipColor = theme.textSecondary;
       label = 'Journal';

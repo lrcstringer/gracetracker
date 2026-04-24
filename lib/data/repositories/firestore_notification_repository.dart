@@ -136,12 +136,13 @@ class FirestoreNotificationRepository implements NotificationRepository {
     required String message,
     required List<String> recipientIds,
   }) =>
-      _sendQueue.enqueue({
-        'type': 'prayer_request',
-        'circleId': circleId,
-        'message': message,
-        'recipientIds': recipientIds,
-      });
+      // Bypass the offline queue so rate-limit (429) and other errors surface
+      // immediately to the UI instead of being silently retried.
+      APIService.shared.sendPrayerRequest(
+        circleId: circleId,
+        message: message,
+        recipientIds: recipientIds,
+      );
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 

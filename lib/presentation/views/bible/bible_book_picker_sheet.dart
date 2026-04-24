@@ -39,7 +39,7 @@ class _BibleBookPickerSheetState extends State<BibleBookPickerSheet> {
       expand: false,
       builder: (context, scrollController) => Container(
         decoration: const BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -51,7 +51,7 @@ class _BibleBookPickerSheetState extends State<BibleBookPickerSheet> {
                 width: 36,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.3),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -65,14 +65,14 @@ class _BibleBookPickerSheetState extends State<BibleBookPickerSheet> {
                 children: [
                   const Text('Go to…',
                       style: TextStyle(
-                        color: MyWalkColor.warmWhite,
+                        color: GraceWayColor.warmWhite,
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                       )),
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close,
-                        size: 20, color: MyWalkColor.softGold),
+                        size: 20, color: GraceWayColor.softGold),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -107,7 +107,7 @@ class _BibleBookPickerSheetState extends State<BibleBookPickerSheet> {
             const SizedBox(height: 12),
             Divider(
                 height: 1,
-                color: MyWalkColor.golden.withValues(alpha: 0.12)),
+                color: GraceWayColor.golden.withValues(alpha: 0.12)),
 
             Expanded(
               child: ListView(
@@ -128,13 +128,13 @@ class _BibleBookPickerSheetState extends State<BibleBookPickerSheet> {
                               horizontal: 12, vertical: 7),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? MyWalkColor.golden.withValues(alpha: 0.15)
-                                : MyWalkColor.charcoal,
+                                ? GraceWayColor.golden.withValues(alpha: 0.15)
+                                : GraceWayColor.charcoal,
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: isSelected
-                                  ? MyWalkColor.golden
-                                  : MyWalkColor.softGold.withValues(alpha: 0.2),
+                                  ? GraceWayColor.golden
+                                  : GraceWayColor.softGold.withValues(alpha: 0.2),
                               width: isSelected ? 1.5 : 1,
                             ),
                           ),
@@ -143,8 +143,8 @@ class _BibleBookPickerSheetState extends State<BibleBookPickerSheet> {
                             style: TextStyle(
                               fontSize: 13,
                               color: isSelected
-                                  ? MyWalkColor.golden
-                                  : MyWalkColor.softGold,
+                                  ? GraceWayColor.golden
+                                  : GraceWayColor.softGold,
                               fontWeight: isSelected
                                   ? FontWeight.w600
                                   : FontWeight.normal,
@@ -160,14 +160,14 @@ class _BibleBookPickerSheetState extends State<BibleBookPickerSheet> {
                     const SizedBox(height: 20),
                     Divider(
                         height: 1,
-                        color: MyWalkColor.golden.withValues(alpha: 0.12)),
+                        color: GraceWayColor.golden.withValues(alpha: 0.12)),
                     const SizedBox(height: 16),
                     Text(
                       'Chapter',
                       style: TextStyle(
                         fontSize: 12,
                         letterSpacing: 1.5,
-                        color: MyWalkColor.softGold.withValues(alpha: 0.6),
+                        color: GraceWayColor.softGold.withValues(alpha: 0.6),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -214,13 +214,13 @@ class _TestamentTab extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
           color: selected
-              ? MyWalkColor.golden.withValues(alpha: 0.15)
+              ? GraceWayColor.golden.withValues(alpha: 0.15)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: selected
-                ? MyWalkColor.golden
-                : MyWalkColor.softGold.withValues(alpha: 0.25),
+                ? GraceWayColor.golden
+                : GraceWayColor.softGold.withValues(alpha: 0.25),
           ),
         ),
         child: Text(
@@ -230,7 +230,7 @@ class _TestamentTab extends StatelessWidget {
             fontWeight:
                 selected ? FontWeight.w600 : FontWeight.normal,
             color:
-                selected ? MyWalkColor.golden : MyWalkColor.softGold,
+                selected ? GraceWayColor.golden : GraceWayColor.softGold,
           ),
         ),
       ),
@@ -262,10 +262,10 @@ class _ChapterGrid extends StatelessWidget {
           onTap: () => onChapterTap(ch),
           child: Container(
             decoration: BoxDecoration(
-              color: MyWalkColor.charcoal,
+              color: GraceWayColor.charcoal,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: MyWalkColor.softGold.withValues(alpha: 0.2),
+                color: GraceWayColor.softGold.withValues(alpha: 0.2),
               ),
             ),
             child: Center(
@@ -273,7 +273,7 @@ class _ChapterGrid extends StatelessWidget {
                 '$ch',
                 style: const TextStyle(
                   fontSize: 13,
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                   fontWeight: FontWeight.w500,
                 ),
               ),

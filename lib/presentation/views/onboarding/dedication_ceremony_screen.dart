@@ -101,7 +101,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
   }
 
   Color get _accentColor =>
-      widget.habitCategory == HabitCategory.abstain ? MyWalkColor.warmCoral : MyWalkColor.golden;
+      widget.habitCategory == HabitCategory.abstain ? GraceWayColor.warmCoral : GraceWayColor.golden;
 
   IconData _categoryIcon() {
     switch (widget.habitCategory) {
@@ -132,8 +132,8 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   colors: [
-                    MyWalkColor.golden.withValues(alpha: _glowOpacity),
-                    MyWalkColor.softGold.withValues(alpha: _glowOpacity * 0.4),
+                    GraceWayColor.golden.withValues(alpha: _glowOpacity),
+                    GraceWayColor.softGold.withValues(alpha: _glowOpacity * 0.4),
                     Colors.transparent,
                   ],
                   radius: 1.5,
@@ -160,8 +160,8 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                       label: const Text('Begin My Walk',
                           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: MyWalkColor.golden,
-                        foregroundColor: MyWalkColor.charcoal,
+                        backgroundColor: GraceWayColor.golden,
+                        foregroundColor: GraceWayColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       ),
@@ -176,11 +176,11 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                     child: ElevatedButton.icon(
                       onPressed: widget.onComplete,
                       icon: const Icon(Icons.arrow_forward_rounded, size: 16),
-                      label: const Text('Enter MyWalk',
+                      label: const Text('Enter GraceWay',
                           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: MyWalkColor.golden,
-                        foregroundColor: MyWalkColor.charcoal,
+                        backgroundColor: GraceWayColor.golden,
+                        foregroundColor: GraceWayColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       ),
@@ -201,7 +201,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
         duration: const Duration(milliseconds: 600),
         child: Column(children: [
           const Text('Your Walk',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
           const SizedBox(height: 8),
           Text('Everything you\u2019ve chosen \u2014 offered to God.',
               textAlign: TextAlign.center,
@@ -213,7 +213,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
         icon: Icons.volunteer_activism,
         name: 'Daily Gratitude',
         detail: HabitCategory.gratitude.defaultPurpose,
-        accent: MyWalkColor.golden,
+        accent: GraceWayColor.golden,
         isShowing: _showGratitudeTile,
         isGlowing: _tilesGlow,
       ),
@@ -244,20 +244,20 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-              color: MyWalkColor.softGold.withValues(alpha: 0.6),
+              color: GraceWayColor.softGold.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 6),
           Text('Romans 12:1',
-              style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.5))),
           if (DateTime.now().weekday != 7) ...[
             const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: MyWalkColor.golden.withValues(alpha: 0.06),
+                color: GraceWayColor.golden.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.15), width: 0.5),
+                border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.15), width: 0.5),
               ),
               child: Text(
                 'Starting mid-week? No problem. Your first full Sunday cycle begins this coming Sunday.',
@@ -290,24 +290,24 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(colors: [
-                    MyWalkColor.golden.withValues(alpha: 0.4),
-                    MyWalkColor.golden.withValues(alpha: 0.1),
+                    GraceWayColor.golden.withValues(alpha: 0.4),
+                    GraceWayColor.golden.withValues(alpha: 0.1),
                   ]),
                 ),
                 child: Transform.scale(
                   scale: 1.0 + b * 0.08,
-                  child: const Icon(Icons.volunteer_activism, size: 38, color: MyWalkColor.golden),
+                  child: const Icon(Icons.volunteer_activism, size: 38, color: GraceWayColor.golden),
                 ),
               ),
               const SizedBox(height: 20),
               const Text('Your walk is set.',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
               const SizedBox(height: 8),
               Text(
                   widget.givenName != null
                       ? 'Remain steadfast in all you do, ${widget.givenName}.'
                       : 'Remain steadfast in all you do.',
-                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
             ]),
           ),
         ),
@@ -322,26 +322,26 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-              color: MyWalkColor.softGold.withValues(alpha: 0.5),
+              color: GraceWayColor.softGold.withValues(alpha: 0.5),
             ),
           ),
           const SizedBox(height: 6),
           Text('Lamentations 3:22\u201323',
-              style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.4))),
+              style: TextStyle(fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.4))),
           const SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: MyWalkColor.cardBackground,
+              color: GraceWayColor.cardBackground,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+              border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
             ),
             child: Column(children: [
-              const Icon(Icons.groups_rounded, size: 28, color: MyWalkColor.golden),
+              const Icon(Icons.groups_rounded, size: 28, color: GraceWayColor.golden),
               const SizedBox(height: 10),
               const Text('Want to walk with others?',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
               const SizedBox(height: 4),
               Text('Circles let you share your walk, pray together, and study scripture as a community.',
                   textAlign: TextAlign.center,
@@ -379,15 +379,15 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.04),
+        color: GraceWayColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
+        border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.12), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('If you hit your targets this week:',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
           const SizedBox(height: 10),
           _milestoneLine(gratitudeLine),
           if (widget.habitName.isNotEmpty) _milestoneLine(customLine),
@@ -400,7 +400,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Icon(Icons.auto_awesome, size: 11, color: MyWalkColor.golden),
+        const Icon(Icons.auto_awesome, size: 11, color: GraceWayColor.golden),
         const SizedBox(width: 8),
         Expanded(
           child: Text(text,
@@ -428,10 +428,10 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
           duration: const Duration(milliseconds: 400),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: isGlowing ? accent.withValues(alpha: 0.08) : MyWalkColor.cardBackground,
+            color: isGlowing ? accent.withValues(alpha: 0.08) : GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isGlowing ? accent.withValues(alpha: 0.3) : MyWalkColor.cardBorder,
+              color: isGlowing ? accent.withValues(alpha: 0.3) : GraceWayColor.cardBorder,
               width: 0.5,
             ),
           ),
@@ -451,7 +451,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(name,
-                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
                 const SizedBox(height: 4),
                 Text(detail,
                     style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
@@ -460,7 +460,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             Icon(
               isGlowing ? Icons.check_circle_rounded : Icons.circle_outlined,
               size: 22,
-              color: isGlowing ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.15),
+              color: isGlowing ? GraceWayColor.golden : Colors.white.withValues(alpha: 0.15),
             ),
           ]),
         ),
@@ -522,8 +522,8 @@ class _PulseRingState extends State<_PulseRing> with SingleTickerProviderStateMi
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(colors: [
-                MyWalkColor.golden.withValues(alpha: 0.4),
-                MyWalkColor.softGold.withValues(alpha: 0.15),
+                GraceWayColor.golden.withValues(alpha: 0.4),
+                GraceWayColor.softGold.withValues(alpha: 0.15),
                 Colors.transparent,
               ]),
             ),

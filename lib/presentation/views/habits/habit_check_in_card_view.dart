@@ -9,8 +9,6 @@ import '../../../domain/services/milestone_service.dart';
 import '../../theme/app_theme.dart';
 import '../../../domain/entities/accountability_partnership.dart';
 import '../../providers/accountability_provider.dart';
-import '../../providers/recovery_path_provider.dart';
-import '../shared/fruit_tag_row.dart';
 import '../shared/golden_pulse_view.dart';
 import '../shared/milestone_celebration_view.dart';
 import 'habit_detail_view.dart';
@@ -53,14 +51,6 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
   void initState() {
     super.initState();
     _refreshState();
-    if (_habit.trackingType == HabitTrackingType.abstain &&
-        !widget.isRetroactive) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          context.read<RecoveryPathProvider>().loadPath(_habit.id);
-        }
-      });
-    }
   }
 
   @override
@@ -152,7 +142,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       (p) => p.checkInPulseHabitId == _habit.id,
     );
     final isAbstain = _habit.trackingType == HabitTrackingType.abstain;
-    final accentColor = isAbstain ? MyWalkColor.sage : MyWalkColor.golden;
+    final accentColor = isAbstain ? GraceWayColor.sage : GraceWayColor.golden;
 
     return Stack(
       children: [
@@ -160,7 +150,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           onTap: () => _showDetail(context),
           child: Container(
             padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -177,8 +167,6 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                 if (isAbstain && !widget.isRetroactive) ...[
                   const SizedBox(height: 12),
                   _partnerStrip(context),
-                  const SizedBox(height: 8),
-                  _rpStrip(context),
                 ],
               ],
             ),
@@ -237,7 +225,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                 ),
               ),
               if (_isCompleted)
@@ -245,7 +233,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                   _completedSubtitle(),
                   style: TextStyle(
                     fontSize: 11,
-                    color: MyWalkColor.sage,
+                    color: GraceWayColor.sage,
                   ),
                 )
               else if (_habit.subcategoryName != null && _habit.subcategoryName!.isNotEmpty)
@@ -265,16 +253,9 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 11,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.6),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.6),
                   ),
                 ),
-              if (_habit.fruitTags.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                FruitTagRow(
-                  fruitTags: _habit.fruitTags,
-                  purposeStatement: _habit.fruitPurposeStatement,
-                ),
-              ],
             ],
           ),
         ),
@@ -284,24 +265,24 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: MyWalkColor.softGold.withValues(alpha: 0.08),
+              color: GraceWayColor.softGold.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.2), width: 0.5),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.2), width: 0.5),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.edit_note,
                     size: 14,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.75)),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.75)),
                 const SizedBox(width: 4),
                 Text(
                   'Journal',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.75),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.75),
                   ),
                 ),
               ],
@@ -338,7 +319,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         onPressed: _checkIn,
         style: ElevatedButton.styleFrom(
           backgroundColor: accentColor,
-          foregroundColor: MyWalkColor.charcoal,
+          foregroundColor: GraceWayColor.charcoal,
           padding: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -364,10 +345,10 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                 final email = await showDialog<String?>(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    backgroundColor: MyWalkColor.charcoal,
+                    backgroundColor: GraceWayColor.charcoal,
                     title: const Text('Invite a prayer partner',
                         style: TextStyle(
-                            color: MyWalkColor.warmWhite,
+                            color: GraceWayColor.warmWhite,
                             fontWeight: FontWeight.w600,
                             fontSize: 16)),
                     content: Column(
@@ -375,32 +356,32 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Enter their MyWalk email address and they\'ll receive an in-app notification immediately.',
+                          'Enter their GraceWay email address and they\'ll receive an in-app notification immediately.',
                           style: TextStyle(
-                              color: MyWalkColor.warmWhite, fontSize: 13, height: 1.5),
+                              color: GraceWayColor.warmWhite, fontSize: 13, height: 1.5),
                         ),
                         const SizedBox(height: 14),
                         TextField(
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
+                          style: const TextStyle(color: GraceWayColor.warmWhite, fontSize: 14),
                           decoration: InputDecoration(
                             hintText: 'their@email.com (optional)',
                             hintStyle: TextStyle(
-                                color: MyWalkColor.warmWhite.withValues(alpha: 0.35),
+                                color: GraceWayColor.warmWhite.withValues(alpha: 0.35),
                                 fontSize: 13),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: MyWalkColor.warmWhite.withValues(alpha: 0.2))),
+                                    color: GraceWayColor.warmWhite.withValues(alpha: 0.2))),
                             focusedBorder: const UnderlineInputBorder(
-                                borderSide: BorderSide(color: MyWalkColor.sage)),
+                                borderSide: BorderSide(color: GraceWayColor.sage)),
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'No email? We\'ll create a link you can share via WhatsApp, email, or SMS.',
                           style: TextStyle(
-                              color: MyWalkColor.warmWhite.withValues(alpha: 0.4),
+                              color: GraceWayColor.warmWhite.withValues(alpha: 0.4),
                               fontSize: 11,
                               height: 1.4),
                         ),
@@ -411,13 +392,13 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                         onPressed: () => Navigator.pop(ctx),
                         child: Text('Cancel',
                             style: TextStyle(
-                                color: MyWalkColor.warmWhite.withValues(alpha: 0.5))),
+                                color: GraceWayColor.warmWhite.withValues(alpha: 0.5))),
                       ),
                       TextButton(
                         onPressed: () =>
                             Navigator.pop(ctx, emailController.text.trim()),
                         child: const Text('Continue',
-                            style: TextStyle(color: MyWalkColor.sage)),
+                            style: TextStyle(color: GraceWayColor.sage)),
                       ),
                     ],
                   ),
@@ -437,17 +418,17 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                     messenger.showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Invitation sent! They\'ll see it in their MyWalk notifications. '
+                          'Invitation sent! They\'ll see it in their GraceWay notifications. '
                           'Share code as backup: ${result.shortCode}',
                         ),
                         duration: const Duration(seconds: 6),
                       ),
                     );
                   } else {
-                    // No MyWalk account found — share the link.
+                    // No GraceWay account found — share the link.
                     await Share.share(
-                      'Please walk with me on my journey — open MyWalk on your phone '
-                      'and accept my prayer partner invite. If you don\'t have MyWalk, '
+                      'Please walk with me on my journey — open GraceWay on your phone '
+                      'and accept my prayer partner invite. If you don\'t have GraceWay, '
                       'download it and tap this link: ${result.shareUrl}\n\n'
                       'Or enter code ${result.shortCode} in the app.',
                     );
@@ -463,19 +444,19 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
-            color: MyWalkColor.warmWhite.withValues(alpha: 0.06),
+            color: GraceWayColor.warmWhite.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(children: [
             Icon(Icons.add_rounded, size: 14,
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.55)),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.55)),
             const SizedBox(width: 5),
             Expanded(
               child: Text(
                 accountabilityProv.isLoading ? 'Creating invite…' : 'Add a support/prayer partner',
                 style: TextStyle(
                     fontSize: 12,
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.55)),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.55)),
               ),
             ),
           ]),
@@ -487,18 +468,18 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: MyWalkColor.warmWhite.withValues(alpha: 0.06),
+          color: GraceWayColor.warmWhite.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(children: [
           Icon(Icons.hourglass_top_rounded, size: 14,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.45)),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.45)),
           const SizedBox(width: 5),
           Expanded(
             child: Text('Waiting for partner…',
                 style: TextStyle(
                     fontSize: 12,
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.45))),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.45))),
           ),
         ]),
       );
@@ -514,111 +495,20 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: MyWalkColor.warmWhite.withValues(alpha: 0.06),
+          color: GraceWayColor.warmWhite.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(children: [
-          const Icon(Icons.handshake_rounded, size: 14, color: MyWalkColor.sage),
+          const Icon(Icons.handshake_rounded, size: 14, color: GraceWayColor.sage),
           const SizedBox(width: 5),
           Expanded(
             child: Text(
               'Reach out to ${partnership.partnerDisplayName ?? 'your partner'}',
-              style: TextStyle(fontSize: 12, color: MyWalkColor.sage.withValues(alpha: 0.9)),
+              style: TextStyle(fontSize: 12, color: GraceWayColor.sage.withValues(alpha: 0.9)),
             ),
           ),
           Icon(Icons.chevron_right_rounded,
-              size: 14, color: MyWalkColor.sage.withValues(alpha: 0.5)),
-        ]),
-      ),
-    );
-  }
-
-  Widget _rpStrip(BuildContext context) {
-    final prov = context.watch<RecoveryPathProvider>();
-    final habitId = _habit.id;
-
-    // If the habit has a recovery path that hasn't been loaded yet, trigger
-    // a load so the strip shows the correct active state rather than "Begin".
-    if (_habit.hasRecoveryPath &&
-        prov.pathFor(habitId) == null &&
-        !prov.isLoadingFor(habitId)) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) context.read<RecoveryPathProvider>().loadPath(habitId);
-      });
-    }
-
-    if (prov.isLoadingFor(habitId)) return const SizedBox.shrink();
-
-    final path = prov.pathFor(habitId);
-    const purple = Color(0xFF8B7EC8);
-
-    void openRP() => Navigator.of(context).pushNamed(
-          '/recovery-path',
-          arguments: {'habitId': habitId, 'habitName': _habit.name},
-        );
-
-    // Path hasn't loaded yet but the habit knows one exists — show nothing
-    // rather than the misleading "Begin" label.
-    if (path == null && _habit.hasRecoveryPath) return const SizedBox.shrink();
-
-    if (path == null) {
-      return GestureDetector(
-        onTap: openRP,
-        behavior: HitTestBehavior.opaque,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          decoration: BoxDecoration(
-            color: purple.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(children: [
-            const Icon(Icons.route_rounded, size: 14, color: purple),
-            const SizedBox(width: 5),
-            Expanded(
-              child: Text('Freedom Path — Begin ›',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: purple.withValues(alpha: 0.85))),
-            ),
-          ]),
-        ),
-      );
-    }
-
-    final phase = prov.phaseFor(habitId);
-    final day = prov.dayNumberFor(habitId);
-    final checkInPending = !prov.checkInDoneToday(habitId);
-
-    return GestureDetector(
-      onTap: openRP,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-          color: purple.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(children: [
-          const Icon(Icons.route_rounded, size: 14, color: purple),
-          const SizedBox(width: 5),
-          Expanded(
-            child: Text(
-              'Freedom Path · Phase $phase · Day $day',
-              style: TextStyle(fontSize: 12, color: purple.withValues(alpha: 0.85)),
-            ),
-          ),
-          if (checkInPending)
-            Container(
-              width: 7,
-              height: 7,
-              decoration: const BoxDecoration(
-                color: MyWalkColor.warmCoral,
-                shape: BoxShape.circle,
-              ),
-            )
-          else
-            Icon(Icons.chevron_right_rounded,
-                size: 14, color: purple.withValues(alpha: 0.5)),
+              size: 14, color: GraceWayColor.sage.withValues(alpha: 0.5)),
         ]),
       ),
     );
@@ -640,8 +530,8 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
             ? 'Were you strong on ${_dayName(widget.targetDate)}?'
             : 'Stayed strong today?'),
         style: ElevatedButton.styleFrom(
-          backgroundColor: MyWalkColor.sage,
-          foregroundColor: MyWalkColor.charcoal,
+          backgroundColor: GraceWayColor.sage,
+          foregroundColor: GraceWayColor.charcoal,
           padding: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -708,12 +598,12 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: MyWalkColor.surfaceOverlay,
+          color: GraceWayColor.surfaceOverlay,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.softGold),
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.softGold),
         ),
       ),
     );
@@ -734,7 +624,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
-                color: _isCompleted ? accentColor : MyWalkColor.warmWhite,
+                color: _isCompleted ? accentColor : GraceWayColor.warmWhite,
               ),
             ),
             if (target > 0)
@@ -758,9 +648,9 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         height: 36,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: MyWalkColor.surfaceOverlay,
+          color: GraceWayColor.surfaceOverlay,
         ),
-        child: Icon(icon, size: 18, color: MyWalkColor.softGold),
+        child: Icon(icon, size: 18, color: GraceWayColor.softGold),
       ),
     );
   }
@@ -781,7 +671,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
             style: TextStyle(
               fontSize: 11,
               fontStyle: FontStyle.italic,
-              color: MyWalkColor.softGold.withValues(alpha: 0.55),
+              color: GraceWayColor.softGold.withValues(alpha: 0.55),
               height: 1.5,
             ),
           ),
@@ -789,7 +679,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           Text(
             verses[i].$2,
             style: TextStyle(
-                fontSize: 10, color: MyWalkColor.golden.withValues(alpha: 0.4)),
+                fontSize: 10, color: GraceWayColor.golden.withValues(alpha: 0.4)),
           ),
         ],
       ],
@@ -806,14 +696,14 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           style: TextStyle(
             fontSize: 11,
             fontStyle: FontStyle.italic,
-            color: MyWalkColor.softGold.withValues(alpha: 0.55),
+            color: GraceWayColor.softGold.withValues(alpha: 0.55),
             height: 1.5,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           verse.reference,
-          style: TextStyle(fontSize: 10, color: MyWalkColor.golden.withValues(alpha: 0.4)),
+          style: TextStyle(fontSize: 10, color: GraceWayColor.golden.withValues(alpha: 0.4)),
         ),
       ],
     );
@@ -858,7 +748,6 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         builder: (_) => JournalEntryComposer(
           habitId: _habit.id,
           habitName: _habit.name,
-          fruitTag: _habit.fruitTags.firstOrNull,
           sourceType: 'habit',
         ),
       ),
@@ -870,7 +759,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

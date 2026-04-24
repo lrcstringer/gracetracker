@@ -8,7 +8,6 @@ import { db, auth } from '../lib/admin';
 // Permanently deletes all data belonging to the authenticated user:
 //   • Removes them from every circle (members sub-doc + memberIds array)
 //   • Deletes all accountability partnerships they own or participate in
-//   • Deletes all recovery paths keyed to their habits
 //   • Recursively deletes users/{uid} and every subcollection
 //   • Deletes all Firebase Storage files under journal/{uid}/
 //   • Deletes the Firebase Auth account (admin SDK, no re-auth required)
@@ -54,15 +53,7 @@ export const deleteAccount = onCall(
       ...partnerSnap.docs.map((doc) => db.recursiveDelete(doc.ref)),
     ]);
 
-    // 3. Delete recovery paths keyed to the user's habits.
-    const recoverySnap = await db.collection('recovery_paths')
-      .where('userId', '==', uid)
-      .get();
-    await Promise.all(
-      recoverySnap.docs.map((doc) => db.recursiveDelete(doc.ref))
-    );
-
-    // 4. Recursively delete users/{uid} and every subcollection
+    // 3. Recursively delete users/{uid} and every subcollection
     //    (habits, entries, journal, memorizations, bookmarks, notifications, state, etc.).
     await db.recursiveDelete(db.collection('users').doc(uid));
 

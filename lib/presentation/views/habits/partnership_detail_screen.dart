@@ -82,15 +82,15 @@ class _PartnershipDetailScreenState extends State<PartnershipDetailScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: MyWalkColor.surfaceOverlay,
+        backgroundColor: GraceWayColor.surfaceOverlay,
         title: const Text('End partnership?',
-            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 16)),
+            style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 16)),
         content: Text(
           'This will end your accountability partnership with '
           '$partnerName. '
           'Messages will no longer be visible.',
           style: TextStyle(
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.7),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.7),
               fontSize: 14),
         ),
         actions: [
@@ -98,12 +98,12 @@ class _PartnershipDetailScreenState extends State<PartnershipDetailScreen> {
             onPressed: () => Navigator.pop(ctx, false),
             child: Text('Cancel',
                 style: TextStyle(
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.5))),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.5))),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('End',
-                style: TextStyle(color: MyWalkColor.warmCoral)),
+                style: TextStyle(color: GraceWayColor.warmCoral)),
           ),
         ],
       ),
@@ -136,13 +136,13 @@ class _PartnershipDetailScreenState extends State<PartnershipDetailScreen> {
     }
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              size: 18, color: MyWalkColor.warmWhite),
+              size: 18, color: GraceWayColor.warmWhite),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Column(
@@ -153,23 +153,23 @@ class _PartnershipDetailScreenState extends State<PartnershipDetailScreen> {
               style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: MyWalkColor.warmWhite),
+                  color: GraceWayColor.warmWhite),
             ),
             Text(
               livePartnership.habitName,
               style: TextStyle(
                   fontSize: 11,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.45)),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.45)),
             ),
           ],
         ),
         actions: [
           if (livePartnership.status == PartnershipStatus.active)
             PopupMenuButton<String>(
-              color: MyWalkColor.surfaceOverlay,
+              color: GraceWayColor.surfaceOverlay,
               icon: Icon(Icons.more_vert_rounded,
                   size: 20,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.6)),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.6)),
               onSelected: (val) {
                 if (val == 'end') _confirmEnd(partnerName);
               },
@@ -179,13 +179,13 @@ class _PartnershipDetailScreenState extends State<PartnershipDetailScreen> {
                   child: Row(children: [
                     Icon(Icons.handshake_outlined,
                         size: 16,
-                        color: MyWalkColor.warmCoral.withValues(alpha: 0.8)),
+                        color: GraceWayColor.warmCoral.withValues(alpha: 0.8)),
                     const SizedBox(width: 8),
                     Text(
                       isOwner ? 'End partnership' : 'Leave partnership',
                       style: TextStyle(
                           fontSize: 13,
-                          color: MyWalkColor.warmCoral.withValues(alpha: 0.9)),
+                          color: GraceWayColor.warmCoral.withValues(alpha: 0.9)),
                     ),
                   ]),
                 ),
@@ -253,14 +253,14 @@ class _EmptyThread extends StatelessWidget {
           children: [
             Icon(Icons.handshake_rounded,
                 size: 40,
-                color: MyWalkColor.sage.withValues(alpha: 0.35)),
+                color: GraceWayColor.sage.withValues(alpha: 0.35)),
             const SizedBox(height: 16),
             Text(
               'You and $partnerName are walking together.',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 15,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.7),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.7),
                   height: 1.5),
             ),
             const SizedBox(height: 8),
@@ -269,7 +269,7 @@ class _EmptyThread extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 13,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.35)),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.35)),
             ),
           ],
         ),
@@ -307,14 +307,14 @@ class _DateChip extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: MyWalkColor.warmWhite.withValues(alpha: 0.06),
+            color: GraceWayColor.warmWhite.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
             _label(),
             style: TextStyle(
                 fontSize: 11,
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.4)),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.4)),
           ),
         ),
       ),
@@ -356,8 +356,8 @@ class _MessageBubble extends StatelessWidget {
                     horizontal: 14, vertical: 10),
                 decoration: BoxDecoration(
                   color: isMe
-                      ? MyWalkColor.sage.withValues(alpha: 0.22)
-                      : MyWalkColor.warmWhite.withValues(alpha: 0.08),
+                      ? GraceWayColor.sage.withValues(alpha: 0.22)
+                      : GraceWayColor.warmWhite.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.only(
                     topLeft: const Radius.circular(16),
                     topRight: const Radius.circular(16),
@@ -369,7 +369,7 @@ class _MessageBubble extends StatelessWidget {
                   message.body,
                   style: TextStyle(
                       fontSize: 14,
-                      color: MyWalkColor.warmWhite
+                      color: GraceWayColor.warmWhite
                           .withValues(alpha: isMe ? 0.92 : 0.78),
                       height: 1.45),
                 ),
@@ -379,7 +379,7 @@ class _MessageBubble extends StatelessWidget {
                 _time(message.sentAt),
                 style: TextStyle(
                     fontSize: 10,
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.28)),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.28)),
               ),
             ],
           ),
@@ -410,7 +410,7 @@ class _ComposeBar extends StatelessWidget {
     final canSend = controller.text.trim().isNotEmpty && !sending;
 
     return Container(
-      color: MyWalkColor.charcoal,
+      color: GraceWayColor.charcoal,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -437,16 +437,16 @@ class _ComposeBar extends StatelessWidget {
                             required isFocused, maxLength}) =>
                         null,
                     style: const TextStyle(
-                        color: MyWalkColor.warmWhite,
+                        color: GraceWayColor.warmWhite,
                         fontSize: 14,
                         height: 1.45),
                     decoration: InputDecoration(
                       hintText: 'Share what\'s on your heart…',
                       hintStyle: TextStyle(
-                          color: MyWalkColor.warmWhite.withValues(alpha: 0.28),
+                          color: GraceWayColor.warmWhite.withValues(alpha: 0.28),
                           fontSize: 14),
                       filled: true,
-                      fillColor: MyWalkColor.surfaceOverlay,
+                      fillColor: GraceWayColor.surfaceOverlay,
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 14, vertical: 10),
                       border: OutlineInputBorder(
@@ -465,8 +465,8 @@ class _ComposeBar extends StatelessWidget {
                     height: 40,
                     decoration: BoxDecoration(
                       color: canSend
-                          ? MyWalkColor.sage
-                          : MyWalkColor.sage.withValues(alpha: 0.25),
+                          ? GraceWayColor.sage
+                          : GraceWayColor.sage.withValues(alpha: 0.25),
                       shape: BoxShape.circle,
                     ),
                     child: sending
@@ -474,15 +474,15 @@ class _ComposeBar extends StatelessWidget {
                             padding: const EdgeInsets.all(10),
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: MyWalkColor.charcoal.withValues(alpha: 0.7),
+                              color: GraceWayColor.charcoal.withValues(alpha: 0.7),
                             ),
                           )
                         : Icon(
                             Icons.send_rounded,
                             size: 18,
                             color: canSend
-                                ? MyWalkColor.charcoal
-                                : MyWalkColor.charcoal.withValues(alpha: 0.4),
+                                ? GraceWayColor.charcoal
+                                : GraceWayColor.charcoal.withValues(alpha: 0.4),
                           ),
                   ),
                 ),
@@ -499,8 +499,8 @@ class _ComposeBar extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 11,
                       color: remaining < 30
-                          ? MyWalkColor.warmCoral.withValues(alpha: 0.8)
-                          : MyWalkColor.warmWhite.withValues(alpha: 0.3)),
+                          ? GraceWayColor.warmCoral.withValues(alpha: 0.8)
+                          : GraceWayColor.warmWhite.withValues(alpha: 0.3)),
                 ),
               ),
             ),
@@ -527,7 +527,7 @@ class _EndedBanner extends StatelessWidget {
     if (label.isEmpty) return const SizedBox.shrink();
     return Container(
       width: double.infinity,
-      color: MyWalkColor.charcoal,
+      color: GraceWayColor.charcoal,
       padding: EdgeInsets.only(
         left: 16,
         right: 16,
@@ -539,7 +539,7 @@ class _EndedBanner extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
             fontSize: 13,
-            color: MyWalkColor.warmWhite.withValues(alpha: 0.35)),
+            color: GraceWayColor.warmWhite.withValues(alpha: 0.35)),
       ),
     );
   }

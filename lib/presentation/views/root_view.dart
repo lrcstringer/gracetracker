@@ -70,21 +70,21 @@ class _RootViewState extends State<RootView> {
 
   void _handleLink(Uri uri, PendingInviteService inviteService,
       PendingPartnerTokenService partnerTokenService) {
-    // Circle invite:  mywalk://join?code=XXXX  or  https://mywalk.faith/join?code=XXXX
+    // Circle invite:  graceway://join?code=XXXX  or  https://graceway.faith/join?code=XXXX
     final code = uri.queryParameters['code'];
     if (code != null && code.isNotEmpty) {
       inviteService.save(code);
       return;
     }
 
-    // Partner invite (custom scheme): mywalk://accountability/accept?token=TOKEN
-    if (uri.scheme == 'mywalk' && uri.host == 'accountability') {
+    // Partner invite (custom scheme): graceway://accountability/accept?token=TOKEN
+    if (uri.scheme == 'graceway' && uri.host == 'accountability') {
       final token = uri.queryParameters['token'];
       if (token != null && token.isNotEmpty) partnerTokenService.save(token);
       return;
     }
 
-    // Partner invite (HTTPS App Link): https://mywalk.faith/accountability/accept/TOKEN
+    // Partner invite (HTTPS App Link): https://graceway.faith/accountability/accept/TOKEN
     final segments = uri.pathSegments;
     if (segments.length >= 3 &&
         segments[0] == 'accountability' &&

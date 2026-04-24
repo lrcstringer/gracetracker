@@ -3,7 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mywalk/data/repositories/firestore_iap_repository.dart';
+import 'package:graceway/data/repositories/firestore_iap_repository.dart';
 
 // ── Mocks (only non-sealed classes) ──────────────────────────────────────────
 

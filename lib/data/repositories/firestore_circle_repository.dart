@@ -50,26 +50,8 @@ class FirestoreCircleRepository implements CircleRepository {
   CollectionReference _prayerRequests(String circleId) =>
       _circles.doc(circleId).collection('prayer_requests');
 
-  CollectionReference _scriptureThreads(String circleId) =>
-      _circles.doc(circleId).collection('scripture_threads');
-
-  CollectionReference _threadComments(String circleId, String threadId) =>
-      _scriptureThreads(circleId).doc(threadId).collection('comments');
-
-  CollectionReference _circleHabits(String circleId) =>
-      _circles.doc(circleId).collection('circle_habits');
-
-  CollectionReference _habitCompletions(String circleId, String habitId) =>
-      _circleHabits(circleId).doc(habitId).collection('completions');
-
-  CollectionReference _habitDailySummary(String circleId, String habitId) =>
-      _circleHabits(circleId).doc(habitId).collection('daily_summary');
-
   CollectionReference _milestoneShares(String circleId) =>
       _circles.doc(circleId).collection('milestone_shares');
-
-  CollectionReference _circleHabitMilestones(String circleId) =>
-      _circles.doc(circleId).collection('circle_habit_milestones');
 
   CollectionReference _weeklyPulse(String circleId) =>
       _circles.doc(circleId).collection('weekly_pulse');
@@ -153,8 +135,6 @@ class FirestoreCircleRepository implements CircleRepository {
         memberCount: data['memberCount'] as int? ?? 0,
         role: membership['role'] as String? ?? 'member',
         inviteCode: data['inviteCode'] as String? ?? '',
-        settings: CircleSettings.fromMap(
-            (data['settings'] as Map<String, dynamic>?) ?? {}),
       );
     }).toList();
   }
@@ -178,8 +158,6 @@ class FirestoreCircleRepository implements CircleRepository {
       memberCount: data['memberCount'] as int? ?? 0,
       inviteCode: data['inviteCode'] as String? ?? '',
       createdAt: _tsToIso(data['createdAt']),
-      settings: CircleSettings.fromMap(
-          (data['settings'] as Map<String, dynamic>?) ?? {}),
       members: membersSnap.docs.map((m) {
         final md = m.data() as Map<String, dynamic>;
         return CircleMember(
@@ -374,7 +352,7 @@ class FirestoreCircleRepository implements CircleRepository {
     final inviteCode = snap.exists
         ? (snap.data()! as Map<String, dynamic>)['inviteCode'] as String? ?? ''
         : '';
-    return 'https://mywalk.faith/join?code=$inviteCode';
+    return 'https://graceway.faith/join?code=$inviteCode';
   }
 
   @override
@@ -462,13 +440,6 @@ class FirestoreCircleRepository implements CircleRepository {
   // ── Circle Settings ───────────────────────────────────────────────────────
 
   @override
-  Future<void> updateCircleSettings(
-      String circleId, CircleSettings settings) async {
-    await _call('circleUpdateSettings',
-        {'circleId': circleId, 'settings': settings.toMap()});
-  }
-
-  @override
   Future<void> updateMemberRole(
       String circleId, String targetUserId, String role) async {
     await _call('circleUpdateMemberRole',
@@ -518,242 +489,6 @@ class FirestoreCircleRepository implements CircleRepository {
       'requestId': requestId,
       'answeredNote': answeredNote,
     });
-  }
-
-  // ── Feature 2: Scripture Threads ─────────────────────────────────────────
-
-  @override
-  Stream<List<ScriptureThread>> watchThreads(String circleId,
-      {required bool isAdmin}) {
-    Query query = _scriptureThreads(circleId)
-        .orderBy('createdAt', descending: true);
-    if (!isAdmin) {
-      query = query.where('status', isEqualTo: 'open');
-    }
-    return query.snapshots().map((snap) => snap.docs
-        .map((d) =>
-            _parseScriptureThread(d.id, d.data() as Map<String, dynamic>))
-        .toList());
-  }
-
-  @override
-  Stream<List<ScriptureComment>> watchComments(
-      String circleId, String threadId) {
-    return _threadComments(circleId, threadId)
-        .orderBy('createdAt', descending: false)
-        .snapshots()
-        .map((snap) => snap.docs
-            .map((d) => _parseScriptureComment(
-                d.id, d.data() as Map<String, dynamic>))
-            .toList());
-  }
-
-  // Scripture-thread writes (createThread, closeThread, deleteThread,
-  // addComment, deleteComment) use direct Firestore writes rather than
-  // callable functions. This is intentional: scripture threads don't require
-  // server-side aggregation or fan-out, so bypassing Cloud Functions reduces
-  // latency and also means these operations work fully offline (Firestore
-  // queues the writes and applies them on reconnect).
-
-  @override
-  Future<void> createThread({
-    required String circleId,
-    required String reference,
-    required String passageText,
-    required String translation,
-  }) async {
-    final displayName =
-        _auth.currentUser?.displayName ?? 'Circle Member';
-    await _scriptureThreads(circleId).add({
-      'circleId': circleId,
-      'createdById': _uid,
-      'createdByDisplayName': displayName,
-      'reference': reference,
-      'passageText': passageText,
-      'translation': translation,
-      'status': 'open',
-      'createdAt': FieldValue.serverTimestamp(),
-      'commentCount': 0,
-    });
-  }
-
-  @override
-  Future<void> closeThread(String circleId, String threadId) async {
-    await _scriptureThreads(circleId).doc(threadId).update({
-      'status': 'closed',
-      'closedAt': FieldValue.serverTimestamp(),
-    });
-  }
-
-  @override
-  Future<void> deleteThread(String circleId, String threadId) async {
-    // Delete all comments first, then the thread document.
-    // Use _queryWithFallback so this also works when the device is offline
-    // (Firestore will queue the batch delete and apply it when reconnected).
-    final comments =
-        await _queryWithFallback(_threadComments(circleId, threadId));
-    final batch = _db.batch();
-    for (final doc in comments.docs) {
-      batch.delete(doc.reference);
-    }
-    batch.delete(_scriptureThreads(circleId).doc(threadId));
-    await batch.commit();
-  }
-
-  @override
-  Future<void> addComment({
-    required String circleId,
-    required String threadId,
-    required String text,
-    String? parentId,
-  }) async {
-    final displayName =
-        _auth.currentUser?.displayName ?? 'Circle Member';
-    final batch = _db.batch();
-    final commentRef = _threadComments(circleId, threadId).doc();
-    batch.set(commentRef, {
-      'threadId': threadId,
-      'authorId': _uid,
-      'authorDisplayName': displayName,
-      'text': text,
-      'parentId': parentId,
-      'createdAt': FieldValue.serverTimestamp(),
-      'deletedAt': null,
-    });
-    batch.update(_scriptureThreads(circleId).doc(threadId), {
-      'commentCount': FieldValue.increment(1),
-    });
-    await batch.commit();
-  }
-
-  @override
-  Future<void> deleteComment(
-      String circleId, String threadId, String commentId) async {
-    final batch = _db.batch();
-    batch.update(_threadComments(circleId, threadId).doc(commentId), {
-      'deletedAt': FieldValue.serverTimestamp(),
-    });
-    batch.update(_scriptureThreads(circleId).doc(threadId), {
-      'commentCount': FieldValue.increment(-1),
-    });
-    await batch.commit();
-  }
-
-  // ── Feature 3: Circle Habits ──────────────────────────────────────────────
-
-  @override
-  Future<List<CircleHabit>> getCircleHabits(String circleId) async {
-    final snap = await _queryWithFallback(_circleHabits(circleId)
-        .where('isActive', isEqualTo: true)
-        .orderBy('createdAt', descending: false));
-    return snap.docs.map((d) {
-      final data = d.data() as Map<String, dynamic>;
-      return _parseCircleHabit(d.id, data);
-    }).toList();
-  }
-
-  @override
-  Future<CircleHabitDailySummary?> getCircleHabitDailySummary(
-    String circleId,
-    String habitId,
-    String date,
-  ) async {
-    final snap =
-        await _getWithFallback(_habitDailySummary(circleId, habitId).doc(date));
-    if (!snap.exists) return null;
-    final data = snap.data() as Map<String, dynamic>;
-    return CircleHabitDailySummary(
-      id: snap.id,
-      habitId: data['habitId'] as String? ?? habitId,
-      totalMembers: data['totalMembers'] as int? ?? 0,
-      completedCount: data['completedCount'] as int? ?? 0,
-      completedUserIds: List<String>.from(
-          (data['completedUserIds'] as List<dynamic>?) ?? []),
-    );
-  }
-
-  @override
-  Future<void> createCircleHabit({
-    required String circleId,
-    required String name,
-    required CircleHabitTrackingType trackingType,
-    int? targetValue,
-    required CircleHabitFrequency frequency,
-    List<int>? specificDays,
-    String? anchorVerse,
-    String? purposeStatement,
-    String? description,
-  }) async {
-    await _call('circleCreateHabit', {
-      'circleId': circleId,
-      'name': name,
-      'trackingType': _circleHabitTrackingTypeToString(trackingType),
-      'targetValue': targetValue,
-      'frequency': _circleHabitFrequencyToString(frequency),
-      'specificDays': specificDays,
-      'anchorVerse': anchorVerse,
-      'purposeStatement': purposeStatement,
-      'description': description,
-    });
-  }
-
-  @override
-  Future<void> completeCircleHabit({
-    required String circleId,
-    required String habitId,
-    required int value,
-    required String date,
-  }) async {
-    final uid = _uid;
-    // Write directly to Firestore; server-side trigger handles aggregation.
-    final completionId = '${date}_$uid';
-    await _habitCompletions(circleId, habitId).doc(completionId).set({
-      'id': completionId,
-      'habitId': habitId,
-      'userId': uid,
-      'date': date,
-      'value': value,
-      'completedAt': FieldValue.serverTimestamp(),
-    });
-  }
-
-  @override
-  Future<void> updateCircleHabit({
-    required String circleId,
-    required String habitId,
-    required String name,
-    required CircleHabitTrackingType trackingType,
-    int? targetValue,
-    required CircleHabitFrequency frequency,
-    List<int>? specificDays,
-    String? anchorVerse,
-    String? purposeStatement,
-    String? description,
-  }) async {
-    await _call('circleUpdateHabit', {
-      'circleId': circleId,
-      'habitId': habitId,
-      'name': name,
-      'trackingType': _circleHabitTrackingTypeToString(trackingType),
-      'targetValue': targetValue,
-      'frequency': _circleHabitFrequencyToString(frequency),
-      'specificDays': specificDays,
-      'anchorVerse': anchorVerse,
-      'purposeStatement': purposeStatement,
-      'description': description,
-    });
-  }
-
-  @override
-  Future<void> deleteCircleHabit(String circleId, String habitId) async {
-    await _call('circleDeleteHabit',
-        {'circleId': circleId, 'habitId': habitId});
-  }
-
-  @override
-  Future<void> deactivateCircleHabit(String circleId, String habitId) async {
-    await _call('circleDeactivateHabit',
-        {'circleId': circleId, 'habitId': habitId});
   }
 
   // ── Feature 4: Encouragements ─────────────────────────────────────────────
@@ -841,26 +576,6 @@ class FirestoreCircleRepository implements CircleRepository {
   Future<void> celebrateMilestone(String circleId, String shareId) async {
     await _call('circleCelebrateMilestone',
         {'circleId': circleId, 'shareId': shareId});
-  }
-
-  // ── Circle Habit Milestones ───────────────────────────────────────────────
-
-  @override
-  Future<List<CircleHabitMilestone>> getCircleHabitMilestones(
-      String circleId) async {
-    final snap = await _queryWithFallback(_circleHabitMilestones(circleId)
-        .orderBy('createdAt', descending: true));
-    return snap.docs.map((d) {
-      final data = d.data() as Map<String, dynamic>;
-      return CircleHabitMilestone(
-        id: data['id'] as String? ?? d.id,
-        circleId: data['circleId'] as String? ?? circleId,
-        habitId: data['habitId'] as String? ?? '',
-        habitName: data['habitName'] as String? ?? '',
-        milestoneValue: (data['milestoneValue'] as int?) ?? 0,
-        createdAt: _tsToIso(data['createdAt']),
-      );
-    }).toList();
   }
 
   // ── Feature 6: Weekly Pulse ───────────────────────────────────────────────
@@ -982,60 +697,6 @@ class FirestoreCircleRepository implements CircleRepository {
     );
   }
 
-  static ScriptureThread _parseScriptureThread(
-      String id, Map<String, dynamic> d) {
-    return ScriptureThread(
-      id: id,
-      circleId: d['circleId'] as String? ?? '',
-      createdById: d['createdById'] as String? ?? '',
-      createdByDisplayName: d['createdByDisplayName'] as String? ?? '',
-      reference: d['reference'] as String? ?? '',
-      passageText: d['passageText'] as String? ?? '',
-      translation: d['translation'] as String? ?? 'WEB',
-      status: d['status'] as String? ?? 'open',
-      createdAt: _tsToIso(d['createdAt']),
-      closedAt: d['closedAt'] != null ? _tsToIso(d['closedAt']) : null,
-      commentCount: d['commentCount'] as int? ?? 0,
-    );
-  }
-
-  static ScriptureComment _parseScriptureComment(
-      String id, Map<String, dynamic> d) {
-    return ScriptureComment(
-      id: id,
-      threadId: d['threadId'] as String? ?? '',
-      authorId: d['authorId'] as String? ?? '',
-      authorDisplayName: d['authorDisplayName'] as String? ?? '',
-      text: d['text'] as String? ?? '',
-      parentId: d['parentId'] as String?,
-      createdAt: _tsToIso(d['createdAt']),
-      deletedAt: d['deletedAt'] != null ? _tsToIso(d['deletedAt']) : null,
-    );
-  }
-
-  static CircleHabit _parseCircleHabit(
-      String id, Map<String, dynamic> d) {
-    return CircleHabit(
-      id: id,
-      circleId: d['circleId'] as String? ?? '',
-      createdById: d['createdById'] as String? ?? '',
-      name: d['name'] as String? ?? '',
-      description: d['description'] as String?,
-      trackingType: _parseCircleHabitTrackingType(d['trackingType'] as String?),
-      targetValue: d['targetValue'] as int?,
-      frequency: _parseCircleHabitFrequency(d['frequency'] as String?),
-      specificDays: (d['specificDays'] as List<dynamic>?)
-          ?.map((e) => (e as num).toInt())
-          .toList(),
-      anchorVerse: d['anchorVerse'] as String?,
-      purposeStatement: d['purposeStatement'] as String?,
-      isActive: d['isActive'] as bool? ?? false,
-      createdAt: _tsToIso(d['createdAt']),
-      startsAt: _tsToIso(d['startsAt']),
-      endsAt: d['endsAt'] != null ? _tsToIso(d['endsAt']) : null,
-    );
-  }
-
   static Encouragement _parseEncouragement(Map<String, dynamic> d) {
     return Encouragement(
       id: d['id'] as String? ?? '',
@@ -1149,51 +810,6 @@ class FirestoreCircleRepository implements CircleRepository {
         return PrayerRequestStatus.expired;
       default:
         return PrayerRequestStatus.active;
-    }
-  }
-
-  static CircleHabitTrackingType _parseCircleHabitTrackingType(String? s) {
-    switch (s) {
-      case 'TIMED':
-        return CircleHabitTrackingType.timed;
-      case 'COUNT':
-        return CircleHabitTrackingType.count;
-      default:
-        return CircleHabitTrackingType.checkIn;
-    }
-  }
-
-  static String _circleHabitTrackingTypeToString(
-      CircleHabitTrackingType t) {
-    switch (t) {
-      case CircleHabitTrackingType.timed:
-        return 'TIMED';
-      case CircleHabitTrackingType.count:
-        return 'COUNT';
-      case CircleHabitTrackingType.checkIn:
-        return 'CHECK_IN';
-    }
-  }
-
-  static CircleHabitFrequency _parseCircleHabitFrequency(String? s) {
-    switch (s) {
-      case 'WEEKLY':
-        return CircleHabitFrequency.weekly;
-      case 'SPECIFIC_DAYS':
-        return CircleHabitFrequency.specificDays;
-      default:
-        return CircleHabitFrequency.daily;
-    }
-  }
-
-  static String _circleHabitFrequencyToString(CircleHabitFrequency f) {
-    switch (f) {
-      case CircleHabitFrequency.weekly:
-        return 'WEEKLY';
-      case CircleHabitFrequency.specificDays:
-        return 'SPECIFIC_DAYS';
-      case CircleHabitFrequency.daily:
-        return 'DAILY';
     }
   }
 

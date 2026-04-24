@@ -54,7 +54,7 @@ class _IdentityScreenState extends State<IdentityScreen> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                   height: 1.25,
                 ),
               ),
@@ -75,7 +75,7 @@ class _IdentityScreenState extends State<IdentityScreen> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _continue(),
                 style: const TextStyle(
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
@@ -86,19 +86,19 @@ class _IdentityScreenState extends State<IdentityScreen> {
                     fontWeight: FontWeight.w400,
                   ),
                   filled: true,
-                  fillColor: MyWalkColor.cardBackground,
+                  fillColor: GraceWayColor.cardBackground,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5),
+                    borderSide: BorderSide(color: GraceWayColor.cardBorder, width: 0.5),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5),
+                    borderSide: BorderSide(color: GraceWayColor.cardBorder, width: 0.5),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: BorderSide(
-                      color: MyWalkColor.golden.withValues(alpha: 0.5),
+                      color: GraceWayColor.golden.withValues(alpha: 0.5),
                       width: 1.5,
                     ),
                   ),
@@ -121,10 +121,10 @@ class _IdentityScreenState extends State<IdentityScreen> {
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyWalkColor.golden,
-              foregroundColor: MyWalkColor.charcoal,
-              disabledBackgroundColor: MyWalkColor.golden.withValues(alpha: 0.25),
-              disabledForegroundColor: MyWalkColor.charcoal.withValues(alpha: 0.4),
+              backgroundColor: GraceWayColor.golden,
+              foregroundColor: GraceWayColor.charcoal,
+              disabledBackgroundColor: GraceWayColor.golden.withValues(alpha: 0.25),
+              disabledForegroundColor: GraceWayColor.charcoal.withValues(alpha: 0.4),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),

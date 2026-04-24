@@ -145,7 +145,7 @@ class NotificationService {
       final body = _reminderMessages[i % _reminderMessages.length];
       await _plugin.zonedSchedule(
         100 + i,
-        'MyWalk',
+        'GraceWay',
         body,
         _nextWeekday(i + 1, hour, minute),
         NotificationDetails(
@@ -162,51 +162,6 @@ class NotificationService {
   Future<void> cancelDailyReminders() async {
     for (int i = 0; i < 7; i++) {
       await _plugin.cancel(100 + i);
-    }
-  }
-
-  // ── Recovery Path daily check-in reminder (ID 200) ────────────────────────
-
-  Future<void> scheduleRecoveryPathReminder({int hour = 9, int minute = 0}) async {
-    await checkAuthorization();
-    if (!isAuthorized) return;
-    await cancelRecoveryPathReminder();
-
-    const messages = [
-      'Your daily check-in is waiting — a few minutes keeps your progress going.',
-      'Take a moment today for your Recovery Path check-in.',
-      'Small daily steps lead to lasting change — check in when you\'re ready.',
-      'Your Recovery Path check-in is here whenever you need it.',
-      'A brief reflection today keeps momentum on your recovery journey.',
-      'Check in with yourself — your Recovery Path is ready.',
-      'Today\'s check-in is a gift to your future self.',
-    ];
-
-    for (int i = 0; i < 7; i++) {
-      await _plugin.zonedSchedule(
-        200 + i,
-        'MyWalk',
-        messages[i % messages.length],
-        _nextWeekday(i + 1, hour, minute),
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            'recovery_path_reminder',
-            'Recovery Path Reminders',
-            importance: Importance.defaultImportance,
-          ),
-          iOS: const DarwinNotificationDetails(),
-        ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
-      );
-    }
-  }
-
-  Future<void> cancelRecoveryPathReminder() async {
-    for (int i = 0; i < 7; i++) {
-      await _plugin.cancel(200 + i);
     }
   }
 
@@ -275,7 +230,7 @@ class NotificationService {
     final body = messages[messageIdx];
 
     await _plugin.zonedSchedule(
-      99999, 'MyWalk', body,
+      99999, 'GraceWay', body,
       _toTZDateTime(scheduled),
       NotificationDetails(
         android: const AndroidNotificationDetails('encouragement', 'Encouragement', importance: Importance.defaultImportance),

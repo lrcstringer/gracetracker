@@ -54,7 +54,7 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
     final showNav = _currentStep >= 2 && _currentStep < _totalSteps - 1;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: SafeArea(
         child: Column(children: [
           if (showNav) _navBar(),
@@ -73,7 +73,7 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
             onTap: _back,
             child: SizedBox(
               width: 44, height: 44,
-              child: Icon(Icons.chevron_left, color: MyWalkColor.softGold.withValues(alpha: 0.6)),
+              child: Icon(Icons.chevron_left, color: GraceWayColor.softGold.withValues(alpha: 0.6)),
             ),
           )
         else
@@ -102,7 +102,7 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: step <= _currentStep
-                ? MyWalkColor.golden
+                ? GraceWayColor.golden
                 : Colors.white.withValues(alpha: 0.15),
           ),
         );

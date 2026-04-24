@@ -28,8 +28,7 @@ abstract class CircleRepository {
   Future<void> updateCircle(String circleId, {String? name, String? description});
   Future<void> deleteCircle(String circleId);
 
-  // ── Circle Settings ─────────────────────────────────────────────────────────
-  Future<void> updateCircleSettings(String circleId, CircleSettings settings);
+  // ── Member management ───────────────────────────────────────────────────────
   Future<void> updateMemberRole(String circleId, String targetUserId, String role);
 
   // ── Feature 1: Prayer List ──────────────────────────────────────────────────
@@ -46,67 +45,6 @@ abstract class CircleRepository {
     String requestId, {
     String? answeredNote,
   });
-
-  // ── Feature 2: Scripture Threads ───────────────────────────────────────────
-  Stream<List<ScriptureThread>> watchThreads(String circleId,
-      {required bool isAdmin});
-  Stream<List<ScriptureComment>> watchComments(
-      String circleId, String threadId);
-  Future<void> createThread({
-    required String circleId,
-    required String reference,
-    required String passageText,
-    required String translation,
-  });
-  Future<void> closeThread(String circleId, String threadId);
-  Future<void> deleteThread(String circleId, String threadId);
-  Future<void> addComment({
-    required String circleId,
-    required String threadId,
-    required String text,
-    String? parentId,
-  });
-  Future<void> deleteComment(
-      String circleId, String threadId, String commentId);
-
-  // ── Feature 3: Circle Habits ────────────────────────────────────────────────
-  Future<List<CircleHabit>> getCircleHabits(String circleId);
-  Future<CircleHabitDailySummary?> getCircleHabitDailySummary(
-    String circleId,
-    String habitId,
-    String date,
-  );
-  Future<void> createCircleHabit({
-    required String circleId,
-    required String name,
-    required CircleHabitTrackingType trackingType,
-    int? targetValue,
-    required CircleHabitFrequency frequency,
-    List<int>? specificDays,
-    String? anchorVerse,
-    String? purposeStatement,
-    String? description,
-  });
-  Future<void> completeCircleHabit({
-    required String circleId,
-    required String habitId,
-    required int value,
-    required String date,
-  });
-  Future<void> updateCircleHabit({
-    required String circleId,
-    required String habitId,
-    required String name,
-    required CircleHabitTrackingType trackingType,
-    int? targetValue,
-    required CircleHabitFrequency frequency,
-    List<int>? specificDays,
-    String? anchorVerse,
-    String? purposeStatement,
-    String? description,
-  });
-  Future<void> deleteCircleHabit(String circleId, String habitId);
-  Future<void> deactivateCircleHabit(String circleId, String habitId);
 
   // ── Feature 4: Encouragements ───────────────────────────────────────────────
   Future<List<Encouragement>> getReceivedEncouragements(String circleId);
@@ -141,9 +79,6 @@ abstract class CircleRepository {
     String? note,
     required bool isAnonymous,
   });
-
-  // ── Circle Habit Milestones ─────────────────────────────────────────────────
-  Future<List<CircleHabitMilestone>> getCircleHabitMilestones(String circleId);
 
   // ── Group Prayer List ───────────────────────────────────────────────────────
   Future<CirclePrayerList?> getGroupPrayerList(String circleId);

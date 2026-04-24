@@ -1,4 +1,4 @@
-# MyWalk — Offline Capabilities Audit
+# GraceWay — Offline Capabilities Audit
 **Date:** 2026-04-07  
 **Scope:** Full codebase — data layer, providers, presentation layer, services  
 **Purpose:** Identify what works offline, what doesn't, and what is needed to achieve full offline capability (where legally/technically possible)

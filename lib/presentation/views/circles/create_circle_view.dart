@@ -48,11 +48,11 @@ class _CreateCircleViewState extends State<CreateCircleView> {
   Widget build(BuildContext context) {
     final nameEmpty = _nameController.text.trim().isEmpty;
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         title: const Text('New Circle',
-            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
+            style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text('Cancel', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
@@ -66,20 +66,20 @@ class _CreateCircleViewState extends State<CreateCircleView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Circle Name',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
               const SizedBox(height: 6),
               _textField(_nameController, 'e.g. Family Prayer', maxLines: 1),
               const SizedBox(height: 16),
               const Text('Description',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
               const SizedBox(height: 6),
               _textField(_descController, 'Optional — what is this circle about?', maxLines: 3),
               if (_error != null) ...[
                 const SizedBox(height: 12),
                 Row(children: [
-                  const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
+                  const Icon(Icons.warning_amber, size: 14, color: GraceWayColor.warmCoral),
                   const SizedBox(width: 6),
-                  Expanded(child: Text(_error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral))),
+                  Expanded(child: Text(_error!, style: const TextStyle(fontSize: 12, color: GraceWayColor.warmCoral))),
                 ]),
               ],
               const SizedBox(height: 24),
@@ -90,14 +90,14 @@ class _CreateCircleViewState extends State<CreateCircleView> {
                   child: ElevatedButton(
                     onPressed: (nameEmpty || _isLoading) ? null : _createCircle,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: MyWalkColor.golden,
-                      foregroundColor: MyWalkColor.charcoal,
+                      backgroundColor: GraceWayColor.golden,
+                      foregroundColor: GraceWayColor.charcoal,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     ),
                     child: _isLoading
                         ? const SizedBox(width: 18, height: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
+                            child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.charcoal))
                         : const Text('Create Circle', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                   ),
                 ),
@@ -114,23 +114,23 @@ class _CreateCircleViewState extends State<CreateCircleView> {
       controller: controller,
       onChanged: (_) => setState(() {}),
       maxLines: maxLines,
-      style: const TextStyle(color: MyWalkColor.warmWhite),
+      style: const TextStyle(color: GraceWayColor.warmWhite),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
         filled: true,
-        fillColor: MyWalkColor.cardBackground,
+        fillColor: GraceWayColor.cardBackground,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5),
+          borderSide: BorderSide(color: GraceWayColor.cardBorder, width: 0.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5),
+          borderSide: BorderSide(color: GraceWayColor.cardBorder, width: 0.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: MyWalkColor.golden.withValues(alpha: 0.5), width: 1),
+          borderSide: BorderSide(color: GraceWayColor.golden.withValues(alpha: 0.5), width: 1),
         ),
         contentPadding: const EdgeInsets.all(12),
       ),

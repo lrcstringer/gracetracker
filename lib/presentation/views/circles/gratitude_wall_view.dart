@@ -106,7 +106,7 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
       if (_isLoading)
         const Center(child: Padding(
           padding: EdgeInsets.all(16),
-          child: CircularProgressIndicator(color: MyWalkColor.golden, strokeWidth: 2),
+          child: CircularProgressIndicator(color: GraceWayColor.golden, strokeWidth: 2),
         ))
       else if (_loadError && _gratitudes.isEmpty)
         Padding(
@@ -114,7 +114,7 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
           child: Center(
             child: Text(
               "Couldn't connect. Check your connection.",
-              style: TextStyle(fontSize: 13, color: MyWalkColor.warmCoral.withValues(alpha: 0.8)),
+              style: TextStyle(fontSize: 13, color: GraceWayColor.warmCoral.withValues(alpha: 0.8)),
             ),
           ),
         )
@@ -134,7 +134,7 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Text('$_newCount new gratitude${_newCount == 1 ? '' : 's'}',
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: MyWalkColor.golden)),
+                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: GraceWayColor.golden)),
             ),
           ),
         ..._gratitudes.map((item) => Padding(
@@ -147,9 +147,9 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
               onPressed: _isLoadingMore ? null : _loadPreviousWeek,
               child: _isLoadingMore
                   ? const SizedBox(width: 16, height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.golden))
+                      child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.golden))
                   : Text('Previous weeks',
-                      style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.7))),
+                      style: TextStyle(fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.7))),
             ),
           ),
       ],
@@ -180,7 +180,7 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
                   fontSize: 13, fontWeight: FontWeight.w600,
                   color: item.isAnonymous
                       ? const Color(0xFF9A98A0)
-                      : MyWalkColor.warmWhite),
+                      : GraceWayColor.warmWhite),
             ),
             const Spacer(),
             Text(_relativeTime(item.sharedAt),
@@ -188,7 +188,7 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
           ]),
           const SizedBox(height: 6),
           Text(item.gratitudeText,
-              style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite, height: 1.5)),
+              style: const TextStyle(fontSize: 14, color: GraceWayColor.warmWhite, height: 1.5)),
         ]),
       ),
     );
@@ -196,8 +196,8 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
 
   Widget _confirmDeleteDialog() {
     return AlertDialog(
-      backgroundColor: MyWalkColor.cardBackground,
-      title: const Text('Delete Gratitude', style: TextStyle(color: MyWalkColor.warmWhite)),
+      backgroundColor: GraceWayColor.cardBackground,
+      title: const Text('Delete Gratitude', style: TextStyle(color: GraceWayColor.warmWhite)),
       content: Text(
         'This gratitude will be removed from the wall for all circle members.',
         style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
@@ -213,7 +213,7 @@ class _GratitudeWallWidgetState extends State<GratitudeWallWidget> {
             setState(() => _deleteTarget = null);
             if (t != null) _deleteGratitude(t);
           },
-          child: const Text('Delete', style: TextStyle(color: MyWalkColor.warmCoral)),
+          child: const Text('Delete', style: TextStyle(color: GraceWayColor.warmCoral)),
         ),
       ],
     );
@@ -228,11 +228,11 @@ class GratitudeWallView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         title: const Text('Gratitude Wall',
-            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 20, fontWeight: FontWeight.w700)),
+            style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 20, fontWeight: FontWeight.w700)),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

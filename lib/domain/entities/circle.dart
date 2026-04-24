@@ -5,43 +5,6 @@ library;
 import 'package:uuid/uuid.dart';
 import 'habit.dart' show PrayerItemStatus;
 
-// ── Settings ──────────────────────────────────────────────────────────────────
-
-class CircleSettings {
-  final String scriptureFocusPermission; // 'admin' | 'any_member'
-  final String eventPermission;          // 'admin' | 'any_member'
-  final String pulseVisibility;          // 'aggregate' | 'named'
-  final bool encouragementPromptsEnabled;
-  final String circleHabitGridVisibility; // 'checkmarks' | 'names'
-
-  const CircleSettings({
-    this.scriptureFocusPermission = 'admin',
-    this.eventPermission = 'admin',
-    this.pulseVisibility = 'aggregate',
-    this.encouragementPromptsEnabled = true,
-    this.circleHabitGridVisibility = 'checkmarks',
-  });
-
-  factory CircleSettings.fromMap(Map<String, dynamic> m) => CircleSettings(
-        scriptureFocusPermission:
-            m['scriptureFocusPermission'] as String? ?? 'admin',
-        eventPermission: m['eventPermission'] as String? ?? 'admin',
-        pulseVisibility: m['pulseVisibility'] as String? ?? 'aggregate',
-        encouragementPromptsEnabled:
-            m['encouragementPromptsEnabled'] as bool? ?? true,
-        circleHabitGridVisibility:
-            m['circleHabitGridVisibility'] as String? ?? 'checkmarks',
-      );
-
-  Map<String, dynamic> toMap() => {
-        'scriptureFocusPermission': scriptureFocusPermission,
-        'eventPermission': eventPermission,
-        'pulseVisibility': pulseVisibility,
-        'encouragementPromptsEnabled': encouragementPromptsEnabled,
-        'circleHabitGridVisibility': circleHabitGridVisibility,
-      };
-}
-
 // ── Core circle types ─────────────────────────────────────────────────────────
 
 class Circle {
@@ -51,7 +14,6 @@ class Circle {
   final int memberCount;
   final String role;
   final String inviteCode;
-  final CircleSettings settings;
 
   const Circle({
     required this.id,
@@ -60,7 +22,6 @@ class Circle {
     required this.memberCount,
     required this.role,
     required this.inviteCode,
-    this.settings = const CircleSettings(),
   });
 
   bool get isAdmin => role == 'admin';
@@ -90,7 +51,6 @@ class CircleDetails {
   final String inviteCode;
   final String createdAt;
   final List<CircleMember> members;
-  final CircleSettings settings;
 
   const CircleDetails({
     required this.id,
@@ -100,7 +60,6 @@ class CircleDetails {
     required this.inviteCode,
     required this.createdAt,
     required this.members,
-    this.settings = const CircleSettings(),
   });
 }
 
@@ -261,138 +220,6 @@ class PrayerRequest {
   bool isAuthor(String uid) => authorId == uid;
 }
 
-// ── Feature 2: Scripture Focus ────────────────────────────────────────────────
-
-class ScriptureThread {
-  final String id;
-  final String circleId;
-  final String createdById;
-  final String createdByDisplayName;
-  final String reference;
-  final String passageText; // Delta JSON
-  final String translation;
-  final String status; // 'open' | 'closed'
-  final String createdAt;
-  final String? closedAt;
-  final int commentCount;
-
-  const ScriptureThread({
-    required this.id,
-    required this.circleId,
-    required this.createdById,
-    required this.createdByDisplayName,
-    required this.reference,
-    required this.passageText,
-    required this.translation,
-    this.status = 'open',
-    required this.createdAt,
-    this.closedAt,
-    this.commentCount = 0,
-  });
-
-  bool get isOpen => status == 'open';
-}
-
-class ScriptureComment {
-  final String id;
-  final String threadId;
-  final String authorId;
-  final String authorDisplayName;
-  final String text;
-  final String? parentId; // null = top-level; set = reply to a top-level comment
-  final String createdAt;
-  final String? deletedAt; // soft-deleted; text replaced with tombstone in UI
-
-  const ScriptureComment({
-    required this.id,
-    required this.threadId,
-    required this.authorId,
-    required this.authorDisplayName,
-    required this.text,
-    this.parentId,
-    required this.createdAt,
-    this.deletedAt,
-  });
-
-  bool get isDeleted => deletedAt != null;
-  bool get isReply => parentId != null;
-  bool isAuthor(String uid) => authorId == uid;
-}
-
-// ── Feature 3: Circle Habits ──────────────────────────────────────────────────
-
-enum CircleHabitFrequency { daily, weekly, specificDays }
-enum CircleHabitTrackingType { checkIn, timed, count }
-
-class CircleHabit {
-  final String id;
-  final String circleId;
-  final String createdById;
-  final String name;
-  final String? description;
-  final CircleHabitTrackingType trackingType;
-  final int? targetValue;
-  final CircleHabitFrequency frequency;
-  final List<int>? specificDays; // 0=Sun … 6=Sat
-  final String? anchorVerse;
-  final String? purposeStatement;
-  final bool isActive;
-  final String createdAt;
-  final String startsAt;
-  final String? endsAt;
-
-  const CircleHabit({
-    required this.id,
-    required this.circleId,
-    required this.createdById,
-    required this.name,
-    this.description,
-    required this.trackingType,
-    this.targetValue,
-    required this.frequency,
-    this.specificDays,
-    this.anchorVerse,
-    this.purposeStatement,
-    required this.isActive,
-    required this.createdAt,
-    required this.startsAt,
-    this.endsAt,
-  });
-
-  /// Returns true if this habit is scheduled for the given weekday (0=Sun … 6=Sat).
-  bool isScheduledFor(int weekday) {
-    switch (frequency) {
-      case CircleHabitFrequency.daily:
-        return true;
-      case CircleHabitFrequency.weekly:
-        return weekday == 0; // Sunday
-      case CircleHabitFrequency.specificDays:
-        return specificDays?.contains(weekday) ?? false;
-    }
-  }
-}
-
-class CircleHabitDailySummary {
-  final String id; // YYYY-MM-DD
-  final String habitId;
-  final int totalMembers;
-  final int completedCount;
-  final List<String> completedUserIds;
-
-  const CircleHabitDailySummary({
-    required this.id,
-    required this.habitId,
-    required this.totalMembers,
-    required this.completedCount,
-    required this.completedUserIds,
-  });
-
-  double get completionRate =>
-      totalMembers == 0 ? 0.0 : completedCount / totalMembers;
-
-  bool hasCompleted(String uid) => completedUserIds.contains(uid);
-}
-
 // ── Feature 4: Encouragements ─────────────────────────────────────────────────
 
 enum EncouragementMessageType { preset, custom }
@@ -540,28 +367,6 @@ class PulseResponse {
   });
 }
 
-// ── Circle Habit Milestones (auto-generated) ──────────────────────────────────
-
-class CircleHabitMilestone {
-  final String id;         // '{habitId}_completions_{value}'
-  final String circleId;
-  final String habitId;
-  final String habitName;
-  final int milestoneValue; // e.g. 100
-  final String createdAt;
-
-  const CircleHabitMilestone({
-    required this.id,
-    required this.circleId,
-    required this.habitId,
-    required this.habitName,
-    required this.milestoneValue,
-    required this.createdAt,
-  });
-
-  String get displayLabel =>
-      'Your circle hit $milestoneValue completions of $habitName!';
-}
 
 // ── Feature 7: Events ─────────────────────────────────────────────────────────
 

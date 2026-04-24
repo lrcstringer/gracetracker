@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.mywalk" "\0"
-            VALUE "FileDescription", "MyWalk" "\0"
+            VALUE "CompanyName", "com.graceway" "\0"
+            VALUE "FileDescription", "GraceWay" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "MyWalk" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.mywalk. All rights reserved." "\0"
-            VALUE "OriginalFilename", "mywalk.exe" "\0"
-            VALUE "ProductName", "MyWalk" "\0"
+            VALUE "InternalName", "GraceWay" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 com.graceway. All rights reserved." "\0"
+            VALUE "OriginalFilename", "graceway.exe" "\0"
+            VALUE "ProductName", "GraceWay" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

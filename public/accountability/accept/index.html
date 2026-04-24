@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MyWalk — Prayer Partnership Invitation</title>
+<title>GraceWay — Prayer Partnership Invitation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -191,7 +191,7 @@
   </svg>
 </div>
 
-<div class="app-name">MyWalk</div>
+<div class="app-name">GraceWay</div>
 
 <h1>You've been invited to walk together</h1>
 
@@ -201,21 +201,21 @@
 <div class="divider"></div>
 
 <p class="body-text">
-  Someone who cares about your journey has invited you to be their support and prayer partner on MyWalk — a daily companion for walking faithfully with God.
+  Someone who cares about your journey has invited you to be their support and prayer partner on GraceWay — a daily companion for walking faithfully with God.
 </p>
 
 <p id="status"></p>
 
-<button class="btn-primary" onclick="openInApp()">Open in MyWalk</button>
+<button class="btn-primary" onclick="openInApp()">Open in GraceWay</button>
 
 <div class="store-row">
-  <a class="btn-store" href="https://apps.apple.com/app/mywalk/id6742635756" target="_blank" rel="noopener">
+  <a class="btn-store" href="https://apps.apple.com/app/graceway/id6742635756" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
     </svg>
     App Store
   </a>
-  <a class="btn-store" href="https://play.google.com/store/apps/details?id=com.mywalk.app" target="_blank" rel="noopener">
+  <a class="btn-store" href="https://play.google.com/store/apps/details?id=com.graceway.app" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M3.18 23.76c.35.19.74.23 1.12.12l12.74-7.36-2.8-2.8-11.06 10.04zM20.47 10.3L17.6 8.65 14.54 11.7l3.06 3.06 2.89-1.67c.82-.48.82-1.79-.02-2.79zM1.5.7C1.2 1.02 1 1.5 1 2.09v19.82c0 .59.2 1.07.5 1.39L1.6 23.38 12.93 12.05v-.3L1.6.78 1.5.7zm11.69 11.65l3.2-3.2-10.8-6.23L13.19 12.35z"/>
     </svg>
@@ -224,7 +224,7 @@
 </div>
 
 <p class="note">
-  You'll need the MyWalk app installed to accept this invitation. Open this link on your phone after installing.
+  You'll need the GraceWay app installed to accept this invitation. Open this link on your phone after installing.
 </p>
 
 <script>
@@ -239,10 +239,10 @@
   }
 
   var token = getToken();
-  // Custom scheme deep link: mywalk://accountability/accept?token=TOKEN
+  // Custom scheme deep link: graceway://accountability/accept?token=TOKEN
   // Handled by _handleLink in root_view.dart (checks uri.host == 'accountability')
   var deepLink = token
-    ? 'mywalk://accountability/accept?token=' + encodeURIComponent(token)
+    ? 'graceway://accountability/accept?token=' + encodeURIComponent(token)
     : null;
 
   function openInApp() {
@@ -250,13 +250,13 @@
       document.getElementById('status').textContent = 'Invalid invitation link.';
       return;
     }
-    document.getElementById('status').textContent = 'Opening MyWalk…';
+    document.getElementById('status').textContent = 'Opening GraceWay…';
     window.location.href = deepLink;
 
     // After a short delay, if the app didn't open, show a hint
     setTimeout(function() {
       document.getElementById('status').textContent =
-        'If nothing happened, install MyWalk from the links below.';
+        'If nothing happened, install GraceWay from the links below.';
     }, 1800);
   }
 

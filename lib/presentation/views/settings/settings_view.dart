@@ -5,11 +5,8 @@ import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/circle.dart';
 import '../../../domain/repositories/circle_repository.dart';
 import '../../../domain/repositories/user_preferences_repository.dart';
-import '../../providers/fruit_portfolio_provider.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/journal_provider.dart';
-import '../../providers/memorization_provider.dart';
-import '../../providers/recovery_path_provider.dart';
 import '../../providers/bible_reading_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../../data/datasources/remote/auth_service.dart';
@@ -17,10 +14,8 @@ import '../../../domain/services/milestone_service.dart';
 import '../../../data/datasources/local/notification_service.dart';
 import '../../../domain/entities/accountability_partnership.dart';
 import '../../providers/accountability_provider.dart';
-import '../../providers/journal_theme_provider.dart';
 import '../../theme/app_theme.dart';
-import '../journal/journal_theme_picker.dart';
-import '../shared/mywalk_paywall_view.dart';
+import '../shared/graceway_paywall_view.dart';
 import 'profile_edit_view.dart';
 
 class SettingsView extends StatefulWidget {
@@ -127,10 +122,10 @@ class _SettingsViewState extends State<SettingsView> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
-        title: const Text('Reset All Data', style: TextStyle(color: MyWalkColor.warmWhite)),
+        backgroundColor: GraceWayColor.cardBackground,
+        title: const Text('Reset All Data', style: TextStyle(color: GraceWayColor.warmWhite)),
         content: Text(
-          'This will permanently delete all your habits, journal entries, scripture memorization, and circle memberships. This cannot be undone.',
+          'This will permanently delete all your habits, journal entries, and circle memberships. This cannot be undone.',
           style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
         ),
         actions: [
@@ -143,7 +138,7 @@ class _SettingsViewState extends State<SettingsView> {
               Navigator.pop(context);
               await _resetAllData();
             },
-            child: const Text('Reset Everything', style: TextStyle(color: MyWalkColor.warmCoral)),
+            child: const Text('Reset Everything', style: TextStyle(color: GraceWayColor.warmCoral)),
           ),
         ],
       ),
@@ -152,12 +147,9 @@ class _SettingsViewState extends State<SettingsView> {
 
   Future<void> _resetAllData() async {
     final habitProvider = context.read<HabitProvider>();
-    final fruit = context.read<FruitPortfolioProvider>();
     final prefs = context.read<UserPreferencesRepository>();
     final accountability = context.read<AccountabilityProvider>();
     final journal = context.read<JournalProvider>();
-    final memorization = context.read<MemorizationProvider>();
-    final recoveryPaths = context.read<RecoveryPathProvider>();
     final circles = context.read<CircleRepository>();
 
     // 1. End all active/pending accountability partnerships.
@@ -174,14 +166,7 @@ class _SettingsViewState extends State<SettingsView> {
             .catchError((_) {}),
     ]);
 
-    // 2. Collect all habit IDs (active + archived) before resetting habits
-    //    so we can delete their recovery paths afterwards.
-    final allHabitIds = {
-      ...habitProvider.sortedHabits.map((h) => h.id),
-      ...(await habitProvider.loadArchivedHabits()).map((h) => h.id),
-    };
-
-    // 3. Leave all circles the user belongs to.
+    // 2. Leave all circles the user belongs to.
     List<Circle> userCircles = const [];
     try {
       userCircles = await circles.listCircles();
@@ -191,21 +176,13 @@ class _SettingsViewState extends State<SettingsView> {
         circles.leaveCircle(c.id).catchError((_) {}),
     ]);
 
-    // 4. Delete all user-generated content in parallel.
+    // 3. Delete all user-generated content in parallel.
     await Future.wait([
       habitProvider.resetAllData(),
-      fruit.reset(),
       journal.deleteAllEntries(),
-      memorization.deleteAllItems(),
     ]);
 
-    // 5. Delete recovery paths for every habit (sequential per path is fine;
-    //    each call is already batched internally).
-    await recoveryPaths
-        .deleteAllPaths(allHabitIds.toList())
-        .catchError((_) {});
-
-    // 6. Wipe all preferences, preserving identity/auth keys.
+    // 4. Wipe all preferences, preserving identity/auth keys.
     await prefs.clearAll(preserve: _identityPrefsKeys);
 
     if (mounted) setState(() => _remindersEnabled = false);
@@ -214,16 +191,16 @@ class _SettingsViewState extends State<SettingsView> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          backgroundColor: MyWalkColor.cardBackground,
-          title: const Text('Data Reset', style: TextStyle(color: MyWalkColor.warmWhite)),
+          backgroundColor: GraceWayColor.cardBackground,
+          title: const Text('Data Reset', style: TextStyle(color: GraceWayColor.warmWhite)),
           content: Text(
-            'All your data has been cleared — habits, journal entries, scripture memorization, and circles. Your account and subscription are unchanged.',
+            'All your data has been cleared — habits, journal entries, and circles. Your account and subscription are unchanged.',
             style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK', style: TextStyle(color: MyWalkColor.golden)),
+              child: const Text('OK', style: TextStyle(color: GraceWayColor.golden)),
             ),
           ],
         ),
@@ -252,13 +229,13 @@ class _SettingsViewState extends State<SettingsView> {
         .length;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: MyWalkColor.charcoal,
+            backgroundColor: GraceWayColor.charcoal,
             title: const Text('Settings',
-                style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
+                style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
             floating: true, snap: true,
           ),
           SliverPadding(
@@ -268,12 +245,12 @@ class _SettingsViewState extends State<SettingsView> {
                 // Brand header
                 Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: MyWalkDecorations.card,
+                  decoration: GraceWayDecorations.card,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('MyWalk',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
+                    const Text('GraceWay',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.golden)),
                     Text('Track your habits. Give them to God.',
-                        style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7))),
+                        style: TextStyle(fontSize: 14, color: GraceWayColor.softGold.withValues(alpha: 0.7))),
                   ]),
                 ),
                 const SizedBox(height: 20),
@@ -288,10 +265,6 @@ class _SettingsViewState extends State<SettingsView> {
                 _sectionHeader('Reminders'),
                 const SizedBox(height: 8),
                 _remindersSection(),
-                const SizedBox(height: 20),
-                _sectionHeader('Journal'),
-                const SizedBox(height: 8),
-                _journalSection(),
                 if (_archivedHabits.isNotEmpty) ...[
                   const SizedBox(height: 20),
                   _sectionHeader('Archived Habits'),
@@ -337,17 +310,17 @@ class _SettingsViewState extends State<SettingsView> {
           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileEditView())),
           child: Container(
             padding: const EdgeInsets.all(14),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Row(children: [
               Container(
                 width: 40, height: 40,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.sage.withValues(alpha: 0.15)),
-                child: const Icon(Icons.person_rounded, size: 18, color: MyWalkColor.sage),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: GraceWayColor.sage.withValues(alpha: 0.15)),
+                child: const Icon(Icons.person_rounded, size: 18, color: GraceWayColor.sage),
               ),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(auth.displayName ?? 'Signed In',
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
                 Text(AuthService.isApplePlatform ? 'Apple Account' : 'Google Account',
                     style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
               ])),
@@ -360,20 +333,20 @@ class _SettingsViewState extends State<SettingsView> {
           onTap: () => auth.signOut(),
           child: Container(
             padding: const EdgeInsets.all(14),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Row(children: [
-              const Icon(Icons.logout_rounded, size: 16, color: MyWalkColor.warmCoral),
+              const Icon(Icons.logout_rounded, size: 16, color: GraceWayColor.warmCoral),
               const SizedBox(width: 10),
-              const Text('Sign Out', style: TextStyle(fontSize: 14, color: MyWalkColor.warmCoral)),
+              const Text('Sign Out', style: TextStyle(fontSize: 14, color: GraceWayColor.warmCoral)),
             ]),
           ),
         ),
         if (auth.error != null) ...[
           const SizedBox(height: 8),
           Row(children: [
-            const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
+            const Icon(Icons.warning_amber, size: 14, color: GraceWayColor.warmCoral),
             const SizedBox(width: 6),
-            Text(auth.error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
+            Text(auth.error!, style: const TextStyle(fontSize: 12, color: GraceWayColor.warmCoral)),
           ]),
         ],
       ]);
@@ -381,7 +354,7 @@ class _SettingsViewState extends State<SettingsView> {
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Row(children: [
         Container(
           width: 40, height: 40,
@@ -391,13 +364,13 @@ class _SettingsViewState extends State<SettingsView> {
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Sign in with Apple',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
           Text('Required for Prayer Circles & backup',
               style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
         ])),
         auth.isLoading
             ? const SizedBox(width: 16, height: 16,
-                child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.golden))
+                child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.golden))
             : Icon(Icons.chevron_right, size: 16, color: Colors.white.withValues(alpha: 0.3)),
       ]),
     );
@@ -409,45 +382,45 @@ class _SettingsViewState extends State<SettingsView> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: MyWalkColor.golden.withValues(alpha: 0.06),
+            color: GraceWayColor.golden.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
+            border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
           ),
           child: Row(children: [
             Container(
               width: 40, height: 40,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.15)),
-              child: const Icon(Icons.workspace_premium_rounded, size: 18, color: MyWalkColor.golden),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: GraceWayColor.golden.withValues(alpha: 0.15)),
+              child: const Icon(Icons.workspace_premium_rounded, size: 18, color: GraceWayColor.golden),
             ),
             const SizedBox(width: 12),
             const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('MyWalk Pro', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
+              Text('GraceWay Pro', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
               Text('All premium features unlocked',
-                  style: TextStyle(fontSize: 12, color: MyWalkColor.softGold)),
+                  style: TextStyle(fontSize: 12, color: GraceWayColor.softGold)),
             ])),
-            const Icon(Icons.verified_rounded, color: MyWalkColor.golden, size: 18),
+            const Icon(Icons.verified_rounded, color: GraceWayColor.golden, size: 18),
           ]),
         )
       else
         GestureDetector(
           onTap: () => showModalBottomSheet(
-            context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: MyWalkColor.charcoal,
-            builder: (_) => const MyWalkPaywallView(),
+            context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: GraceWayColor.charcoal,
+            builder: (_) => const GraceWayPaywallView(),
           ),
           child: Container(
             padding: const EdgeInsets.all(14),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Row(children: [
               Container(
                 width: 40, height: 40,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.1)),
-                child: Icon(Icons.workspace_premium_outlined, size: 18, color: MyWalkColor.golden.withValues(alpha: 0.6)),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: GraceWayColor.golden.withValues(alpha: 0.1)),
+                child: Icon(Icons.workspace_premium_outlined, size: 18, color: GraceWayColor.golden.withValues(alpha: 0.6)),
               ),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const Text('Upgrade to Pro',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
-                Text('Unlimited habits, Recovery Path, analytics & more',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
+                Text('Unlimited habits, analytics & more',
                     style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
               ])),
               Icon(Icons.chevron_right, size: 16, color: Colors.white.withValues(alpha: 0.3)),
@@ -459,21 +432,21 @@ class _SettingsViewState extends State<SettingsView> {
         onTap: store.isLoading ? null : () => store.restore(),
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: MyWalkDecorations.card,
+          decoration: GraceWayDecorations.card,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              const Icon(Icons.refresh_rounded, size: 16, color: MyWalkColor.softGold),
+              const Icon(Icons.refresh_rounded, size: 16, color: GraceWayColor.softGold),
               const SizedBox(width: 10),
               Text('Restore Purchases', style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.6))),
               const Spacer(),
               if (store.isLoading)
                 const SizedBox(width: 16, height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.golden)),
+                    child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.golden)),
             ]),
             if (store.error != null) ...[
               const SizedBox(height: 6),
               Text(store.error!,
-                  style: const TextStyle(fontSize: 11, color: MyWalkColor.warmCoral)),
+                  style: const TextStyle(fontSize: 11, color: GraceWayColor.warmCoral)),
             ],
           ]),
         ),
@@ -485,16 +458,16 @@ class _SettingsViewState extends State<SettingsView> {
     return Column(children: [
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: MyWalkDecorations.card,
+        decoration: GraceWayDecorations.card,
         child: Row(children: [
-          const Icon(Icons.notifications_rounded, size: 16, color: MyWalkColor.golden),
+          const Icon(Icons.notifications_rounded, size: 16, color: GraceWayColor.golden),
           const SizedBox(width: 10),
           const Expanded(child: Text('Daily Reminders',
-              style: TextStyle(fontSize: 14, color: MyWalkColor.warmWhite))),
+              style: TextStyle(fontSize: 14, color: GraceWayColor.warmWhite))),
           Switch(
             value: _remindersEnabled,
             onChanged: (v) { setState(() => _remindersEnabled = v); _savePrefs(); },
-            activeThumbColor: MyWalkColor.golden,
+            activeThumbColor: GraceWayColor.golden,
           ),
         ]),
       ),
@@ -504,14 +477,14 @@ class _SettingsViewState extends State<SettingsView> {
           onTap: _pickTime,
           child: Container(
             padding: const EdgeInsets.all(14),
-            decoration: MyWalkDecorations.card,
+            decoration: GraceWayDecorations.card,
             child: Row(children: [
-              const Icon(Icons.access_time_rounded, size: 16, color: MyWalkColor.softGold),
+              const Icon(Icons.access_time_rounded, size: 16, color: GraceWayColor.softGold),
               const SizedBox(width: 10),
               const Expanded(child: Text('Reminder Time',
-                  style: TextStyle(fontSize: 14, color: MyWalkColor.warmWhite))),
+                  style: TextStyle(fontSize: 14, color: GraceWayColor.warmWhite))),
               Text(_reminderTime.format(context),
-                  style: const TextStyle(fontSize: 14, color: MyWalkColor.golden)),
+                  style: const TextStyle(fontSize: 14, color: GraceWayColor.golden)),
             ]),
           ),
         ),
@@ -523,72 +496,23 @@ class _SettingsViewState extends State<SettingsView> {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
+              color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.2), width: 0.5),
+              border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.2), width: 0.5),
             ),
             child: Row(children: [
-              const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
+              const Icon(Icons.warning_amber, size: 14, color: GraceWayColor.warmCoral),
               const SizedBox(width: 8),
               const Expanded(
                 child: Text('Notifications disabled — tap to enable',
-                    style: TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
+                    style: TextStyle(fontSize: 12, color: GraceWayColor.warmCoral)),
               ),
-              const Icon(Icons.chevron_right, size: 14, color: MyWalkColor.warmCoral),
+              const Icon(Icons.chevron_right, size: 14, color: GraceWayColor.warmCoral),
             ]),
           ),
         ),
       ],
     ]);
-  }
-
-  Widget _journalSection() {
-    final currentTheme = context.watch<JournalThemeProvider>().theme;
-    return GestureDetector(
-      onTap: () => showJournalThemePicker(context),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: MyWalkDecorations.card,
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyWalkColor.golden.withValues(alpha: 0.1),
-              ),
-              child: Icon(Icons.palette_outlined,
-                  size: 18, color: MyWalkColor.golden.withValues(alpha: 0.8)),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Journal Theme',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: MyWalkColor.warmWhite)),
-                  Text('Personalise your journal look',
-                      style: TextStyle(fontSize: 12, color: MyWalkColor.softGold)),
-                ],
-              ),
-            ),
-            Text(
-              currentTheme.name,
-              style: TextStyle(
-                  fontSize: 13,
-                  color: MyWalkColor.golden.withValues(alpha: 0.8)),
-            ),
-            const SizedBox(width: 6),
-            Icon(Icons.chevron_right,
-                size: 16, color: Colors.white.withValues(alpha: 0.3)),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _archivedHabitsSection() {
@@ -597,7 +521,7 @@ class _SettingsViewState extends State<SettingsView> {
         padding: const EdgeInsets.only(bottom: 8),
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: MyWalkDecorations.card,
+          decoration: GraceWayDecorations.card,
           child: Row(children: [
             Icon(_habitIcon(habit), size: 16,
                 color: Colors.white.withValues(alpha: 0.3)),
@@ -617,16 +541,16 @@ class _SettingsViewState extends State<SettingsView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: MyWalkColor.golden.withValues(alpha: 0.1),
+                  color: GraceWayColor.golden.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                      color: MyWalkColor.golden.withValues(alpha: 0.25), width: 0.5),
+                      color: GraceWayColor.golden.withValues(alpha: 0.25), width: 0.5),
                 ),
                 child: const Text('Restore',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: MyWalkColor.golden)),
+                        color: GraceWayColor.golden)),
               ),
             ),
           ]),
@@ -643,26 +567,26 @@ class _SettingsViewState extends State<SettingsView> {
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(children: [
-        _statRow(Icons.check_circle_rounded, 'Total check-ins', '$checkIns', MyWalkColor.golden),
+        _statRow(Icons.check_circle_rounded, 'Total check-ins', '$checkIns', GraceWayColor.golden),
         if (minutes > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.access_time_rounded, 'Time given', timeStr, MyWalkColor.golden),
+          _statRow(Icons.access_time_rounded, 'Time given', timeStr, GraceWayColor.golden),
         ],
         if (cleanDays > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.shield_rounded, 'Clean days', '$cleanDays', MyWalkColor.sage),
+          _statRow(Icons.shield_rounded, 'Clean days', '$cleanDays', GraceWayColor.sage),
         ],
         if (count > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.tag_rounded, 'Total counted', '${count.toInt()}', MyWalkColor.golden),
+          _statRow(Icons.tag_rounded, 'Total counted', '${count.toInt()}', GraceWayColor.golden),
         ],
         const SizedBox(height: 12),
-        _statRow(Icons.list_rounded, 'Active habits', '$habitCount', MyWalkColor.golden),
+        _statRow(Icons.list_rounded, 'Active habits', '$habitCount', GraceWayColor.golden),
         if (milestones > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.star_rounded, 'Milestones reached', '$milestones', MyWalkColor.golden),
+          _statRow(Icons.star_rounded, 'Milestones reached', '$milestones', GraceWayColor.golden),
         ],
       ]),
     );
@@ -679,7 +603,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   Widget _circleNotificationsSection() {
     return Container(
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Column(
         children: [
           _circleNotifToggle(
@@ -691,7 +615,7 @@ class _SettingsViewState extends State<SettingsView> {
               _saveCircleNotifPref('circle_notif_prayer', val);
             },
           ),
-          Divider(height: 1, color: MyWalkColor.warmWhite.withValues(alpha: 0.06)),
+          Divider(height: 1, color: GraceWayColor.warmWhite.withValues(alpha: 0.06)),
           _circleNotifToggle(
             label: 'Announcements',
             subtitle: 'Admin announcements for your circles',
@@ -724,19 +648,19 @@ class _SettingsViewState extends State<SettingsView> {
                     style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: MyWalkColor.warmWhite)),
+                        color: GraceWayColor.warmWhite)),
                 const SizedBox(height: 2),
                 Text(subtitle,
                     style: TextStyle(
                         fontSize: 12,
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.45))),
+                        color: GraceWayColor.warmWhite.withValues(alpha: 0.45))),
               ],
             ),
           ),
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: MyWalkColor.softGold,
+            activeThumbColor: GraceWayColor.softGold,
           ),
         ],
       ),
@@ -746,7 +670,7 @@ class _SettingsViewState extends State<SettingsView> {
   Widget _infoRow(String label, String value) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: MyWalkDecorations.card,
+      decoration: GraceWayDecorations.card,
       child: Row(children: [
         Expanded(child: Text(label, style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.7)))),
         Text(value, style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.4))),
@@ -762,13 +686,13 @@ class _SettingsViewState extends State<SettingsView> {
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.25), width: 0.5),
+          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.25), width: 0.5),
         ),
         child: Row(children: [
-          Icon(Icons.no_accounts_rounded, size: 16, color: MyWalkColor.warmCoral.withValues(alpha: 0.7)),
+          Icon(Icons.no_accounts_rounded, size: 16, color: GraceWayColor.warmCoral.withValues(alpha: 0.7)),
           const SizedBox(width: 10),
           Expanded(child: Text('Delete My Account',
-              style: TextStyle(fontSize: 14, color: MyWalkColor.warmCoral.withValues(alpha: 0.7)))),
+              style: TextStyle(fontSize: 14, color: GraceWayColor.warmCoral.withValues(alpha: 0.7)))),
         ]),
       ),
     );
@@ -778,10 +702,10 @@ class _SettingsViewState extends State<SettingsView> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
-        title: const Text('Delete Account', style: TextStyle(color: MyWalkColor.warmWhite)),
+        backgroundColor: GraceWayColor.cardBackground,
+        title: const Text('Delete Account', style: TextStyle(color: GraceWayColor.warmWhite)),
         content: Text(
-          'This permanently deletes your account and all your data — habits, journal entries, scripture memorization, circles, and all media. '
+          'This permanently deletes your account and all your data — habits, journal entries, circles, and all media. '
           'This cannot be undone.',
           style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
         ),
@@ -795,7 +719,7 @@ class _SettingsViewState extends State<SettingsView> {
               Navigator.pop(context);
               await _deleteAccount();
             },
-            child: const Text('Delete Forever', style: TextStyle(color: MyWalkColor.warmCoral)),
+            child: const Text('Delete Forever', style: TextStyle(color: GraceWayColor.warmCoral)),
           ),
         ],
       ),
@@ -816,18 +740,18 @@ class _SettingsViewState extends State<SettingsView> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: MyWalkColor.golden.withValues(alpha: 0.05),
+          color: GraceWayColor.golden.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-              color: MyWalkColor.golden.withValues(alpha: 0.15), width: 0.5),
+              color: GraceWayColor.golden.withValues(alpha: 0.15), width: 0.5),
         ),
         child: Row(children: [
           const Icon(Icons.menu_book_rounded,
-              size: 16, color: MyWalkColor.golden),
+              size: 16, color: GraceWayColor.golden),
           const SizedBox(width: 10),
           const Expanded(
               child: Text('Reset Bible Reading Plan',
-                  style: TextStyle(fontSize: 14, color: MyWalkColor.golden))),
+                  style: TextStyle(fontSize: 14, color: GraceWayColor.golden))),
         ]),
       ),
     );
@@ -837,18 +761,18 @@ class _SettingsViewState extends State<SettingsView> {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
+        backgroundColor: GraceWayColor.cardBackground,
         title: const Text('Reset Bible Reading Plan',
-            style: TextStyle(color: MyWalkColor.warmWhite)),
+            style: TextStyle(color: GraceWayColor.warmWhite)),
         content: const Text(
           'This will delete all your reading progress and streaks. This cannot be undone.',
-          style: TextStyle(color: MyWalkColor.softGold),
+          style: TextStyle(color: GraceWayColor.softGold),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
             child: const Text('Cancel',
-                style: TextStyle(color: MyWalkColor.softGold)),
+                style: TextStyle(color: GraceWayColor.softGold)),
           ),
           TextButton(
             onPressed: () async {
@@ -856,7 +780,7 @@ class _SettingsViewState extends State<SettingsView> {
               await context.read<BibleReadingProvider>().resetPlan();
             },
             child: const Text('Reset',
-                style: TextStyle(color: MyWalkColor.warmCoral)),
+                style: TextStyle(color: GraceWayColor.warmCoral)),
           ),
         ],
       ),
@@ -869,15 +793,15 @@ class _SettingsViewState extends State<SettingsView> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
+          color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
         ),
         child: Row(children: [
-          const Icon(Icons.delete_rounded, size: 16, color: MyWalkColor.warmCoral),
+          const Icon(Icons.delete_rounded, size: 16, color: GraceWayColor.warmCoral),
           const SizedBox(width: 10),
           const Expanded(child: Text('Reset All Data',
-              style: TextStyle(fontSize: 14, color: MyWalkColor.warmCoral))),
+              style: TextStyle(fontSize: 14, color: GraceWayColor.warmCoral))),
         ]),
       ),
     );

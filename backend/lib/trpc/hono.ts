@@ -19,7 +19,7 @@ app.use(
 );
 
 app.get("/", (c) => {
-  return c.json({ status: "ok", message: "MyWalk API is running" });
+  return c.json({ status: "ok", message: "GraceWay API is running" });
 });
 
 export default app;

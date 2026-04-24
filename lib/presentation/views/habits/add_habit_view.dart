@@ -4,17 +4,13 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/habit_category_model.dart';
-import '../../../domain/entities/fruit.dart';
-import '../../../domain/services/fruit_service.dart';
 import '../../utils/category_icons.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/habit_category_provider.dart';
-import '../../providers/fruit_portfolio_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../theme/app_theme.dart';
 import '../shared/day_of_week_picker.dart';
-import '../shared/fruit_tag_chip.dart';
-import '../shared/mywalk_paywall_view.dart';
+import '../shared/graceway_paywall_view.dart';
 
 class AddHabitView extends StatefulWidget {
   final ScrollController? scrollController;
@@ -83,9 +79,6 @@ class _AddHabitViewState extends State<AddHabitView> {
   Set<int> _activeDays = {1, 2, 3, 4, 5, 6, 7};
   String _trigger = '';
   String _copingPlan = '';
-  List<FruitType> _selectedFruits = [];
-  String _fruitPurposeStatement = '';
-  List<FruitType> _suggestedFruits = [];
   late QuillController _notesController;
   final FocusNode _notesFocusNode = FocusNode();
   final ScrollController _notesScrollController = ScrollController();
@@ -103,19 +96,19 @@ class _AddHabitViewState extends State<AddHabitView> {
     if (_step == 1) {
       title = 'Choose a Habit';
       leading = IconButton(
-        icon: const Icon(Icons.close, color: MyWalkColor.warmWhite),
+        icon: const Icon(Icons.close, color: GraceWayColor.warmWhite),
         onPressed: () => Navigator.pop(context),
       );
     } else if (_step == 2) {
       title = _selectedCategoryModel?.name ?? '';
       leading = IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: MyWalkColor.warmWhite, size: 18),
+        icon: const Icon(Icons.arrow_back_ios, color: GraceWayColor.warmWhite, size: 18),
         onPressed: () => setState(() => _step = 1),
       );
     } else {
       title = 'Set It Up';
       leading = IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: MyWalkColor.warmWhite, size: 18),
+        icon: const Icon(Icons.arrow_back_ios, color: GraceWayColor.warmWhite, size: 18),
         onPressed: () {
           if (_isPreFilled) {
             Navigator.pop(context);
@@ -129,21 +122,21 @@ class _AddHabitViewState extends State<AddHabitView> {
     }
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         leading: leading,
         title: Text(
           title,
           style: const TextStyle(
-              color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
+              color: GraceWayColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
         ),
         actions: [
           if (_step == 1)
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text('Cancel',
-                  style: TextStyle(color: MyWalkColor.softGold.withValues(alpha: 0.8))),
+                  style: TextStyle(color: GraceWayColor.softGold.withValues(alpha: 0.8))),
             ),
         ],
       ),
@@ -162,7 +155,7 @@ class _AddHabitViewState extends State<AddHabitView> {
   // ── Step 1: Category grid ────────────────────────────────────────────────
 
   Widget _categoryGrid() {
-    const hiddenCategoryIds = {'fruit_of_the_spirit', 'the_beatitudes'};
+    const hiddenCategoryIds = {'fruit_of_the_spirit'};
     final categories = context
         .watch<HabitCategoryProvider>()
         .categories
@@ -181,14 +174,14 @@ class _AddHabitViewState extends State<AddHabitView> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+            border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(iconForKey(cat.iconKey), size: 24, color: MyWalkColor.golden),
+              Icon(iconForKey(cat.iconKey), size: 24, color: GraceWayColor.golden),
               const SizedBox(height: 8),
               Text(
                 cat.name,
@@ -197,7 +190,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                 ),
               ),
             ],
@@ -229,9 +222,9 @@ class _AddHabitViewState extends State<AddHabitView> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+          border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,7 +232,7 @@ class _AddHabitViewState extends State<AddHabitView> {
             // Title row
             Row(
               children: [
-                Icon(iconForKey(sub.iconKey), size: 20, color: MyWalkColor.golden),
+                Icon(iconForKey(sub.iconKey), size: 20, color: GraceWayColor.golden),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -247,7 +240,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: MyWalkColor.warmWhite,
+                      color: GraceWayColor.warmWhite,
                     ),
                   ),
                 ),
@@ -274,13 +267,13 @@ class _AddHabitViewState extends State<AddHabitView> {
               Row(
                 children: [
                   Icon(Icons.format_quote, size: 12,
-                      color: MyWalkColor.golden.withValues(alpha: 0.6)),
+                      color: GraceWayColor.golden.withValues(alpha: 0.6)),
                   const SizedBox(width: 4),
                   Text(
                     sub.keyVerseRef!,
                     style: TextStyle(
                       fontSize: 11,
-                      color: MyWalkColor.golden.withValues(alpha: 0.7),
+                      color: GraceWayColor.golden.withValues(alpha: 0.7),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -300,16 +293,16 @@ class _AddHabitViewState extends State<AddHabitView> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: MyWalkColor.golden.withValues(alpha: 0.3),
+            color: GraceWayColor.golden.withValues(alpha: 0.3),
             width: 0.5,
           ),
         ),
         child: Row(
           children: [
-            Icon(Icons.add_circle_outline, size: 20, color: MyWalkColor.golden),
+            Icon(Icons.add_circle_outline, size: 20, color: GraceWayColor.golden),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -320,7 +313,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: MyWalkColor.warmWhite,
+                      color: GraceWayColor.warmWhite,
                     ),
                   ),
                   const SizedBox(height: 3),
@@ -381,18 +374,18 @@ class _AddHabitViewState extends State<AddHabitView> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: MyWalkColor.golden.withValues(alpha: 0.12),
+                    color: GraceWayColor.golden.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.workspace_premium, size: 10, color: MyWalkColor.golden),
+                      Icon(Icons.workspace_premium, size: 10, color: GraceWayColor.golden),
                       const SizedBox(width: 3),
                       Text('Customise',
                           style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w500,
-                              color: MyWalkColor.golden)),
+                              color: GraceWayColor.golden)),
                     ],
                   ),
                 ),
@@ -413,19 +406,15 @@ class _AddHabitViewState extends State<AddHabitView> {
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: MyWalkColor.surfaceOverlay,
+              color: GraceWayColor.surfaceOverlay,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
               _purposeStatement,
               style:
-                  TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7)),
+                  TextStyle(fontSize: 14, color: GraceWayColor.softGold.withValues(alpha: 0.7)),
             ),
           ),
-        const SizedBox(height: 20),
-
-        // Fruit tags
-        _fruitTagSection(),
         const SizedBox(height: 20),
 
         // Tracking type (not for abstain)
@@ -447,7 +436,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        color: selected ? MyWalkColor.golden : MyWalkColor.surfaceOverlay,
+                        color: selected ? GraceWayColor.golden : GraceWayColor.surfaceOverlay,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
@@ -456,7 +445,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+                            color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
                           ),
                         ),
                       ),
@@ -484,7 +473,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        color: selected ? MyWalkColor.golden : MyWalkColor.surfaceOverlay,
+                        color: selected ? GraceWayColor.golden : GraceWayColor.surfaceOverlay,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
@@ -493,7 +482,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+                            color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
                           ),
                         ),
                       ),
@@ -515,7 +504,7 @@ class _AddHabitViewState extends State<AddHabitView> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: BoxDecoration(
-                  color: MyWalkColor.surfaceOverlay,
+                  color: GraceWayColor.surfaceOverlay,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -523,18 +512,18 @@ class _AddHabitViewState extends State<AddHabitView> {
                     IconButton(
                       onPressed:
                           _dailyTarget > 1 ? () => setState(() => _dailyTarget--) : null,
-                      icon: const Icon(Icons.remove, size: 18, color: MyWalkColor.softGold),
+                      icon: const Icon(Icons.remove, size: 18, color: GraceWayColor.softGold),
                     ),
                     Text(
                       '${_dailyTarget.toInt()}',
                       style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
-                          color: MyWalkColor.golden),
+                          color: GraceWayColor.golden),
                     ),
                     IconButton(
                       onPressed: () => setState(() => _dailyTarget++),
-                      icon: const Icon(Icons.add, size: 18, color: MyWalkColor.softGold),
+                      icon: const Icon(Icons.add, size: 18, color: GraceWayColor.softGold),
                     ),
                   ],
                 ),
@@ -565,11 +554,9 @@ class _AddHabitViewState extends State<AddHabitView> {
         _anchoringSection(isAbstain),
         const SizedBox(height: 28),
 
-        // Support/Prayer Partner + Recovery Path (abstain only)
+        // Support/Prayer Partner (abstain only)
         if (isAbstain) ...[
           _partnerSection(),
-          const SizedBox(height: 20),
-          _recoveryPathTeaserCard(),
           const SizedBox(height: 28),
         ],
 
@@ -587,9 +574,9 @@ class _AddHabitViewState extends State<AddHabitView> {
           child: ElevatedButton(
             onPressed: _habitName.trim().isEmpty ? null : _saveHabit,
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyWalkColor.golden,
-              foregroundColor: MyWalkColor.charcoal,
-              disabledBackgroundColor: MyWalkColor.golden.withValues(alpha: 0.4),
+              backgroundColor: GraceWayColor.golden,
+              foregroundColor: GraceWayColor.charcoal,
+              disabledBackgroundColor: GraceWayColor.golden.withValues(alpha: 0.4),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -611,10 +598,10 @@ class _AddHabitViewState extends State<AddHabitView> {
           padding: const EdgeInsets.all(16),
           margin: const EdgeInsets.only(bottom: 20),
           decoration: BoxDecoration(
-            color: MyWalkColor.surfaceOverlay,
+            color: GraceWayColor.surfaceOverlay,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-                color: MyWalkColor.golden.withValues(alpha: 0.15), width: 0.5),
+                color: GraceWayColor.golden.withValues(alpha: 0.15), width: 0.5),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -625,7 +612,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(Icons.format_quote,
-                        size: 16, color: MyWalkColor.golden.withValues(alpha: 0.7)),
+                        size: 16, color: GraceWayColor.golden.withValues(alpha: 0.7)),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Column(
@@ -636,7 +623,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                             style: TextStyle(
                               fontSize: 13,
                               fontStyle: FontStyle.italic,
-                              color: MyWalkColor.warmWhite.withValues(alpha: 0.85),
+                              color: GraceWayColor.warmWhite.withValues(alpha: 0.85),
                               height: 1.5,
                             ),
                           ),
@@ -646,7 +633,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
-                              color: MyWalkColor.golden.withValues(alpha: 0.8),
+                              color: GraceWayColor.golden.withValues(alpha: 0.8),
                             ),
                           ),
                         ],
@@ -656,7 +643,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                 ),
                 const SizedBox(height: 12),
                 Divider(
-                    color: MyWalkColor.golden.withValues(alpha: 0.12), thickness: 0.5),
+                    color: GraceWayColor.golden.withValues(alpha: 0.12), thickness: 0.5),
                 const SizedBox(height: 12),
               ],
 
@@ -668,7 +655,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     fontSize: 9,
                     letterSpacing: 1.4,
                     fontWeight: FontWeight.w600,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.5),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.5),
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -686,7 +673,7 @@ class _AddHabitViewState extends State<AddHabitView> {
               // Examples
               if (sub.examples.isNotEmpty) ...[
                 Divider(
-                    color: MyWalkColor.golden.withValues(alpha: 0.12), thickness: 0.5),
+                    color: GraceWayColor.golden.withValues(alpha: 0.12), thickness: 0.5),
                 const SizedBox(height: 12),
                 Text(
                   'EXAMPLES',
@@ -694,7 +681,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     fontSize: 9,
                     letterSpacing: 1.4,
                     fontWeight: FontWeight.w600,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.5),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.5),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -707,12 +694,12 @@ class _AddHabitViewState extends State<AddHabitView> {
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: _habitName == ex
-                            ? MyWalkColor.golden.withValues(alpha: 0.2)
-                            : MyWalkColor.cardBackground,
+                            ? GraceWayColor.golden.withValues(alpha: 0.2)
+                            : GraceWayColor.cardBackground,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: _habitName == ex
-                              ? MyWalkColor.golden.withValues(alpha: 0.5)
+                              ? GraceWayColor.golden.withValues(alpha: 0.5)
                               : Colors.white.withValues(alpha: 0.08),
                           width: 0.5,
                         ),
@@ -722,7 +709,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                         style: TextStyle(
                           fontSize: 12,
                           color: _habitName == ex
-                              ? MyWalkColor.golden
+                              ? GraceWayColor.golden
                               : Colors.white.withValues(alpha: 0.6),
                         ),
                       ),
@@ -735,23 +722,23 @@ class _AddHabitViewState extends State<AddHabitView> {
               // Supporting Verses link
               if (sub.supportingVerses.isNotEmpty) ...[
                 Divider(
-                    color: MyWalkColor.golden.withValues(alpha: 0.12), thickness: 0.5),
+                    color: GraceWayColor.golden.withValues(alpha: 0.12), thickness: 0.5),
                 const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () => _showSupportingVerses(sub),
                   child: Row(
                     children: [
                       Icon(Icons.menu_book_outlined,
-                          size: 14, color: MyWalkColor.golden.withValues(alpha: 0.7)),
+                          size: 14, color: GraceWayColor.golden.withValues(alpha: 0.7)),
                       const SizedBox(width: 6),
                       Text(
                         'Supporting Verses (${sub.supportingVerses.length})',
                         style: TextStyle(
                           fontSize: 12,
-                          color: MyWalkColor.golden.withValues(alpha: 0.8),
+                          color: GraceWayColor.golden.withValues(alpha: 0.8),
                           fontWeight: FontWeight.w500,
                           decoration: TextDecoration.underline,
-                          decorationColor: MyWalkColor.golden.withValues(alpha: 0.4),
+                          decorationColor: GraceWayColor.golden.withValues(alpha: 0.4),
                         ),
                       ),
                     ],
@@ -769,7 +756,7 @@ class _AddHabitViewState extends State<AddHabitView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -794,7 +781,7 @@ class _AddHabitViewState extends State<AddHabitView> {
               child: Row(
                 children: [
                   Icon(Icons.menu_book_outlined,
-                      size: 18, color: MyWalkColor.golden.withValues(alpha: 0.8)),
+                      size: 18, color: GraceWayColor.golden.withValues(alpha: 0.8)),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -802,7 +789,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: MyWalkColor.warmWhite,
+                        color: GraceWayColor.warmWhite,
                       ),
                     ),
                   ),
@@ -810,7 +797,7 @@ class _AddHabitViewState extends State<AddHabitView> {
               ),
             ),
             const SizedBox(height: 16),
-            Divider(color: MyWalkColor.golden.withValues(alpha: 0.15), height: 1),
+            Divider(color: GraceWayColor.golden.withValues(alpha: 0.15), height: 1),
             Expanded(
               child: ListView.separated(
                 controller: scrollCtrl,
@@ -850,7 +837,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: MyWalkColor.golden.withValues(alpha: 0.8),
+                          color: GraceWayColor.golden.withValues(alpha: 0.8),
                         ),
                       ),
                     ],
@@ -890,19 +877,19 @@ class _AddHabitViewState extends State<AddHabitView> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.5), width: 0.5),
+          border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.5), width: 0.5),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(label,
                 style: TextStyle(
-                    fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.9))),
+                    fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.9))),
             const SizedBox(width: 4),
             Icon(Icons.edit_outlined,
-                size: 11, color: MyWalkColor.golden.withValues(alpha: 0.6)),
+                size: 11, color: GraceWayColor.golden.withValues(alpha: 0.6)),
           ],
         ),
       ),
@@ -928,9 +915,6 @@ class _AddHabitViewState extends State<AddHabitView> {
         _purposeStatement = legacyEnum.defaultPurpose;
         _dailyTarget = 1;
         _targetUnit = '';
-        _suggestedFruits = FruitSuggestionService.suggest(legacyEnum);
-        _selectedFruits = [];
-        _fruitPurposeStatement = '';
         _step = 3;
       });
     } else {
@@ -956,9 +940,6 @@ class _AddHabitViewState extends State<AddHabitView> {
       _targetUnit = '';
       _habitName = '';
       _purposeStatement = legacyEnum.defaultPurpose;
-      _suggestedFruits = FruitSuggestionService.suggest(legacyEnum);
-      _selectedFruits = [];
-      _fruitPurposeStatement = '';
       _step = 3;
     });
   }
@@ -980,12 +961,6 @@ class _AddHabitViewState extends State<AddHabitView> {
       _targetUnit = trackingType == HabitTrackingType.timed ? 'minutes' : '';
       _habitName = isCustomSub ? '' : sub.name;
       _purposeStatement = sub.yourWhy.isNotEmpty ? sub.yourWhy : legacyEnum.defaultPurpose;
-      _suggestedFruits = FruitSuggestionService.suggestForSubcategory(sub.id);
-      if (_suggestedFruits.isEmpty) {
-        _suggestedFruits = FruitSuggestionService.suggest(legacyEnum);
-      }
-      _selectedFruits = [];
-      _fruitPurposeStatement = '';
       _step = 3;
     });
   }
@@ -1001,7 +976,7 @@ class _AddHabitViewState extends State<AddHabitView> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            color: GraceWayColor.softGold.withValues(alpha: 0.5),
             letterSpacing: 0.8,
           ),
         ),
@@ -1013,10 +988,10 @@ class _AddHabitViewState extends State<AddHabitView> {
         const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: MyWalkColor.golden.withValues(alpha: 0.18),
+              color: GraceWayColor.golden.withValues(alpha: 0.18),
               width: 1,
             ),
           ),
@@ -1063,12 +1038,12 @@ class _AddHabitViewState extends State<AddHabitView> {
                     showDirection: false,
                     iconTheme: QuillIconTheme(
                       iconButtonUnselectedData: IconButtonData(
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.5),
+                        color: GraceWayColor.warmWhite.withValues(alpha: 0.5),
                         iconSize: 18,
                         visualDensity: VisualDensity.compact,
                       ),
                       iconButtonSelectedData: IconButtonData(
-                        color: MyWalkColor.golden,
+                        color: GraceWayColor.golden,
                         iconSize: 18,
                         visualDensity: VisualDensity.compact,
                       ),
@@ -1077,7 +1052,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                 ),
                 Divider(
                   height: 1,
-                  color: MyWalkColor.golden.withValues(alpha: 0.12),
+                  color: GraceWayColor.golden.withValues(alpha: 0.12),
                 ),
                 QuillEditor.basic(
                   controller: _notesController,
@@ -1116,7 +1091,7 @@ class _AddHabitViewState extends State<AddHabitView> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            color: GraceWayColor.softGold.withValues(alpha: 0.5),
             letterSpacing: 0.8,
           ),
         ),
@@ -1131,21 +1106,21 @@ class _AddHabitViewState extends State<AddHabitView> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
-              color: MyWalkColor.sage.withValues(alpha: 0.07),
+              color: GraceWayColor.sage.withValues(alpha: 0.07),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: MyWalkColor.sage.withValues(alpha: 0.18), width: 0.5),
+                  color: GraceWayColor.sage.withValues(alpha: 0.18), width: 0.5),
             ),
             child: Row(children: [
               const Icon(Icons.lightbulb_outline_rounded,
-                  size: 13, color: MyWalkColor.sage),
+                  size: 13, color: GraceWayColor.sage),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   'Your coping plan mentions reaching out — adding a partner makes that easier.',
                   style: TextStyle(
                       fontSize: 12,
-                      color: MyWalkColor.sage.withValues(alpha: 0.85),
+                      color: GraceWayColor.sage.withValues(alpha: 0.85),
                       height: 1.4),
                 ),
               ),
@@ -1156,72 +1131,27 @@ class _AddHabitViewState extends State<AddHabitView> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.07), width: 0.5),
+                color: GraceWayColor.warmWhite.withValues(alpha: 0.07), width: 0.5),
           ),
           child: Row(children: [
             Icon(Icons.handshake_rounded,
-                size: 16, color: MyWalkColor.warmWhite.withValues(alpha: 0.3)),
+                size: 16, color: GraceWayColor.warmWhite.withValues(alpha: 0.3)),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
                 'You can invite a partner after saving this habit.',
                 style: TextStyle(
                     fontSize: 13,
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.45),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.45),
                     height: 1.4),
               ),
             ),
           ]),
         ),
       ],
-    );
-  }
-
-  // ── Recovery Path teaser card ─────────────────────────────────────────────
-
-  Widget _recoveryPathTeaserCard() {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFF6B4FA0).withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-            color: const Color(0xFF6B4FA0).withValues(alpha: 0.2), width: 0.5),
-      ),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            color: const Color(0xFF6B4FA0).withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(Icons.route_rounded,
-              size: 16, color: Color(0xFFB39DDB)),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text(
-              'Recovery Path',
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFFB39DDB)),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              'A guided programme to understand your patterns, anchor to your values, and build guardrails. Available once you save this habit.',
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white.withValues(alpha: 0.5),
-                  height: 1.4),
-            ),
-          ]),
-        ),
-      ]),
     );
   }
 
@@ -1234,7 +1164,7 @@ class _AddHabitViewState extends State<AddHabitView> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            color: GraceWayColor.softGold.withValues(alpha: 0.5),
             letterSpacing: 0.8,
           ),
         ),
@@ -1248,10 +1178,10 @@ class _AddHabitViewState extends State<AddHabitView> {
           controller: _referenceUrlController,
           keyboardType: TextInputType.url,
           autocorrect: false,
-          style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite),
+          style: const TextStyle(fontSize: 14, color: GraceWayColor.warmWhite),
           decoration: InputDecoration(
             filled: true,
-            fillColor: MyWalkColor.cardBackground,
+            fillColor: GraceWayColor.cardBackground,
             hintText: 'https://…',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
             border: OutlineInputBorder(
@@ -1260,11 +1190,11 @@ class _AddHabitViewState extends State<AddHabitView> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: MyWalkColor.sage, width: 1),
+              borderSide: const BorderSide(color: GraceWayColor.sage, width: 1),
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             prefixIcon: Icon(Icons.link_rounded,
-                size: 18, color: MyWalkColor.softGold.withValues(alpha: 0.5)),
+                size: 18, color: GraceWayColor.softGold.withValues(alpha: 0.5)),
           ),
         ),
       ],
@@ -1291,9 +1221,6 @@ class _AddHabitViewState extends State<AddHabitView> {
       activeDays: _activeDays,
       trigger: _trigger,
       copingPlan: _copingPlan,
-      fruitTags: _selectedFruits,
-      fruitPurposeStatement:
-          _fruitPurposeStatement.trim().isEmpty ? null : _fruitPurposeStatement.trim(),
       categoryId: _categoryId,
       subcategoryId: _subcategoryId,
       categoryName: _categoryName,
@@ -1303,9 +1230,6 @@ class _AddHabitViewState extends State<AddHabitView> {
       notes: notesJson,
       referenceUrl: refUrl,
     );
-    if (_selectedFruits.isNotEmpty) {
-      context.read<FruitPortfolioProvider>().onHabitTagsChanged([], _selectedFruits);
-    }
     Navigator.pop(context);
   }
 
@@ -1396,7 +1320,7 @@ class _AddHabitViewState extends State<AddHabitView> {
             child: Row(
               children: ['Pray first', 'Call a friend', 'Go for a walk', 'Read my verse',
                       'Journal it out']
-                  .map((s) => _chipButton(s, _copingPlan == s, MyWalkColor.warmCoral,
+                  .map((s) => _chipButton(s, _copingPlan == s, GraceWayColor.warmCoral,
                       () => setState(() => _copingPlan = s)))
                   .toList(),
             ),
@@ -1422,7 +1346,7 @@ class _AddHabitViewState extends State<AddHabitView> {
           child: Row(
             children: chips
                 .map((s) => _chipButton(
-                    s, _trigger == s, MyWalkColor.golden, () => setState(() => _trigger = s)))
+                    s, _trigger == s, GraceWayColor.golden, () => setState(() => _trigger = s)))
                 .toList(),
           ),
         ),
@@ -1436,76 +1360,6 @@ class _AddHabitViewState extends State<AddHabitView> {
     );
   }
 
-  // ── Fruit tag section ────────────────────────────────────────────────────
-
-  Widget _fruitTagSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _label('What fruit is this cultivating?'),
-        const SizedBox(height: 4),
-        Text(
-          'Connect this habit to your spiritual growth. (Optional)',
-          style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4)),
-        ),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: FruitType.values.map((fruit) {
-            return FruitTagChip(
-              fruit: fruit,
-              isSelected: _selectedFruits.contains(fruit),
-              isSuggested: false,
-              onTap: () {
-                setState(() {
-                  if (_selectedFruits.contains(fruit)) {
-                    _selectedFruits =
-                        _selectedFruits.where((f) => f != fruit).toList();
-                  } else {
-                    _selectedFruits = [..._selectedFruits, fruit];
-                  }
-                  if (_selectedFruits.isNotEmpty && _fruitPurposeStatement.isEmpty) {
-                    _fruitPurposeStatement = FruitPurposeStatements.defaultFor(
-                      _selectedCategory,
-                      _selectedFruits.first,
-                    );
-                  }
-                });
-              },
-            );
-          }).toList(),
-        ),
-        if (_selectedFruits.isNotEmpty) ...[
-          const SizedBox(height: 12),
-          _label('Spiritual purpose (optional)'),
-          const SizedBox(height: 6),
-          _textField(
-            hint: 'Why does this habit matter to you spiritually?',
-            value: _fruitPurposeStatement,
-            onChanged: (v) => setState(() => _fruitPurposeStatement = v),
-            maxLines: 2,
-          ),
-        ],
-        if (_selectedFruits.isEmpty) ...[
-          const SizedBox(height: 6),
-          GestureDetector(
-            onTap: () => setState(() => _suggestedFruits = []),
-            child: Text(
-              "I'll decide later",
-              style: TextStyle(
-                fontSize: 11,
-                color: MyWalkColor.softGold.withValues(alpha: 0.45),
-                decoration: TextDecoration.underline,
-                decorationColor: MyWalkColor.softGold.withValues(alpha: 0.3),
-              ),
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
   // ── Small widgets ────────────────────────────────────────────────────────
 
   Widget _label(String text, {bool inline = false}) {
@@ -1514,7 +1368,7 @@ class _AddHabitViewState extends State<AddHabitView> {
       style: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w500,
-        color: MyWalkColor.softGold.withValues(alpha: 0.6),
+        color: GraceWayColor.softGold.withValues(alpha: 0.6),
       ),
     );
   }
@@ -1530,13 +1384,13 @@ class _AddHabitViewState extends State<AddHabitView> {
         ..selection = TextSelection.collapsed(offset: value.length),
       onChanged: onChanged,
       maxLines: maxLines,
-      style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
+      style: const TextStyle(color: GraceWayColor.warmWhite, fontSize: 14),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle:
             TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
         filled: true,
-        fillColor: MyWalkColor.surfaceOverlay,
+        fillColor: GraceWayColor.surfaceOverlay,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
@@ -1555,7 +1409,7 @@ class _AddHabitViewState extends State<AddHabitView> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: selected ? activeColor : MyWalkColor.surfaceOverlay,
+            color: selected ? activeColor : GraceWayColor.surfaceOverlay,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
@@ -1563,7 +1417,7 @@ class _AddHabitViewState extends State<AddHabitView> {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+              color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
             ),
           ),
         ),
@@ -1576,8 +1430,8 @@ class _AddHabitViewState extends State<AddHabitView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: MyWalkColor.charcoal,
-      builder: (_) => const MyWalkPaywallView(),
+      backgroundColor: GraceWayColor.charcoal,
+      builder: (_) => const GraceWayPaywallView(),
     );
   }
 

@@ -11,7 +11,6 @@ import '../../domain/services/week_cycle_manager.dart';
 import 'circles/circle_invitation_dialog.dart';
 import 'today/today_view.dart';
 import 'progress/progress_view.dart';
-import 'kingdom_life/kingdom_life_view.dart';
 import 'circles/circles_tab.dart';
 import 'journal/journal_tab.dart';
 import 'shared/week_look_back_view.dart';
@@ -176,7 +175,7 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
             controller: _pageController,
             onPageChanged: (i) => setState(() {
               _selectedTab = i;
-              if (i == 4) _hasNewGratitudes = false;
+              if (i == 3) _hasNewGratitudes = false;
             }),
             children: [
               _KeepAlivePage(child: TodayView(
@@ -186,7 +185,6 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
               )),
               _KeepAlivePage(child: ProgressView(weekCycleManager: wcm)),
               const _KeepAlivePage(child: JournalTab()),
-              const _KeepAlivePage(child: KingdomLifeView()),
               const _KeepAlivePage(child: CirclesTab()),
             ],
           ),
@@ -195,7 +193,7 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
             onTap: (i) {
               setState(() {
                 _selectedTab = i;
-                if (i == 4) _hasNewGratitudes = false;
+                if (i == 3) _hasNewGratitudes = false;
               });
               _pageController.animateToPage(
                 i,
@@ -206,7 +204,7 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
             items: [
               const BottomNavigationBarItem(
                 icon: Icon(Icons.card_giftcard),
-                label: 'Today',
+                label: 'Gift',
               ),
               const BottomNavigationBarItem(
                 icon: Icon(Icons.bar_chart),
@@ -216,11 +214,6 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
                 icon: Icon(Icons.book_outlined),
                 activeIcon: Icon(Icons.book),
                 label: 'Journal',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.auto_awesome_outlined),
-                activeIcon: Icon(Icons.auto_awesome),
-                label: 'Kingdom Life',
               ),
               BottomNavigationBarItem(
                 icon: _hasNewGratitudes

@@ -4,20 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../domain/entities/journal_entry.dart';
 import '../../domain/repositories/journal_repository.dart';
-import '../services/encryption_service.dart';
 
 class FirestoreJournalRepository implements JournalRepository {
   final FirebaseFirestore _db;
   final FirebaseStorage _storage;
-  final EncryptionService _enc;
 
   FirestoreJournalRepository({
     FirebaseFirestore? db,
     FirebaseStorage? storage,
-    EncryptionService? enc,
   })  : _db = db ?? FirebaseFirestore.instance,
-        _storage = storage ?? FirebaseStorage.instance,
-        _enc = enc ?? EncryptionService();
+        _storage = storage ?? FirebaseStorage.instance;
 
   String get _uid {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -30,47 +26,30 @@ class FirestoreJournalRepository implements JournalRepository {
 
   @override
   Stream<List<JournalEntry>> watchEntries() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return const Stream.empty();
+    if (FirebaseAuth.instance.currentUser?.uid == null) return const Stream.empty();
     return _journalRef
         .orderBy('createdAt', descending: true)
         .snapshots()
-        .map((snap) => snap.docs.map((d) {
-              final data = Map<String, dynamic>.from(d.data());
-              data['text'] = _enc.decryptField(data['text'] as String?, uid);
-              return JournalEntry.fromFirestore(data);
-            }).toList());
+        .map((snap) => snap.docs.map((d) => JournalEntry.fromFirestore(d.data())).toList());
   }
 
   @override
   Future<List<JournalEntry>> loadEntries() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return const [];
-
+    if (FirebaseAuth.instance.currentUser?.uid == null) return const [];
     final snap = await _journalRef.orderBy('createdAt', descending: true).get();
-    return snap.docs.map((d) {
-      final data = Map<String, dynamic>.from(d.data());
-      data['text'] = _enc.decryptField(data['text'] as String?, uid);
-      return JournalEntry.fromFirestore(data);
-    }).toList();
+    return snap.docs.map((d) => JournalEntry.fromFirestore(d.data())).toList();
   }
 
   @override
   Future<void> saveEntry(JournalEntry entry) async {
-    final uid = _uid;
-    final data = entry.toFirestore();
-    data['text'] = _enc.encryptField(data['text'] as String?, uid);
     // Fire-and-forget: Firestore queues writes locally when offline and
     // syncs automatically when connectivity is restored.
-    _journalRef.doc(entry.id).set(data).ignore();
+    _journalRef.doc(entry.id).set(entry.toFirestore()).ignore();
   }
 
   @override
   Future<void> updateEntry(JournalEntry entry) async {
-    final uid = _uid;
-    final data = entry.toFirestore();
-    data['text'] = _enc.encryptField(data['text'] as String?, uid);
-    _journalRef.doc(entry.id).set(data, SetOptions(merge: true)).ignore();
+    _journalRef.doc(entry.id).set(entry.toFirestore(), SetOptions(merge: true)).ignore();
   }
 
   @override

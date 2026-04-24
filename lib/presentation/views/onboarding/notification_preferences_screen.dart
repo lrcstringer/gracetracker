@@ -55,7 +55,7 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
       initialTime: _reminderTime,
       builder: (context, child) => Theme(
         data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.dark(primary: MyWalkColor.golden),
+          colorScheme: const ColorScheme.dark(primary: GraceWayColor.golden),
         ),
         child: child!,
       ),
@@ -87,7 +87,7 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const Text(
                   'Stay on track,\ngently.',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite, height: 1.3),
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite, height: 1.3),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -98,15 +98,15 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: MyWalkColor.cardBackground,
+                    color: GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+                    border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
                   ),
                   child: Row(children: [
                     Expanded(
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         const Text('Daily Reminders',
-                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
                         const SizedBox(height: 4),
                         Text('A small prompt at the time you choose',
                             style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
@@ -115,8 +115,8 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                     Switch(
                       value: _remindersEnabled,
                       onChanged: (v) => setState(() => _remindersEnabled = v),
-                      activeThumbColor: MyWalkColor.golden,
-                      activeTrackColor: MyWalkColor.golden.withValues(alpha: 0.3),
+                      activeThumbColor: GraceWayColor.golden,
+                      activeTrackColor: GraceWayColor.golden.withValues(alpha: 0.3),
                     ),
                   ]),
                 ),
@@ -128,14 +128,14 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: MyWalkColor.cardBackground,
+                              color: GraceWayColor.cardBackground,
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+                              border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
                             ),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                               Text('Remind me at',
                                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-                                      color: MyWalkColor.softGold.withValues(alpha: 0.6))),
+                                      color: GraceWayColor.softGold.withValues(alpha: 0.6))),
                               const SizedBox(height: 12),
                               GestureDetector(
                                 onTap: _pickTime,
@@ -143,16 +143,16 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                                   width: double.infinity,
                                   padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                                   decoration: BoxDecoration(
-                                    color: MyWalkColor.golden.withValues(alpha: 0.08),
+                                    color: GraceWayColor.golden.withValues(alpha: 0.08),
                                     borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
+                                    border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
                                   ),
                                   child: Row(children: [
-                                    const Icon(Icons.access_time_rounded, size: 18, color: MyWalkColor.golden),
+                                    const Icon(Icons.access_time_rounded, size: 18, color: GraceWayColor.golden),
                                     const SizedBox(width: 10),
                                     Text(_formatTime(_reminderTime),
                                         style: const TextStyle(
-                                          fontSize: 20, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite,
+                                          fontSize: 20, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite,
                                         )),
                                     const Spacer(),
                                     Text('tap to change',
@@ -168,7 +168,7 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                 const SizedBox(height: 20),
                 Row(children: [
                   Icon(Icons.notifications_rounded, size: 14,
-                      color: MyWalkColor.golden.withValues(alpha: 0.5)),
+                      color: GraceWayColor.golden.withValues(alpha: 0.5)),
                   const SizedBox(width: 10),
                   Text('You can change this anytime in Settings.',
                       style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
@@ -180,12 +180,12 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-                      color: MyWalkColor.softGold.withValues(alpha: 0.6),
+                      color: GraceWayColor.softGold.withValues(alpha: 0.6),
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text('Proverbs 16:3',
-                      style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
+                      style: TextStyle(fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.5))),
                 ]),
               ]),
             ),
@@ -205,8 +205,8 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                 style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: MyWalkColor.golden,
-                foregroundColor: MyWalkColor.charcoal,
+                backgroundColor: GraceWayColor.golden,
+                foregroundColor: GraceWayColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),

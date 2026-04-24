@@ -87,14 +87,14 @@ class _SignInScreenState extends State<SignInScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: RadialGradient(colors: [
-                        MyWalkColor.golden.withValues(alpha: 0.2),
-                        MyWalkColor.golden.withValues(alpha: 0.04),
+                        GraceWayColor.golden.withValues(alpha: 0.2),
+                        GraceWayColor.golden.withValues(alpha: 0.04),
                       ]),
                     ),
                     child: const Icon(
                       Icons.lock_open_rounded,
                       size: 32,
-                      color: MyWalkColor.golden,
+                      color: GraceWayColor.golden,
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -106,7 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
-                      color: MyWalkColor.warmWhite,
+                      color: GraceWayColor.warmWhite,
                       height: 1.3,
                     ),
                   ),
@@ -129,17 +129,17 @@ class _SignInScreenState extends State<SignInScreen> {
                   Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: MyWalkColor.cardBackground,
+                      color: GraceWayColor.cardBackground,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+                      border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
                     ),
                     child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Icon(Icons.security_rounded,
-                          size: 16, color: MyWalkColor.golden.withValues(alpha: 0.7)),
+                          size: 16, color: GraceWayColor.golden.withValues(alpha: 0.7)),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'Your walk is saved securely to your account. All data outside of your device is encrypted. We never share your data with third-parties.',
+                          'Your walk is saved securely to your account. We never share your data with third-parties.',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withValues(alpha: 0.45),
@@ -156,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Text(
                       auth.error!,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 13, color: MyWalkColor.warmCoral),
+                      style: const TextStyle(fontSize: 13, color: GraceWayColor.warmCoral),
                     ),
                   ],
                 ],
@@ -209,7 +209,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       width: 18,
                       height: 18,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: MyWalkColor.charcoal),
+                          strokeWidth: 2, color: GraceWayColor.charcoal),
                     )
                   : Icon(
                       isApple ? Icons.apple : Icons.g_mobiledata_rounded,
@@ -224,8 +224,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: MyWalkColor.golden,
-                foregroundColor: MyWalkColor.charcoal,
+                backgroundColor: GraceWayColor.golden,
+                foregroundColor: GraceWayColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
@@ -241,9 +241,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 TextSpan(
                   text: 'Terms of Service and Privacy Policy',
                   style: const TextStyle(
-                    color: MyWalkColor.softGold,
+                    color: GraceWayColor.softGold,
                     decoration: TextDecoration.underline,
-                    decorationColor: MyWalkColor.softGold,
+                    decorationColor: GraceWayColor.softGold,
                   ),
                   recognizer: _termsTap,
                 ),

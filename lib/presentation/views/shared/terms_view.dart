@@ -13,19 +13,19 @@ class TermsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.charcoal,
         title: const Text(
           'Terms & Privacy Policy',
           style: TextStyle(
-            color: MyWalkColor.warmWhite,
+            color: GraceWayColor.warmWhite,
             fontSize: 18,
             fontWeight: FontWeight.w700,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.close, color: MyWalkColor.warmWhite),
+          icon: const Icon(Icons.close, color: GraceWayColor.warmWhite),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -54,13 +54,13 @@ class _TermsContent extends StatelessWidget {
 
         _heading('1. Acceptance of Terms'),
         _body(
-          'By downloading or using MyWalk ("the App"), you agree to be bound by '
+          'By downloading or using GraceWay ("the App"), you agree to be bound by '
           'these Terms of Service. If you do not agree, please do not use the App.',
         ),
 
         _heading('2. Description of Service'),
         _body(
-          'MyWalk is a faith-based habit and spiritual practice tracking app. It '
+          'GraceWay is a faith-based habit and spiritual practice tracking app. It '
           'allows you to log daily habits, track abstinence, time spiritual '
           'activities, record progress, join Prayer Circles, and reflect on your '
           'walk with God. Some features require an account and an active internet '
@@ -70,7 +70,7 @@ class _TermsContent extends StatelessWidget {
         _heading('3. Account & Sign-In'),
         _body(
           'You may sign in using Apple Sign In (iOS) or Google Sign In (Android). '
-          'By signing in, you authorize MyWalk to create and maintain a secure '
+          'By signing in, you authorize GraceWay to create and maintain a secure '
           'account associated with your identity. You are responsible for '
           'maintaining the confidentiality of your account and for all activity '
           'that occurs under it.',
@@ -98,7 +98,7 @@ class _TermsContent extends StatelessWidget {
 
         _heading('6. In-App Purchases'),
         _body(
-          'MyWalk offers optional premium features through in-app purchases '
+          'GraceWay offers optional premium features through in-app purchases '
           'processed by Apple (App Store) or Google (Play Store). All purchases '
           'are final and non-refundable except as required by applicable law or '
           'the platform\'s own refund policies. Subscriptions automatically renew '
@@ -109,7 +109,7 @@ class _TermsContent extends StatelessWidget {
         _heading('7. Intellectual Property'),
         _body(
           'All content, design, code, and branding within the App are the '
-          'property of MyWalk and its developers. You may not reproduce, '
+          'property of GraceWay and its developers. You may not reproduce, '
           'distribute, or create derivative works without explicit written '
           'permission.',
         ),
@@ -123,7 +123,7 @@ class _TermsContent extends StatelessWidget {
 
         _heading('9. Limitation of Liability'),
         _body(
-          'To the fullest extent permitted by law, MyWalk and its developers '
+          'To the fullest extent permitted by law, GraceWay and its developers '
           'shall not be liable for any indirect, incidental, special, or '
           'consequential damages arising from your use of the App.',
         ),
@@ -179,7 +179,7 @@ class _TermsContent extends StatelessWidget {
 
         _heading('3. Third-Party Services'),
         _body(
-          'MyWalk uses the following third-party services, each with its own '
+          'GraceWay uses the following third-party services, each with its own '
           'privacy policy:\n\n'
           '• Firebase (Google): Authentication, cloud database (Firestore), '
           'and offline data storage.\n'
@@ -208,7 +208,7 @@ class _TermsContent extends StatelessWidget {
 
         _heading('6. Children\'s Privacy'),
         _body(
-          'MyWalk is not directed at children under the age of 13. We do not '
+          'GraceWay is not directed at children under the age of 13. We do not '
           'knowingly collect personal information from children under 13. If you '
           'believe a child has provided us with personal information, please '
           'contact us and we will delete it promptly.',
@@ -237,7 +237,7 @@ class _TermsContent extends StatelessWidget {
         _body(
           'If you have questions about these Terms or this Privacy Policy, '
           'please contact us at:\n\n'
-          'MyWalk Support\nsupport@mywalk.faith',
+          'GraceWay Support\nsupport@graceway.faith',
         ),
 
         const SizedBox(height: 32),
@@ -262,7 +262,7 @@ class _TermsContent extends StatelessWidget {
       style: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
-        color: MyWalkColor.golden,
+        color: GraceWayColor.golden,
       ),
     );
   }
@@ -275,7 +275,7 @@ class _TermsContent extends StatelessWidget {
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: MyWalkColor.warmWhite,
+          color: GraceWayColor.warmWhite,
         ),
       ),
     );

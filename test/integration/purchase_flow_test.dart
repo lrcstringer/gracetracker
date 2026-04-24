@@ -22,9 +22,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
-import 'package:mywalk/domain/repositories/iap_repository.dart';
-import 'package:mywalk/presentation/providers/store_provider.dart';
-import 'package:mywalk/presentation/views/onboarding/paywall_screen.dart';
+import 'package:graceway/domain/repositories/iap_repository.dart';
+import 'package:graceway/presentation/providers/store_provider.dart';
+import 'package:graceway/presentation/views/onboarding/paywall_screen.dart';
 
 // ── Mocks ──────────────────────────────────────────────────────────────────
 
@@ -121,11 +121,11 @@ void main() {
   late StoreProvider store;
 
   final annualProduct =
-      _FakeProduct(id: MyWalkProducts.annual, rawPrice: 39.99);
+      _FakeProduct(id: GraceWayProducts.annual, rawPrice: 39.99);
   final monthlyProduct =
-      _FakeProduct(id: MyWalkProducts.monthly, rawPrice: 4.99);
+      _FakeProduct(id: GraceWayProducts.monthly, rawPrice: 4.99);
   final lifetimeProduct =
-      _FakeProduct(id: MyWalkProducts.lifetime, rawPrice: 99.99);
+      _FakeProduct(id: GraceWayProducts.lifetime, rawPrice: 99.99);
 
   setUp(() {
     mockIap = MockInAppPurchase();
@@ -253,7 +253,7 @@ void main() {
     // Step 4 — Google Play emits a purchased event.
     purchaseController.add([
       _FakePurchase(
-        productID: MyWalkProducts.annual,
+        productID: GraceWayProducts.annual,
         status: PurchaseStatus.purchased,
         pendingComplete: true,
       ),
@@ -265,7 +265,7 @@ void main() {
 
     // Step 5 — validateReceipt called with correct payload.
     // verificationData.source = 'google_play' → android path.
-    expect(stubRepo.lastValidateProductId, MyWalkProducts.annual);
+    expect(stubRepo.lastValidateProductId, GraceWayProducts.annual);
     expect(stubRepo.lastValidatePlatform, 'android');
     expect(stubRepo.lastValidatePurchaseToken, 'server-purchase-token');
     expect(stubRepo.lastValidateReceiptData, isNull);
@@ -294,7 +294,7 @@ void main() {
     // Simulate user cancellation via Android BillingResponse.
     purchaseController.add([
       _FakePurchase(
-        productID: MyWalkProducts.annual,
+        productID: GraceWayProducts.annual,
         status: PurchaseStatus.error,
         pendingComplete: false,
       )..error = IAPError(
@@ -325,7 +325,7 @@ void main() {
 
     purchaseController.add([
       _FakePurchase(
-        productID: MyWalkProducts.annual,
+        productID: GraceWayProducts.annual,
         status: PurchaseStatus.purchased,
       ),
     ]);
@@ -355,7 +355,7 @@ void main() {
     // Store delivers a restored purchase.
     purchaseController.add([
       _FakePurchase(
-        productID: MyWalkProducts.annual,
+        productID: GraceWayProducts.annual,
         status: PurchaseStatus.restored,
         pendingComplete: true,
       ),
@@ -363,7 +363,7 @@ void main() {
     await tester.pump();
 
     verify(() => mockIap.completePurchase(any())).called(1);
-    expect(stubRepo.lastValidateProductId, MyWalkProducts.annual);
+    expect(stubRepo.lastValidateProductId, GraceWayProducts.annual);
     expect(store.isPremium, true);
   });
 }

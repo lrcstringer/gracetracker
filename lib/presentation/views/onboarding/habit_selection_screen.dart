@@ -36,7 +36,7 @@ class HabitSelectionScreen extends StatelessWidget {
       subtitle: 'Overcoming bad/persistent habits, optionally with support partners and our Freedom Path activities guide',
       icon: Icons.shield_rounded,
       category: HabitCategory.abstain,
-      color: MyWalkColor.warmCoral,
+      color: GraceWayColor.warmCoral,
     ),
     _ActivityOption(
       label: 'Service',
@@ -58,7 +58,7 @@ class HabitSelectionScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
-                color: MyWalkColor.warmWhite,
+                color: GraceWayColor.warmWhite,
                 height: 1.25,
               ),
             ),
@@ -108,9 +108,9 @@ class _ActivityTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+          border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
         ),
         child: Row(children: [
           Container(
@@ -118,9 +118,9 @@ class _ActivityTile extends StatelessWidget {
             height: 44,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: (option.color ?? MyWalkColor.golden).withValues(alpha: 0.1),
+              color: (option.color ?? GraceWayColor.golden).withValues(alpha: 0.1),
             ),
-            child: Icon(option.icon, size: 20, color: option.color ?? MyWalkColor.golden),
+            child: Icon(option.icon, size: 20, color: option.color ?? GraceWayColor.golden),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -130,7 +130,7 @@ class _ActivityTile extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                 ),
               ),
               const SizedBox(height: 3),

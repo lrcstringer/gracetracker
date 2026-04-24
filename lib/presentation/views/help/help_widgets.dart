@@ -28,7 +28,7 @@ class HelpHero extends StatelessWidget {
           colors: [
             accentColor.withValues(alpha: 0.22),
             accentColor.withValues(alpha: 0.06),
-            MyWalkColor.charcoal,
+            GraceWayColor.charcoal,
           ],
           stops: const [0.0, 0.55, 1.0],
         ),
@@ -52,7 +52,7 @@ class HelpHero extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              color: MyWalkColor.warmWhite,
+              color: GraceWayColor.warmWhite,
               fontSize: 26,
               fontWeight: FontWeight.w700,
             ),
@@ -62,7 +62,7 @@ class HelpHero extends StatelessWidget {
             subtitle,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.58),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.58),
               fontSize: 14,
               height: 1.45,
             ),
@@ -88,7 +88,7 @@ class HelpSectionTitle extends StatelessWidget {
           Text(
             title.toUpperCase(),
             style: TextStyle(
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.45),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.45),
               fontSize: 11,
               fontWeight: FontWeight.w600,
               letterSpacing: 1.3,
@@ -97,7 +97,7 @@ class HelpSectionTitle extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Divider(
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.09),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.09),
               thickness: 1,
             ),
           ),
@@ -129,9 +129,9 @@ class HelpFeatureCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.cardBorder),
+        border: Border.all(color: GraceWayColor.cardBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +149,7 @@ class HelpFeatureCard extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              color: MyWalkColor.warmWhite,
+              color: GraceWayColor.warmWhite,
               fontSize: 13,
               fontWeight: FontWeight.w600,
             ),
@@ -158,7 +158,7 @@ class HelpFeatureCard extends StatelessWidget {
           Text(
             description,
             style: TextStyle(
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.52),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.52),
               fontSize: 12,
               height: 1.45,
             ),
@@ -226,7 +226,7 @@ class HelpStep extends StatelessWidget {
                     child: Container(
                       width: 1.5,
                       margin: const EdgeInsets.symmetric(vertical: 4),
-                      color: MyWalkColor.warmWhite.withValues(alpha: 0.07),
+                      color: GraceWayColor.warmWhite.withValues(alpha: 0.07),
                     ),
                   ),
               ],
@@ -240,9 +240,9 @@ class HelpStep extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 14, vertical: 13),
                   decoration: BoxDecoration(
-                    color: MyWalkColor.cardBackground,
+                    color: GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: MyWalkColor.cardBorder),
+                    border: Border.all(color: GraceWayColor.cardBorder),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,7 +254,7 @@ class HelpStep extends StatelessWidget {
                             Text(
                               title,
                               style: const TextStyle(
-                                color: MyWalkColor.warmWhite,
+                                color: GraceWayColor.warmWhite,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -263,7 +263,7 @@ class HelpStep extends StatelessWidget {
                             Text(
                               description,
                               style: TextStyle(
-                                color: MyWalkColor.warmWhite
+                                color: GraceWayColor.warmWhite
                                     .withValues(alpha: 0.52),
                                 fontSize: 13,
                                 height: 1.45,

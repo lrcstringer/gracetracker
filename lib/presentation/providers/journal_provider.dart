@@ -5,11 +5,10 @@ import 'package:path_provider/path_provider.dart';
 import '../../data/datasources/remote/auth_service.dart';
 import '../../data/services/local_voice_cache_service.dart';
 import '../../data/services/media_upload_service.dart';
-import '../../domain/entities/fruit.dart';
 import '../../domain/entities/journal_entry.dart';
 import '../../domain/repositories/journal_repository.dart';
 
-enum JournalSortOrder { newestFirst, oldestFirst, byHabit, byFruit }
+enum JournalSortOrder { newestFirst, oldestFirst, byHabit }
 
 class JournalProvider extends ChangeNotifier {
   final JournalRepository _repository;
@@ -85,8 +84,7 @@ class JournalProvider extends ChangeNotifier {
       result = result.where((e) {
         final textMatch = JournalEntry.extractPlainText(e.text).toLowerCase().contains(q);
         final habitMatch = e.habitName?.toLowerCase().contains(q) ?? false;
-        final fruitMatch = e.fruitTag?.label.toLowerCase().contains(q) ?? false;
-        return textMatch || habitMatch || fruitMatch;
+        return textMatch || habitMatch;
       }).toList();
     }
 
@@ -99,12 +97,6 @@ class JournalProvider extends ChangeNotifier {
       case JournalSortOrder.byHabit:
         result.sort((a, b) {
           final primary = (a.habitName ?? '').compareTo(b.habitName ?? '');
-          return primary != 0 ? primary : b.createdAt.compareTo(a.createdAt);
-        });
-      case JournalSortOrder.byFruit:
-        result.sort((a, b) {
-          final primary =
-              (a.fruitTag?.label ?? '').compareTo(b.fruitTag?.label ?? '');
           return primary != 0 ? primary : b.createdAt.compareTo(a.createdAt);
         });
     }
@@ -125,7 +117,6 @@ class JournalProvider extends ChangeNotifier {
     String? voiceLocalPath,
     String? habitId,
     String? habitName,
-    FruitType? fruitTag,
     required String sourceType,
   }) async {
     final hasPendingMedia = imageLocalPaths.isNotEmpty || voiceLocalPath != null;
@@ -137,7 +128,6 @@ class JournalProvider extends ChangeNotifier {
       uploadPending: hasPendingMedia,
       habitId: habitId,
       habitName: habitName,
-      fruitTag: fruitTag,
       sourceType: sourceType,
     );
 
@@ -195,7 +185,6 @@ class JournalProvider extends ChangeNotifier {
       uploadPending: hasPendingMedia,
       habitId: entry.habitId,
       habitName: entry.habitName,
-      fruitTag: entry.fruitTag,
       sourceType: entry.sourceType,
       pinned: entry.pinned,
     );

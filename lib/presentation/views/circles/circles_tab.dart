@@ -37,7 +37,7 @@ class _CirclesAuthGateView extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthService>();
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
@@ -47,20 +47,20 @@ class _CirclesAuthGateView extends StatelessWidget {
               Stack(alignment: Alignment.center, children: [
                 Container(width: 100, height: 100,
                     decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: MyWalkColor.golden.withValues(alpha: 0.08))),
+                        color: GraceWayColor.golden.withValues(alpha: 0.08))),
                 Container(width: 72, height: 72,
                     decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: MyWalkColor.golden.withValues(alpha: 0.12))),
-                const Icon(Icons.group_rounded, size: 32, color: MyWalkColor.golden),
+                        color: GraceWayColor.golden.withValues(alpha: 0.12))),
+                const Icon(Icons.group_rounded, size: 32, color: GraceWayColor.golden),
               ]),
               const SizedBox(height: 20),
               const Text('Prayer Circles',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite)),
               const SizedBox(height: 12),
               Text(
                 'Walk together in faith with your community.\nCreate or join circles to share your journey.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7), height: 1.6),
+                style: TextStyle(fontSize: 14, color: GraceWayColor.softGold.withValues(alpha: 0.7), height: 1.6),
               ),
               const SizedBox(height: 32),
               ..._features.map((f) => Padding(
@@ -69,7 +69,7 @@ class _CirclesAuthGateView extends StatelessWidget {
                   )),
               const SizedBox(height: 32),
               if (auth.error != null) ...[
-                Text(auth.error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
+                Text(auth.error!, style: const TextStyle(fontSize: 12, color: GraceWayColor.warmCoral)),
                 const SizedBox(height: 12),
               ],
               SizedBox(
@@ -78,13 +78,13 @@ class _CirclesAuthGateView extends StatelessWidget {
                   onPressed: auth.isLoading ? null : auth.signIn,
                   icon: auth.isLoading
                       ? const SizedBox(width: 18, height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
+                          child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.charcoal))
                       : Icon(AuthService.isApplePlatform ? Icons.apple : Icons.g_mobiledata, size: 20),
                   label: Text(AuthService.isApplePlatform ? 'Sign in with Apple' : 'Sign in with Google',
                       style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: MyWalkColor.golden,
-                    foregroundColor: MyWalkColor.charcoal,
+                    backgroundColor: GraceWayColor.golden,
+                    foregroundColor: GraceWayColor.charcoal,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
@@ -106,21 +106,21 @@ class _CirclesAuthGateView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+        border: Border.all(color: GraceWayColor.cardBorder, width: 0.5),
       ),
       child: Row(children: [
         Container(
           width: 40, height: 40,
           decoration: BoxDecoration(
-              color: MyWalkColor.golden.withValues(alpha: 0.08),
+              color: GraceWayColor.golden.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(10)),
-          child: Icon(icon, size: 18, color: MyWalkColor.golden),
+          child: Icon(icon, size: 18, color: GraceWayColor.golden),
         ),
         const SizedBox(width: 14),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
           Text(description, style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.45))),
         ])),
       ]),
@@ -161,7 +161,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
   }
 
   void _openJoin() => showModalBottomSheet(
-    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: MyWalkColor.charcoal,
+    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: GraceWayColor.charcoal,
     builder: (_) => JoinCircleView(
       initialCode: _joinCode,
       onJoined: () async { _joinCode = ''; await _loadCircles(); },
@@ -169,7 +169,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
   );
 
   void _openCreate() => showModalBottomSheet(
-    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: MyWalkColor.charcoal,
+    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: GraceWayColor.charcoal,
     builder: (_) => CreateCircleView(
       onCreated: (c) => setState(() => _circles.insert(0, Circle(
         id: c.id, name: c.name, description: '', memberCount: 1, role: 'admin', inviteCode: c.inviteCode,
@@ -180,7 +180,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
   void _showAddSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: MyWalkColor.cardBackground,
+      backgroundColor: GraceWayColor.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -195,20 +195,20 @@ class _CirclesListViewState extends State<_CirclesListView> {
             ListTile(
               leading: Container(
                 width: 40, height: 40,
-                decoration: BoxDecoration(color: MyWalkColor.golden.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
-                child: const Icon(Icons.add_circle_outline, color: MyWalkColor.golden, size: 20),
+                decoration: BoxDecoration(color: GraceWayColor.golden.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
+                child: const Icon(Icons.add_circle_outline, color: GraceWayColor.golden, size: 20),
               ),
-              title: const Text('Create Circle', style: TextStyle(color: MyWalkColor.warmWhite, fontWeight: FontWeight.w600)),
+              title: const Text('Create Circle', style: TextStyle(color: GraceWayColor.warmWhite, fontWeight: FontWeight.w600)),
               subtitle: Text('Start a new prayer circle', style: TextStyle(color: Colors.white.withValues(alpha: 0.45), fontSize: 12)),
               onTap: () { Navigator.pop(context); _openCreate(); },
             ),
             ListTile(
               leading: Container(
                 width: 40, height: 40,
-                decoration: BoxDecoration(color: MyWalkColor.golden.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
-                child: const Icon(Icons.group_add_outlined, color: MyWalkColor.golden, size: 20),
+                decoration: BoxDecoration(color: GraceWayColor.golden.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
+                child: const Icon(Icons.group_add_outlined, color: GraceWayColor.golden, size: 20),
               ),
-              title: const Text('Join Circle', style: TextStyle(color: MyWalkColor.warmWhite, fontWeight: FontWeight.w600)),
+              title: const Text('Join Circle', style: TextStyle(color: GraceWayColor.warmWhite, fontWeight: FontWeight.w600)),
               subtitle: Text('Enter an invite code', style: TextStyle(color: Colors.white.withValues(alpha: 0.45), fontSize: 12)),
               onTap: () { Navigator.pop(context); _openJoin(); },
             ),
@@ -224,22 +224,22 @@ class _CirclesListViewState extends State<_CirclesListView> {
     final imageHeight = MediaQuery.of(context).size.width * (2.0 / 3.0);
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: MyWalkColor.golden,
-        foregroundColor: MyWalkColor.charcoal,
+        backgroundColor: GraceWayColor.golden,
+        foregroundColor: GraceWayColor.charcoal,
         onPressed: () => _showAddSheet(context),
         child: const Icon(Icons.add),
       ),
       body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor: MyWalkColor.charcoal,
-              foregroundColor: MyWalkColor.warmWhite,
+              backgroundColor: GraceWayColor.charcoal,
+              foregroundColor: GraceWayColor.warmWhite,
               expandedHeight: imageHeight,
               pinned: true,
               title: const Text(
-                'MyWalk',
+                'GraceWay',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -256,7 +256,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
                   children: [
                     // Pre-composed triptych
                     Image.asset(
-                      'assets/circles/groups.webp',
+                      'assets/circles.png',
                       fit: BoxFit.cover,
                     ),
                     // Gradient fade to app background
@@ -267,8 +267,8 @@ class _CirclesListViewState extends State<_CirclesListView> {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            MyWalkColor.charcoal.withValues(alpha: 0.45),
-                            MyWalkColor.charcoal,
+                            GraceWayColor.charcoal.withValues(alpha: 0.45),
+                            GraceWayColor.charcoal,
                           ],
                           stops: const [0.0, 0.6, 1.0],
                         ),
@@ -286,7 +286,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.w700,
-                              color: MyWalkColor.warmWhite,
+                              color: GraceWayColor.warmWhite,
                               height: 1.1,
                             ),
                           ),
@@ -296,7 +296,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
                             style: TextStyle(
                               fontSize: 12,
                               fontStyle: FontStyle.italic,
-                              color: MyWalkColor.softGold,
+                              color: GraceWayColor.softGold,
                               height: 1.45,
                             ),
                           ),
@@ -305,7 +305,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
                             'Hebrews 10:24\u201325',
                             style: TextStyle(
                               fontSize: 11,
-                              color: MyWalkColor.golden,
+                              color: GraceWayColor.golden,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -318,7 +318,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
             ),
             if (_isLoading)
               const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator(color: MyWalkColor.golden)))
+                  child: Center(child: CircularProgressIndicator(color: GraceWayColor.golden)))
             else if (_error != null && _circles.isEmpty)
               SliverFillRemaining(child: _errorState())
             else if (_circles.isEmpty)
@@ -345,10 +345,10 @@ class _CirclesListViewState extends State<_CirclesListView> {
               SliverToBoxAdapter(child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(children: [
-                  const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
+                  const Icon(Icons.warning_amber, size: 14, color: GraceWayColor.warmCoral),
                   const SizedBox(width: 8),
                   Expanded(child: Text("Couldn't refresh. Check your connection.",
-                      style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral))),
+                      style: const TextStyle(fontSize: 12, color: GraceWayColor.warmCoral))),
                 ]),
               )),
           ],
@@ -361,7 +361,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
       Icon(Icons.wifi_off_rounded, size: 48, color: Colors.white.withValues(alpha: 0.2)),
       const SizedBox(height: 16),
       const Text("Couldn't load circles",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
       const SizedBox(height: 8),
       Text('Check your connection and try again.',
           textAlign: TextAlign.center,
@@ -369,7 +369,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
       const SizedBox(height: 24),
       TextButton(
         onPressed: _loadCircles,
-        child: const Text('Retry', style: TextStyle(fontSize: 14, color: MyWalkColor.golden)),
+        child: const Text('Retry', style: TextStyle(fontSize: 14, color: GraceWayColor.golden)),
       ),
     ]);
   }
@@ -378,12 +378,12 @@ class _CirclesListViewState extends State<_CirclesListView> {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
         width: 88, height: 88,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.08)),
-        child: Icon(Icons.group_rounded, size: 36, color: MyWalkColor.golden.withValues(alpha: 0.6)),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: GraceWayColor.golden.withValues(alpha: 0.08)),
+        child: Icon(Icons.group_rounded, size: 36, color: GraceWayColor.golden.withValues(alpha: 0.6)),
       ),
       const SizedBox(height: 20),
       const Text('No Circles Yet',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
       const SizedBox(height: 8),
       Text('Create a circle to pray with friends,\nor join one with an invite code.',
           textAlign: TextAlign.center,
@@ -397,7 +397,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
             child: ElevatedButton(
               onPressed: _openCreate,
               style: ElevatedButton.styleFrom(
-                backgroundColor: MyWalkColor.golden, foregroundColor: MyWalkColor.charcoal,
+                backgroundColor: GraceWayColor.golden, foregroundColor: GraceWayColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
@@ -408,7 +408,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
           TextButton(
             onPressed: _openJoin,
             child: const Text('Join with Code',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.golden)),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: GraceWayColor.golden)),
           ),
         ]),
       ),
@@ -432,12 +432,12 @@ class _CircleCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isAdmin
-                ? MyWalkColor.golden.withValues(alpha: 0.25)
-                : MyWalkColor.cardBorder,
+                ? GraceWayColor.golden.withValues(alpha: 0.25)
+                : GraceWayColor.cardBorder,
             width: isAdmin ? 1.0 : 0.5,
           ),
         ),
@@ -447,19 +447,19 @@ class _CircleCard extends StatelessWidget {
             width: 52, height: 52,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: MyWalkColor.golden.withValues(alpha: 0.1),
-              border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 1),
+              color: GraceWayColor.golden.withValues(alpha: 0.1),
+              border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 1),
             ),
             child: Center(child: Text(
               circle.name.isNotEmpty ? circle.name[0].toUpperCase() : '?',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.golden),
             )),
           ),
           const SizedBox(width: 14),
           // Name + meta
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(circle.name,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
             const SizedBox(height: 5),
             Row(children: [
               Icon(Icons.group_rounded, size: 13, color: Colors.white.withValues(alpha: 0.4)),
@@ -471,15 +471,15 @@ class _CircleCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   decoration: BoxDecoration(
-                    color: MyWalkColor.golden.withValues(alpha: 0.1),
+                    color: GraceWayColor.golden.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.25), width: 0.5),
+                    border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.25), width: 0.5),
                   ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.workspace_premium, size: 10, color: MyWalkColor.golden.withValues(alpha: 0.8)),
+                    Icon(Icons.workspace_premium, size: 10, color: GraceWayColor.golden.withValues(alpha: 0.8)),
                     const SizedBox(width: 3),
                     Text('Admin', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600,
-                        color: MyWalkColor.golden.withValues(alpha: 0.8))),
+                        color: GraceWayColor.golden.withValues(alpha: 0.8))),
                   ]),
                 ),
               ],
@@ -490,10 +490,10 @@ class _CircleCard extends StatelessWidget {
             width: 32, height: 32,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: MyWalkColor.golden.withValues(alpha: 0.08),
+              color: GraceWayColor.golden.withValues(alpha: 0.08),
             ),
             child: Icon(Icons.chevron_right_rounded, size: 18,
-                color: MyWalkColor.golden.withValues(alpha: 0.6)),
+                color: GraceWayColor.golden.withValues(alpha: 0.6)),
           ),
         ]),
       ),

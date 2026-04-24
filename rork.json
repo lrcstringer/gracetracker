@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "MyWalk",
+      "name": "GraceWay",
       "path": "ios",
       "framework": "swift"
     }

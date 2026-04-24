@@ -69,10 +69,10 @@ class _BibleReadingGridViewState extends State<BibleReadingGridView> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _checkMilestone(context));
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         title: const Text('Bible in a Year'),
         actions: [
           if (provider.isActive && currentWeek != null)
@@ -80,7 +80,7 @@ class _BibleReadingGridViewState extends State<BibleReadingGridView> {
               onPressed: () => _openCurrentDayModal(context, provider),
               child: const Text(
                 'Continue',
-                style: TextStyle(color: MyWalkColor.golden, fontSize: 13),
+                style: TextStyle(color: GraceWayColor.golden, fontSize: 13),
               ),
             ),
         ],
@@ -92,7 +92,7 @@ class _BibleReadingGridViewState extends State<BibleReadingGridView> {
           Expanded(
             child: provider.isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(color: MyWalkColor.golden),
+                    child: CircularProgressIndicator(color: GraceWayColor.golden),
                   )
                 : provider.isNotStarted
                     ? _NotStartedView(onStart: () => _startPlan(context, provider))
@@ -170,7 +170,7 @@ class _ProgressHeader extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      color: MyWalkColor.cardBackground,
+      color: GraceWayColor.cardBackground,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -180,7 +180,7 @@ class _ProgressHeader extends StatelessWidget {
               Text(
                 'Week ${weekIndex + 1} of 52',
                 style: const TextStyle(
-                  color: MyWalkColor.warmWhite,
+                  color: GraceWayColor.warmWhite,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -188,7 +188,7 @@ class _ProgressHeader extends StatelessWidget {
               Text(
                 '$daysRead days read',
                 style: TextStyle(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.8),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.8),
                   fontSize: 12,
                 ),
               ),
@@ -200,8 +200,8 @@ class _ProgressHeader extends StatelessWidget {
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 5,
-              backgroundColor: MyWalkColor.golden.withValues(alpha: 0.15),
-              valueColor: const AlwaysStoppedAnimation<Color>(MyWalkColor.golden),
+              backgroundColor: GraceWayColor.golden.withValues(alpha: 0.15),
+              valueColor: const AlwaysStoppedAnimation<Color>(GraceWayColor.golden),
             ),
           ),
         ],
@@ -230,21 +230,21 @@ class _PendingBanner extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: MyWalkColor.golden.withValues(alpha: 0.08),
+        color: GraceWayColor.golden.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: MyWalkColor.golden.withValues(alpha: 0.25),
+          color: GraceWayColor.golden.withValues(alpha: 0.25),
           width: 0.5,
         ),
       ),
       child: Row(
         children: [
-          const Icon(Icons.schedule, color: MyWalkColor.golden, size: 15),
+          const Icon(Icons.schedule, color: GraceWayColor.golden, size: 15),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               countdown,
-              style: const TextStyle(color: MyWalkColor.softGold, fontSize: 12),
+              style: const TextStyle(color: GraceWayColor.softGold, fontSize: 12),
             ),
           ),
         ],
@@ -267,13 +267,13 @@ class _NotStartedView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.menu_book_rounded, color: MyWalkColor.golden, size: 48),
+            const Icon(Icons.menu_book_rounded, color: GraceWayColor.golden, size: 48),
             const SizedBox(height: 20),
             const Text(
               'Bible in a Year',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: MyWalkColor.warmWhite,
+                color: GraceWayColor.warmWhite,
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
               ),
@@ -283,7 +283,7 @@ class _NotStartedView extends StatelessWidget {
               'A balanced daily reading plan covering all 66 books — Psalms, New Testament, Torah, Historical, Prophetic, and Wisdom literature.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: MyWalkColor.softGold.withValues(alpha: 0.8),
+                color: GraceWayColor.softGold.withValues(alpha: 0.8),
                 fontSize: 14,
                 height: 1.5,
               ),
@@ -292,8 +292,8 @@ class _NotStartedView extends StatelessWidget {
             ElevatedButton(
               onPressed: onStart,
               style: ElevatedButton.styleFrom(
-                backgroundColor: MyWalkColor.golden,
-                foregroundColor: MyWalkColor.charcoal,
+                backgroundColor: GraceWayColor.golden,
+                foregroundColor: GraceWayColor.charcoal,
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -390,12 +390,12 @@ class _WeekAccordion extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isCurrent
-              ? MyWalkColor.golden.withValues(alpha: 0.4)
-              : MyWalkColor.cardBorder,
+              ? GraceWayColor.golden.withValues(alpha: 0.4)
+              : GraceWayColor.cardBorder,
           width: isCurrent ? 1.0 : 0.5,
         ),
       ),
@@ -415,21 +415,21 @@ class _WeekAccordion extends StatelessWidget {
                     height: 32,
                     decoration: BoxDecoration(
                       color: isWeekDone
-                          ? MyWalkColor.sage.withValues(alpha: 0.25)
+                          ? GraceWayColor.sage.withValues(alpha: 0.25)
                           : isCurrent
-                              ? MyWalkColor.golden.withValues(alpha: 0.15)
-                              : MyWalkColor.surfaceOverlay,
+                              ? GraceWayColor.golden.withValues(alpha: 0.15)
+                              : GraceWayColor.surfaceOverlay,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
                       child: isWeekDone
-                          ? const Icon(Icons.check, color: MyWalkColor.sage, size: 16)
+                          ? const Icon(Icons.check, color: GraceWayColor.sage, size: 16)
                           : Text(
                               '${weekIndex + 1}',
                               style: TextStyle(
                                 color: isCurrent
-                                    ? MyWalkColor.golden
-                                    : MyWalkColor.softGold,
+                                    ? GraceWayColor.golden
+                                    : GraceWayColor.softGold,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -445,8 +445,8 @@ class _WeekAccordion extends StatelessWidget {
                           'Week ${weekIndex + 1}',
                           style: TextStyle(
                             color: isCurrent
-                                ? MyWalkColor.warmWhite
-                                : MyWalkColor.softGold,
+                                ? GraceWayColor.warmWhite
+                                : GraceWayColor.softGold,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -456,7 +456,7 @@ class _WeekAccordion extends StatelessWidget {
                             summary,
                             style: TextStyle(
                               color:
-                                  MyWalkColor.softGold.withValues(alpha: 0.6),
+                                  GraceWayColor.softGold.withValues(alpha: 0.6),
                               fontSize: 11,
                             ),
                             maxLines: 1,
@@ -468,14 +468,14 @@ class _WeekAccordion extends StatelessWidget {
                   Text(
                     '$daysComplete/7',
                     style: TextStyle(
-                      color: MyWalkColor.softGold.withValues(alpha: 0.7),
+                      color: GraceWayColor.softGold.withValues(alpha: 0.7),
                       fontSize: 11,
                     ),
                   ),
                   const SizedBox(width: 4),
                   Icon(
                     isExpanded ? Icons.expand_less : Icons.expand_more,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.5),
+                    color: GraceWayColor.softGold.withValues(alpha: 0.5),
                     size: 18,
                   ),
                 ],
@@ -488,7 +488,7 @@ class _WeekAccordion extends StatelessWidget {
               children: [
                 Divider(
                   height: 1,
-                  color: MyWalkColor.cardBorder,
+                  color: GraceWayColor.cardBorder,
                 ),
                 ...List.generate(weekDays.length, (d) {
                   return _DayRow(
@@ -557,13 +557,13 @@ class _DayRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
         decoration: BoxDecoration(
           color: isDone
-              ? MyWalkColor.sage.withValues(alpha: 0.07)
+              ? GraceWayColor.sage.withValues(alpha: 0.07)
               : isCurrent
-                  ? MyWalkColor.golden.withValues(alpha: 0.04)
+                  ? GraceWayColor.golden.withValues(alpha: 0.04)
                   : Colors.transparent,
           border: Border(
             bottom: BorderSide(
-              color: MyWalkColor.cardBorder,
+              color: GraceWayColor.cardBorder,
               width: 0.5,
             ),
           ),
@@ -575,13 +575,13 @@ class _DayRow extends StatelessWidget {
               width: 20,
               child: isDone
                   ? const Icon(Icons.check_circle,
-                      color: MyWalkColor.sage, size: 16)
+                      color: GraceWayColor.sage, size: 16)
                   : isCurrent
                       ? Container(
                           width: 8,
                           height: 8,
                           decoration: const BoxDecoration(
-                            color: MyWalkColor.golden,
+                            color: GraceWayColor.golden,
                             shape: BoxShape.circle,
                           ),
                         )
@@ -595,8 +595,8 @@ class _DayRow extends StatelessWidget {
                 dayName,
                 style: TextStyle(
                   color: isCurrent
-                      ? MyWalkColor.warmWhite
-                      : MyWalkColor.softGold,
+                      ? GraceWayColor.warmWhite
+                      : GraceWayColor.softGold,
                   fontSize: 12,
                   fontWeight:
                       isCurrent ? FontWeight.w600 : FontWeight.normal,
@@ -610,8 +610,8 @@ class _DayRow extends StatelessWidget {
                 summary,
                 style: TextStyle(
                   color: isDone
-                      ? MyWalkColor.sage.withValues(alpha: 0.8)
-                      : MyWalkColor.softGold.withValues(alpha: 0.7),
+                      ? GraceWayColor.sage.withValues(alpha: 0.8)
+                      : GraceWayColor.softGold.withValues(alpha: 0.7),
                   fontSize: 11,
                 ),
                 maxLines: 1,
@@ -619,7 +619,7 @@ class _DayRow extends StatelessWidget {
               ),
             ),
             const Icon(Icons.chevron_right,
-                color: MyWalkColor.softGold, size: 14),
+                color: GraceWayColor.softGold, size: 14),
           ],
         ),
       ),

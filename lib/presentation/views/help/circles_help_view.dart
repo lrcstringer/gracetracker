@@ -7,15 +7,15 @@ class CirclesHelpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const accent = MyWalkColor.sage;
-    const golden = MyWalkColor.golden;
+    const accent = GraceWayColor.sage;
+    const golden = GraceWayColor.golden;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
         title: const Text('Circles — Help'),
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -61,7 +61,7 @@ class CirclesHelpView extends StatelessWidget {
                 ),
                 HelpFeatureCard(
                   icon: Icons.link_outlined,
-                  iconColor: MyWalkColor.warmCoral,
+                  iconColor: GraceWayColor.warmCoral,
                   iconBg: Color(0x1AD4836B),
                   title: 'Easy Invites',
                   description:
@@ -95,7 +95,7 @@ class CirclesHelpView extends StatelessWidget {
             const HelpStep(
               number: 3,
               icon: Icons.link_outlined,
-              accentColor: MyWalkColor.warmCoral,
+              accentColor: GraceWayColor.warmCoral,
               title: 'Invite others',
               description:
                   'Open your circle, find the invite code, and share it with friends or family.',
@@ -133,9 +133,9 @@ class _CircleCardAnatomy extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: MyWalkColor.cardBorder),
+          border: Border.all(color: GraceWayColor.cardBorder),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -144,21 +144,21 @@ class _CircleCardAnatomy extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: MyWalkColor.charcoal,
+                color: GraceWayColor.charcoal,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.08),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.08),
                 ),
               ),
               child: Row(
                 children: [
                   CircleAvatar(
                     radius: 22,
-                    backgroundColor: MyWalkColor.sage.withValues(alpha: 0.25),
+                    backgroundColor: GraceWayColor.sage.withValues(alpha: 0.25),
                     child: const Text(
                       'F',
                       style: TextStyle(
-                        color: MyWalkColor.sage,
+                        color: GraceWayColor.sage,
                         fontWeight: FontWeight.w700,
                         fontSize: 18,
                       ),
@@ -174,7 +174,7 @@ class _CircleCardAnatomy extends StatelessWidget {
                             Text(
                               'Family Circle',
                               style: TextStyle(
-                                color: MyWalkColor.warmWhite
+                                color: GraceWayColor.warmWhite
                                     .withValues(alpha: 0.9),
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
@@ -185,13 +185,13 @@ class _CircleCardAnatomy extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: MyWalkColor.golden.withValues(alpha: 0.15),
+                                color: GraceWayColor.golden.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: const Text(
                                 'ADMIN',
                                 style: TextStyle(
-                                  color: MyWalkColor.golden,
+                                  color: GraceWayColor.golden,
                                   fontSize: 9,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 0.8,
@@ -206,13 +206,13 @@ class _CircleCardAnatomy extends StatelessWidget {
                             Icon(
                               Icons.people_outline,
                               size: 13,
-                              color: MyWalkColor.warmWhite.withValues(alpha: 0.4),
+                              color: GraceWayColor.warmWhite.withValues(alpha: 0.4),
                             ),
                             const SizedBox(width: 4),
                             Text(
                               '4 members',
                               style: TextStyle(
-                                color: MyWalkColor.warmWhite.withValues(alpha: 0.45),
+                                color: GraceWayColor.warmWhite.withValues(alpha: 0.45),
                                 fontSize: 12,
                               ),
                             ),
@@ -223,7 +223,7 @@ class _CircleCardAnatomy extends StatelessWidget {
                   ),
                   Icon(
                     Icons.chevron_right,
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.25),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.25),
                   ),
                 ],
               ),
@@ -232,12 +232,12 @@ class _CircleCardAnatomy extends StatelessWidget {
             // Legend
             _LegendRow(
               icon: Icons.circle,
-              color: MyWalkColor.sage,
+              color: GraceWayColor.sage,
               label: 'Circle initial avatar',
             ),
             _LegendRow(
               icon: Icons.badge_outlined,
-              color: MyWalkColor.golden,
+              color: GraceWayColor.golden,
               label: 'ADMIN badge — shown if you created the circle',
             ),
             _LegendRow(
@@ -247,7 +247,7 @@ class _CircleCardAnatomy extends StatelessWidget {
             ),
             _LegendRow(
               icon: Icons.chevron_right,
-              color: MyWalkColor.warmWhite,
+              color: GraceWayColor.warmWhite,
               label: 'Tap to open the circle',
               isLast: true,
             ),
@@ -285,7 +285,7 @@ class _LegendRow extends StatelessWidget {
                 child: Text(
                   label,
                   style: TextStyle(
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.65),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.65),
                     fontSize: 12,
                   ),
                 ),
@@ -295,7 +295,7 @@ class _LegendRow extends StatelessWidget {
         ),
         if (!isLast)
           Divider(
-            color: MyWalkColor.warmWhite.withValues(alpha: 0.07),
+            color: GraceWayColor.warmWhite.withValues(alpha: 0.07),
             height: 1,
           ),
       ],

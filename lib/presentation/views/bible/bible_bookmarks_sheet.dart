@@ -17,7 +17,7 @@ class BibleBookmarksSheet extends StatelessWidget {
       expand: false,
       builder: (context, scrollController) => Container(
         decoration: const BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
@@ -28,7 +28,7 @@ class BibleBookmarksSheet extends StatelessWidget {
                 width: 36,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.3),
+                  color: GraceWayColor.softGold.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -41,12 +41,12 @@ class BibleBookmarksSheet extends StatelessWidget {
               child: Row(
                 children: [
                   const Icon(Icons.bookmark,
-                      size: 18, color: MyWalkColor.golden),
+                      size: 18, color: GraceWayColor.golden),
                   const SizedBox(width: 8),
                   const Text(
                     'My Bookmarks',
                     style: TextStyle(
-                      color: MyWalkColor.warmWhite,
+                      color: GraceWayColor.warmWhite,
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
                     ),
@@ -54,7 +54,7 @@ class BibleBookmarksSheet extends StatelessWidget {
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close,
-                        size: 20, color: MyWalkColor.softGold),
+                        size: 20, color: GraceWayColor.softGold),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -62,7 +62,7 @@ class BibleBookmarksSheet extends StatelessWidget {
             ),
             Divider(
                 height: 1,
-                color: MyWalkColor.golden.withValues(alpha: 0.12)),
+                color: GraceWayColor.golden.withValues(alpha: 0.12)),
 
             // Bookmarks list
             Expanded(
@@ -78,14 +78,14 @@ class BibleBookmarksSheet extends StatelessWidget {
                           Icon(
                             Icons.bookmark_border_outlined,
                             size: 48,
-                            color: MyWalkColor.softGold.withValues(alpha: 0.3),
+                            color: GraceWayColor.softGold.withValues(alpha: 0.3),
                           ),
                           const SizedBox(height: 16),
                           Text(
                             'No bookmarks yet',
                             style: TextStyle(
                               color:
-                                  MyWalkColor.softGold.withValues(alpha: 0.6),
+                                  GraceWayColor.softGold.withValues(alpha: 0.6),
                               fontSize: 15,
                             ),
                           ),
@@ -94,7 +94,7 @@ class BibleBookmarksSheet extends StatelessWidget {
                             'Long-press any verse to bookmark it',
                             style: TextStyle(
                               color:
-                                  MyWalkColor.softGold.withValues(alpha: 0.4),
+                                  GraceWayColor.softGold.withValues(alpha: 0.4),
                               fontSize: 13,
                             ),
                           ),
@@ -111,7 +111,7 @@ class BibleBookmarksSheet extends StatelessWidget {
                       height: 1,
                       indent: 16,
                       endIndent: 16,
-                      color: MyWalkColor.golden.withValues(alpha: 0.08),
+                      color: GraceWayColor.golden.withValues(alpha: 0.08),
                     ),
                     itemBuilder: (context, i) {
                       final bookmark = bookmarks[i];
@@ -177,11 +177,11 @@ class _BookmarkTile extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         onTap: onTap,
         leading: const Icon(Icons.bookmark,
-            size: 20, color: MyWalkColor.golden),
+            size: 20, color: GraceWayColor.golden),
         title: Text(
           bookmark.reference,
           style: const TextStyle(
-            color: MyWalkColor.golden,
+            color: GraceWayColor.golden,
             fontSize: 13,
             fontWeight: FontWeight.w600,
             letterSpacing: 0.3,
@@ -192,7 +192,7 @@ class _BookmarkTile extends StatelessWidget {
           child: Text(
             bookmark.text,
             style: TextStyle(
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.75),
+              color: GraceWayColor.warmWhite.withValues(alpha: 0.75),
               fontSize: 13,
               height: 1.5,
             ),
@@ -202,7 +202,7 @@ class _BookmarkTile extends StatelessWidget {
         ),
         trailing: IconButton(
           icon: const Icon(Icons.delete_outline,
-              size: 18, color: MyWalkColor.softGold),
+              size: 18, color: GraceWayColor.softGold),
           onPressed: onDelete,
           tooltip: 'Remove bookmark',
         ),

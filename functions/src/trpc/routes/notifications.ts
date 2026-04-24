@@ -126,7 +126,7 @@ export const notificationsRouter = createTRPCRouter({
       return { notifId, recipientCount: recipients.length };
     }),
 
-  // Send a help/prayer request (any member, to chosen recipients)
+  // Send a help/prayer request (any member, to chosen recipients, 2/day limit for non-admins)
   sendPrayerRequest: protectedProcedure
     .input(
       z.object({
@@ -138,6 +138,23 @@ export const notificationsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const memberDoc = await membersCol(input.circleId).doc(ctx.userId).get();
       if (!memberDoc.exists) throw new TRPCError({ code: 'FORBIDDEN', message: 'Not a member' });
+
+      const role = memberDoc.data()?.role as string | undefined;
+      const isAdmin = role === 'admin';
+
+      // Rate limit: non-admins may send at most 2 prayer requests per calendar day (UTC).
+      const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+      let todayCount = 0;
+      if (!isAdmin) {
+        const lastDate = memberDoc.data()?.prayerRequestDate as string | undefined;
+        todayCount = lastDate === today ? ((memberDoc.data()?.prayerRequestCount as number) ?? 0) : 0;
+        if (todayCount >= 2) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'You can send up to 2 prayer requests per day.',
+          });
+        }
+      }
 
       // Verify all requested recipients are actual members of this circle.
       const actualMemberIds = await getCircleMemberIds(input.circleId);
@@ -170,6 +187,15 @@ export const notificationsRouter = createTRPCRouter({
         data: { notifId, type: 'prayer_request', circleId: input.circleId },
         channelId: 'circles',
       }).catch(() => undefined);
+
+      // Increment daily counter for non-admins (fire-and-forget — a missed write at
+      // worst permits one extra send, which is acceptable for a faith app).
+      if (!isAdmin) {
+        membersCol(input.circleId).doc(ctx.userId).update({
+          prayerRequestDate: today,
+          prayerRequestCount: todayCount + 1,
+        }).catch(() => undefined);
+      }
 
       return { notifId, recipientCount: recipients.length };
     }),

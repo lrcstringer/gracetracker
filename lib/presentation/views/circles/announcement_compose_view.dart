@@ -52,10 +52,10 @@ class _AnnouncementComposeViewState extends State<AnnouncementComposeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         title: const Text('Send Announcement'),
         actions: [
           TextButton(
@@ -69,7 +69,7 @@ class _AnnouncementComposeViewState extends State<AnnouncementComposeView> {
                 : const Text(
                     'Send',
                     style: TextStyle(
-                      color: MyWalkColor.softGold,
+                      color: GraceWayColor.softGold,
                       fontWeight: FontWeight.w600,
                       fontSize: 15,
                     ),
@@ -87,7 +87,7 @@ class _AnnouncementComposeViewState extends State<AnnouncementComposeView> {
                 'To all members of ${widget.circleName}',
                 style: TextStyle(
                   fontSize: 13,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.5),
+                  color: GraceWayColor.warmWhite.withValues(alpha: 0.5),
                 ),
               ),
               const SizedBox(height: 16),
@@ -100,17 +100,17 @@ class _AnnouncementComposeViewState extends State<AnnouncementComposeView> {
                   expands: true,
                   textAlignVertical: TextAlignVertical.top,
                   style: const TextStyle(
-                    color: MyWalkColor.warmWhite,
+                    color: GraceWayColor.warmWhite,
                     fontSize: 15,
                     height: 1.6,
                   ),
                   decoration: InputDecoration(
                     hintText: 'Write your announcement…',
                     hintStyle: TextStyle(
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.3)),
+                        color: GraceWayColor.warmWhite.withValues(alpha: 0.3)),
                     border: InputBorder.none,
                     counterStyle: TextStyle(
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.3)),
+                        color: GraceWayColor.warmWhite.withValues(alpha: 0.3)),
                   ),
                 ),
               ),

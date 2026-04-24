@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'habit_entry.dart';
-import 'fruit.dart';
 
 // ── Prayer Items ──────────────────────────────────────────────────────────────
 
@@ -229,9 +228,6 @@ class Habit {
   // When non-null, totalCompletedDays() and totalValue() use these instead of entries.
   final int? allTimeCompletedCount;
   final double? allTimeTotalValue;
-  // Fruit of the Spirit tagging
-  final List<FruitType> fruitTags;
-  final String? fruitPurposeStatement;
   final String sourceType; // 'user_created' | 'micro_action_library'
   final String? sourceActionId;
   // Two-level category hierarchy (new system)
@@ -246,10 +242,7 @@ class Habit {
   // Prayer list: when true, shows a structured prayer items section in the detail view
   final bool hasPrayerItems;
   final List<PrayerItem> prayerItems;
-  // Accountability / Recovery Path
   final String? accountabilityPartnerId;
-  final String? recoveryPathId;
-  final bool hasRecoveryPath;
 
   const Habit({
     required this.id,
@@ -269,8 +262,6 @@ class Habit {
     this.entries = const [],
     this.allTimeCompletedCount,
     this.allTimeTotalValue,
-    this.fruitTags = const [],
-    this.fruitPurposeStatement,
     this.sourceType = 'user_created',
     this.sourceActionId,
     this.categoryId,
@@ -282,8 +273,6 @@ class Habit {
     this.hasPrayerItems = false,
     this.prayerItems = const [],
     this.accountabilityPartnerId,
-    this.recoveryPathId,
-    this.hasRecoveryPath = false,
   });
 
   factory Habit.create({
@@ -298,8 +287,6 @@ class Habit {
     Set<int> activeDays = const {1, 2, 3, 4, 5, 6, 7},
     String trigger = '',
     String copingPlan = '',
-    List<FruitType> fruitTags = const [],
-    String? fruitPurposeStatement,
     String sourceType = 'user_created',
     String? sourceActionId,
     String notes = '',
@@ -325,8 +312,6 @@ class Habit {
       trigger: trigger,
       copingPlan: copingPlan,
       entries: const [],
-      fruitTags: fruitTags,
-      fruitPurposeStatement: fruitPurposeStatement,
       sourceType: sourceType,
       sourceActionId: sourceActionId,
       notes: notes,
@@ -355,8 +340,6 @@ class Habit {
     List<HabitEntry>? entries,
     int? allTimeCompletedCount,
     double? allTimeTotalValue,
-    List<FruitType>? fruitTags,
-    String? fruitPurposeStatement,
     String? sourceType,
     String? sourceActionId,
     String? categoryId,
@@ -368,8 +351,6 @@ class Habit {
     bool? hasPrayerItems,
     List<PrayerItem>? prayerItems,
     Object? accountabilityPartnerId = _keep,
-    Object? recoveryPathId = _keep,
-    bool? hasRecoveryPath,
   }) =>
       Habit(
         id: id,
@@ -389,8 +370,6 @@ class Habit {
         entries: entries ?? this.entries,
         allTimeCompletedCount: allTimeCompletedCount ?? this.allTimeCompletedCount,
         allTimeTotalValue: allTimeTotalValue ?? this.allTimeTotalValue,
-        fruitTags: fruitTags ?? this.fruitTags,
-        fruitPurposeStatement: fruitPurposeStatement ?? this.fruitPurposeStatement,
         sourceType: sourceType ?? this.sourceType,
         sourceActionId: sourceActionId ?? this.sourceActionId,
         categoryId: categoryId ?? this.categoryId,
@@ -404,10 +383,6 @@ class Habit {
         accountabilityPartnerId: identical(accountabilityPartnerId, _keep)
             ? this.accountabilityPartnerId
             : accountabilityPartnerId as String?,
-        recoveryPathId: identical(recoveryPathId, _keep)
-            ? this.recoveryPathId
-            : recoveryPathId as String?,
-        hasRecoveryPath: hasRecoveryPath ?? this.hasRecoveryPath,
       );
 
   Set<int> get activeDaySet {
@@ -483,8 +458,6 @@ class Habit {
         'copingPlan': copingPlan,
         'allTimeCompletedCount': allTimeCompletedCount ?? 0,
         'allTimeTotalValue': allTimeTotalValue ?? 0.0,
-        'fruitTags': fruitTags.map((f) => f.name).toList(),
-        'fruitPurposeStatement': fruitPurposeStatement,
         'sourceType': sourceType,
         'sourceActionId': sourceActionId,
         'categoryId': categoryId,
@@ -496,8 +469,6 @@ class Habit {
         'hasPrayerItems': hasPrayerItems,
         'prayerItems': prayerItems.map((p) => p.toMap()).toList(),
         if (accountabilityPartnerId != null) 'accountabilityPartnerId': accountabilityPartnerId,
-        if (recoveryPathId != null) 'recoveryPathId': recoveryPathId,
-        'hasRecoveryPath': hasRecoveryPath,
       };
 
   factory Habit.fromFirestore(
@@ -531,10 +502,6 @@ class Habit {
       entries: entries,
       allTimeCompletedCount: (data['allTimeCompletedCount'] as num?)?.toInt(),
       allTimeTotalValue: (data['allTimeTotalValue'] as num?)?.toDouble(),
-      fruitTags: ((data['fruitTags'] as List<dynamic>?) ?? [])
-          .map((e) => FruitType.fromString(e as String))
-          .toList(),
-      fruitPurposeStatement: data['fruitPurposeStatement'] as String?,
       sourceType: data['sourceType'] as String? ?? 'user_created',
       sourceActionId: data['sourceActionId'] as String?,
       categoryId: data['categoryId'] as String?,
@@ -548,8 +515,6 @@ class Habit {
           .map((e) => PrayerItem.fromMap(e as Map<String, dynamic>))
           .toList(),
       accountabilityPartnerId: data['accountabilityPartnerId'] as String?,
-      recoveryPathId: data['recoveryPathId'] as String?,
-      hasRecoveryPath: data['hasRecoveryPath'] as bool? ?? false,
     );
   }
 }

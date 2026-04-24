@@ -28,11 +28,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
 
   static const _proFeatures = [
     (Icons.all_inclusive_rounded, 'Unlimited Habits'),
-    (Icons.format_quote_rounded, 'Custom Purpose Statements'),
     (Icons.bar_chart_rounded, 'Detailed Stats & Insights'),
     (Icons.notifications_rounded, 'Smart Reminders'),
-    (Icons.shield_rounded, 'Recovery Path & Partner Support'),
-    (Icons.auto_awesome, '52-Week Year in MyWalk'),
   ];
 
   @override
@@ -100,12 +97,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
               duration: const Duration(milliseconds: 500),
               child: Column(children: [
                 const Text(
-                  'Go deeper with\nMyWalk Pro',
+                  'Go deeper with\nGraceWay Pro',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
-                      color: MyWalkColor.warmWhite,
+                      color: GraceWayColor.warmWhite,
                       height: 1.3),
                 ),
                 const SizedBox(height: 10),
@@ -162,14 +159,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       width: 18,
                       height: 18,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: MyWalkColor.charcoal))
+                          strokeWidth: 2, color: GraceWayColor.charcoal))
                   : const Icon(Icons.workspace_premium_rounded, size: 18),
               label: Text(_ctaLabel,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, fontSize: 16)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: MyWalkColor.golden,
-                foregroundColor: MyWalkColor.charcoal,
+                backgroundColor: GraceWayColor.golden,
+                foregroundColor: GraceWayColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
@@ -200,7 +197,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
               child: Text(store.error!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 12, color: MyWalkColor.warmCoral)),
+                      fontSize: 12, color: GraceWayColor.warmCoral)),
             ),
         ]),
       ),
@@ -216,13 +213,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isGold
-            ? MyWalkColor.golden.withValues(alpha: 0.06)
-            : MyWalkColor.cardBackground,
+            ? GraceWayColor.golden.withValues(alpha: 0.06)
+            : GraceWayColor.cardBackground,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: isGold
-              ? MyWalkColor.golden.withValues(alpha: 0.2)
-              : MyWalkColor.cardBorder,
+              ? GraceWayColor.golden.withValues(alpha: 0.2)
+              : GraceWayColor.cardBorder,
           width: 0.5,
         ),
       ),
@@ -234,13 +231,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.5,
                 color: isGold
-                    ? MyWalkColor.golden
+                    ? GraceWayColor.golden
                     : Colors.white.withValues(alpha: 0.5),
               )),
           if (isGold) ...[
             const SizedBox(width: 6),
             const Icon(Icons.workspace_premium_rounded,
-                size: 10, color: MyWalkColor.golden),
+                size: 10, color: GraceWayColor.golden),
           ],
         ]),
         const SizedBox(height: 14),
@@ -252,8 +249,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   child: Icon(f.$1,
                       size: 13,
                       color: isGold
-                          ? MyWalkColor.golden
-                          : MyWalkColor.softGold.withValues(alpha: 0.5)),
+                          ? GraceWayColor.golden
+                          : GraceWayColor.softGold.withValues(alpha: 0.5)),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -261,7 +258,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       style: TextStyle(
                         fontSize: 12,
                         color: isGold
-                            ? MyWalkColor.warmWhite
+                            ? GraceWayColor.warmWhite
                             : Colors.white.withValues(alpha: 0.5),
                       )),
                 ),
@@ -342,13 +339,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
           color: isSelected
-              ? MyWalkColor.golden.withValues(alpha: 0.08)
-              : MyWalkColor.cardBackground,
+              ? GraceWayColor.golden.withValues(alpha: 0.08)
+              : GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? MyWalkColor.golden.withValues(alpha: 0.4)
-                : MyWalkColor.cardBorder,
+                ? GraceWayColor.golden.withValues(alpha: 0.4)
+                : GraceWayColor.cardBorder,
             width: isSelected ? 1.5 : 0.5,
           ),
         ),
@@ -357,13 +354,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                  color: MyWalkColor.golden,
+                  color: GraceWayColor.golden,
                   borderRadius: BorderRadius.circular(20)),
               child: Text(badge,
                   style: const TextStyle(
                       fontSize: 9,
                       fontWeight: FontWeight.w700,
-                      color: MyWalkColor.charcoal)),
+                      color: GraceWayColor.charcoal)),
             )
           else
             const SizedBox(height: 17),
@@ -374,7 +371,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.5,
                 color: isSelected
-                    ? MyWalkColor.golden
+                    ? GraceWayColor.golden
                     : Colors.white.withValues(alpha: 0.5),
               )),
           const SizedBox(height: 4),
@@ -383,7 +380,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
                 color: isSelected
-                    ? MyWalkColor.warmWhite
+                    ? GraceWayColor.warmWhite
                     : Colors.white.withValues(alpha: 0.5),
               )),
           const SizedBox(height: 2),
@@ -397,7 +394,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     fontSize: 9,
                     fontWeight: FontWeight.w600,
                     color: isSelected
-                        ? MyWalkColor.sage
+                        ? GraceWayColor.sage
                         : Colors.white.withValues(alpha: 0.3))),
           ],
         ]),

@@ -14,7 +14,7 @@ class CategoryGroupHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Divider(
-            color: MyWalkColor.golden.withValues(alpha: 0.25),
+            color: GraceWayColor.golden.withValues(alpha: 0.25),
             thickness: 0.5,
           ),
           const SizedBox(height: 8),

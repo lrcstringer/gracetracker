@@ -25,10 +25,10 @@ class BibleReadingHabitCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
-            color: MyWalkColor.cardBackground,
+            color: GraceWayColor.cardBackground,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: MyWalkColor.golden.withValues(alpha: 0.25),
+              color: GraceWayColor.golden.withValues(alpha: 0.25),
               width: 0.5,
             ),
           ),
@@ -54,19 +54,19 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.menu_book_rounded, color: MyWalkColor.golden, size: 18),
+        const Icon(Icons.menu_book_rounded, color: GraceWayColor.golden, size: 18),
         const SizedBox(width: 8),
         const Expanded(
           child: Text(
             'Bible in a Year',
             style: TextStyle(
-              color: MyWalkColor.warmWhite,
+              color: GraceWayColor.warmWhite,
               fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
           ),
         ),
-        const Icon(Icons.chevron_right, color: MyWalkColor.softGold, size: 20),
+        const Icon(Icons.chevron_right, color: GraceWayColor.softGold, size: 20),
       ],
     );
   }
@@ -95,7 +95,7 @@ class _NotStartedBody extends StatelessWidget {
     return Text(
       'Read through the entire Bible in one year. Tap to get started.',
       style: TextStyle(
-        color: MyWalkColor.softGold.withValues(alpha: 0.7),
+        color: GraceWayColor.softGold.withValues(alpha: 0.7),
         fontSize: 12,
       ),
     );
@@ -114,7 +114,7 @@ class _PendingBody extends StatelessWidget {
           ? 'Your plan begins this Sunday.'
           : 'Your plan begins in $days ${days == 1 ? 'day' : 'days'}.',
       style: TextStyle(
-        color: MyWalkColor.softGold.withValues(alpha: 0.8),
+        color: GraceWayColor.softGold.withValues(alpha: 0.8),
         fontSize: 12,
       ),
     );
@@ -140,7 +140,7 @@ class _ActiveBody extends StatelessWidget {
             Text(
               'Week ${weekIndex + 1} of 52',
               style: const TextStyle(
-                color: MyWalkColor.softGold,
+                color: GraceWayColor.softGold,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
@@ -148,7 +148,7 @@ class _ActiveBody extends StatelessWidget {
             Text(
               '$daysRead days read',
               style: TextStyle(
-                color: MyWalkColor.softGold.withValues(alpha: 0.7),
+                color: GraceWayColor.softGold.withValues(alpha: 0.7),
                 fontSize: 11,
               ),
             ),
@@ -160,8 +160,8 @@ class _ActiveBody extends StatelessWidget {
           child: LinearProgressIndicator(
             value: progress,
             minHeight: 4,
-            backgroundColor: MyWalkColor.golden.withValues(alpha: 0.15),
-            valueColor: const AlwaysStoppedAnimation<Color>(MyWalkColor.golden),
+            backgroundColor: GraceWayColor.golden.withValues(alpha: 0.15),
+            valueColor: const AlwaysStoppedAnimation<Color>(GraceWayColor.golden),
           ),
         ),
       ],

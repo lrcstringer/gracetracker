@@ -7,15 +7,15 @@ class ProgressHelpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const accent = MyWalkColor.sage;
-    const golden = MyWalkColor.golden;
+    const accent = GraceWayColor.sage;
+    const golden = GraceWayColor.golden;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
         title: const Text('Progress — Help'),
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: GraceWayColor.charcoal,
+        foregroundColor: GraceWayColor.warmWhite,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -61,7 +61,7 @@ class ProgressHelpView extends StatelessWidget {
                 ),
                 HelpFeatureCard(
                   icon: Icons.calendar_month_outlined,
-                  iconColor: MyWalkColor.warmCoral,
+                  iconColor: GraceWayColor.warmCoral,
                   iconBg: Color(0x1AD4836B),
                   title: 'Year Heatmap',
                   description:
@@ -111,7 +111,7 @@ class ProgressHelpView extends StatelessWidget {
             const HelpStep(
               number: 5,
               icon: Icons.calendar_month_outlined,
-              accentColor: MyWalkColor.warmCoral,
+              accentColor: GraceWayColor.warmCoral,
               title: 'Unlock the year heatmap',
               description:
                   'Tap the blurred heatmap section to upgrade and see your full 52-week history.',
@@ -131,22 +131,22 @@ class _WeekTierGuide extends StatelessWidget {
   Widget build(BuildContext context) {
     final tiers = [
       _TierRow(
-        color: MyWalkColor.warmWhite.withValues(alpha: 0.15),
+        color: GraceWayColor.warmWhite.withValues(alpha: 0.15),
         label: 'Just getting started',
         note: '0 habits completed',
       ),
       _TierRow(
-        color: MyWalkColor.sage.withValues(alpha: 0.4),
+        color: GraceWayColor.sage.withValues(alpha: 0.4),
         label: 'Something given',
         note: 'A few habits done',
       ),
       _TierRow(
-        color: MyWalkColor.sage,
+        color: GraceWayColor.sage,
         label: 'Strong week',
         note: 'Most habits completed',
       ),
       _TierRow(
-        color: MyWalkColor.golden,
+        color: GraceWayColor.golden,
         label: 'Beautiful week',
         note: 'All habits completed',
         isTop: true,
@@ -157,15 +157,15 @@ class _WeekTierGuide extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: GraceWayColor.cardBackground,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: MyWalkColor.cardBorder),
+          border: Border.all(color: GraceWayColor.cardBorder),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
           children: tiers
               .map((t) => t)
-              .expand((t) => [t, if (t != tiers.last) Divider(color: MyWalkColor.warmWhite.withValues(alpha: 0.07), height: 1)])
+              .expand((t) => [t, if (t != tiers.last) Divider(color: GraceWayColor.warmWhite.withValues(alpha: 0.07), height: 1)])
               .toList(),
         ),
       ),
@@ -212,7 +212,7 @@ class _TierRow extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    color: isTop ? color : MyWalkColor.warmWhite.withValues(alpha: 0.85),
+                    color: isTop ? color : GraceWayColor.warmWhite.withValues(alpha: 0.85),
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -220,7 +220,7 @@ class _TierRow extends StatelessWidget {
                 Text(
                   note,
                   style: TextStyle(
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.45),
+                    color: GraceWayColor.warmWhite.withValues(alpha: 0.45),
                     fontSize: 12,
                   ),
                 ),

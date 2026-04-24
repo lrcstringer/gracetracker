@@ -99,14 +99,14 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Icon(_categoryIcon(), size: 20, color: MyWalkColor.golden),
+              Icon(_categoryIcon(), size: 20, color: GraceWayColor.golden),
               const SizedBox(width: 10),
               Text(
                 widget.category.rawValue,
                 style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  color: MyWalkColor.softGold,
+                  color: GraceWayColor.softGold,
                 ),
               ),
             ]),
@@ -139,10 +139,10 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: MyWalkColor.golden,
-              foregroundColor: MyWalkColor.charcoal,
-              disabledBackgroundColor: MyWalkColor.golden.withValues(alpha: 0.25),
-              disabledForegroundColor: MyWalkColor.charcoal.withValues(alpha: 0.4),
+              backgroundColor: GraceWayColor.golden,
+              foregroundColor: GraceWayColor.charcoal,
+              disabledBackgroundColor: GraceWayColor.golden.withValues(alpha: 0.25),
+              disabledForegroundColor: GraceWayColor.charcoal.withValues(alpha: 0.4),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -159,26 +159,26 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: MyWalkColor.softGold.withValues(alpha: 0.6),
+          color: GraceWayColor.softGold.withValues(alpha: 0.6),
         ),
       ),
       const SizedBox(height: 8),
       TextField(
         controller: _nameController,
         autofocus: widget.category == HabitCategory.custom,
-        style: const TextStyle(fontSize: 16, color: MyWalkColor.warmWhite),
+        style: const TextStyle(fontSize: 16, color: GraceWayColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'e.g. Morning sketching',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: MyWalkColor.cardBackground,
+          fillColor: GraceWayColor.cardBackground,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: MyWalkColor.golden.withValues(alpha: 0.5), width: 1.5),
+            borderSide: BorderSide(color: GraceWayColor.golden.withValues(alpha: 0.5), width: 1.5),
           ),
           contentPadding: const EdgeInsets.all(14),
         ),
@@ -199,7 +199,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: MyWalkColor.softGold.withValues(alpha: 0.6),
+          color: GraceWayColor.softGold.withValues(alpha: 0.6),
         ),
       ),
       const SizedBox(height: 8),
@@ -226,7 +226,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
+                    color: selected ? GraceWayColor.golden : GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
@@ -235,7 +235,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+                        color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
                       ),
                     ),
                   ),
@@ -256,7 +256,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: MyWalkColor.softGold.withValues(alpha: 0.6),
+          color: GraceWayColor.softGold.withValues(alpha: 0.6),
         ),
       ),
       const SizedBox(height: 8),
@@ -271,7 +271,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
+                    color: selected ? GraceWayColor.golden : GraceWayColor.cardBackground,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
@@ -280,7 +280,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
+                        color: selected ? GraceWayColor.charcoal : GraceWayColor.softGold,
                       ),
                     ),
                   ),
@@ -300,24 +300,24 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: MyWalkColor.softGold.withValues(alpha: 0.6),
+          color: GraceWayColor.softGold.withValues(alpha: 0.6),
         ),
       ),
       const SizedBox(height: 8),
       Row(children: [
         Text(
           '${_dailyTarget.toInt()}',
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.golden),
         ),
         const SizedBox(width: 12),
         Column(children: [
           GestureDetector(
             onTap: () => setState(() => _dailyTarget = (_dailyTarget + 1).clamp(1, 100)),
-            child: const Icon(Icons.keyboard_arrow_up, color: MyWalkColor.golden),
+            child: const Icon(Icons.keyboard_arrow_up, color: GraceWayColor.golden),
           ),
           GestureDetector(
             onTap: () => setState(() => _dailyTarget = (_dailyTarget - 1).clamp(1, 100)),
-            child: const Icon(Icons.keyboard_arrow_down, color: MyWalkColor.golden),
+            child: const Icon(Icons.keyboard_arrow_down, color: GraceWayColor.golden),
           ),
         ]),
         const SizedBox(width: 12),
@@ -326,12 +326,12 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
             controller: TextEditingController(text: _targetUnit)
               ..selection = TextSelection.collapsed(offset: _targetUnit.length),
             onChanged: (v) => _targetUnit = v,
-            style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
+            style: const TextStyle(fontSize: 15, color: GraceWayColor.warmWhite),
             decoration: InputDecoration(
               hintText: 'Unit (e.g. glasses)',
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
               filled: true,
-              fillColor: MyWalkColor.cardBackground,
+              fillColor: GraceWayColor.cardBackground,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
               contentPadding: const EdgeInsets.all(10),
             ),
@@ -349,7 +349,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: MyWalkColor.softGold.withValues(alpha: 0.6),
+          color: GraceWayColor.softGold.withValues(alpha: 0.6),
         ),
       ),
       const SizedBox(height: 8),
@@ -371,9 +371,9 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
               height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
+                color: selected ? GraceWayColor.golden : GraceWayColor.cardBackground,
                 border: Border.all(
-                  color: selected ? MyWalkColor.golden : MyWalkColor.cardBorder,
+                  color: selected ? GraceWayColor.golden : GraceWayColor.cardBorder,
                   width: 0.5,
                 ),
               ),
@@ -383,7 +383,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: selected ? MyWalkColor.charcoal : Colors.white.withValues(alpha: 0.4),
+                    color: selected ? GraceWayColor.charcoal : Colors.white.withValues(alpha: 0.4),
                   ),
                 ),
               ),

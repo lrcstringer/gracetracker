@@ -11,13 +11,11 @@ import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import '../../../domain/entities/fruit.dart';
 import '../../../domain/entities/journal_entry.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/journal_theme.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/journal_provider.dart';
-import '../../providers/journal_theme_provider.dart';
 import '../../theme/app_theme.dart';
 import 'doodle_canvas_screen.dart';
 
@@ -32,7 +30,6 @@ class JournalEntryComposer extends StatefulWidget {
   // Pre-filled context (new entry only).
   final String? habitId;
   final String? habitName;
-  final FruitType? fruitTag;
   final String sourceType;
 
   const JournalEntryComposer({
@@ -40,7 +37,6 @@ class JournalEntryComposer extends StatefulWidget {
     this.initialEntry,
     this.habitId,
     this.habitName,
-    this.fruitTag,
     this.sourceType = 'free',
   });
 
@@ -370,7 +366,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
           voiceLocalPath: _newVoicePath,
           habitId: _linkedHabit?.id ?? widget.habitId,
           habitName: _linkedHabit?.name ?? widget.habitName,
-          fruitTag: _linkedHabit?.fruitTags.firstOrNull ?? widget.fruitTag,
           sourceType: _linkedHabit != null ? 'linked' : widget.sourceType,
         );
       }
@@ -393,7 +388,7 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
   }
 
   void _showPermissionDenied(String resource) {
-    final theme = context.read<JournalThemeProvider>().theme;
+    const theme = JournalTheme.parchment;
     showDialog<void>(
       context: context,
       builder: (_) => AlertDialog(
@@ -514,7 +509,7 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
                   for (final habit in habits)
                     ListTile(
                       leading: Icon(Icons.repeat,
-                          color: MyWalkColor.golden, size: 20),
+                          color: GraceWayColor.golden, size: 20),
                       title: Text(
                         habit.name,
                         style: TextStyle(
@@ -538,9 +533,8 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.watch<JournalThemeProvider>().theme;
+    const theme = JournalTheme.parchment;
 
-    final fruitTag = widget.initialEntry?.fruitTag ?? _linkedHabit?.fruitTags.firstOrNull ?? widget.fruitTag;
     final habitName = widget.initialEntry?.habitName ?? _linkedHabit?.name ?? widget.habitName;
     final sourceType = widget.initialEntry?.sourceType ?? (_linkedHabit != null ? 'linked' : widget.sourceType);
 
@@ -589,7 +583,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
             _linkedHabit != null
                 ? _SourceChip(
                     habitName: habitName,
-                    fruitTag: fruitTag,
                     sourceType: sourceType,
                     theme: theme,
                     onClear: () => setState(() => _linkedHabit = null),
@@ -598,10 +591,9 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
                     theme: theme,
                     onTap: () => _showHabitPicker(theme),
                   )
-          else if (sourceType != 'free' || fruitTag != null || habitName != null)
+          else if (sourceType != 'free' || habitName != null)
             _SourceChip(
               habitName: habitName,
-              fruitTag: fruitTag,
               sourceType: sourceType,
               theme: theme,
             ),
@@ -755,14 +747,12 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
 
 class _SourceChip extends StatelessWidget {
   final String? habitName;
-  final FruitType? fruitTag;
   final String sourceType;
   final JournalTheme theme;
   final VoidCallback? onClear;
 
   const _SourceChip({
     this.habitName,
-    this.fruitTag,
     required this.sourceType,
     required this.theme,
     this.onClear,
@@ -775,13 +765,9 @@ class _SourceChip extends StatelessWidget {
     IconData icon;
 
     if (habitName != null) {
-      chipColor = MyWalkColor.golden;
+      chipColor = GraceWayColor.golden;
       label = habitName!;
       icon = Icons.repeat;
-    } else if (fruitTag != null) {
-      chipColor = fruitTag!.color;
-      label = fruitTag!.label;
-      icon = fruitTag!.icon;
     } else {
       chipColor = theme.textSecondary;
       label = 'Journal';

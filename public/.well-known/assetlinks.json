@@ -3,7 +3,7 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.mywalk.faith",
+      "package_name": "com.graceway.faith",
       "sha256_cert_fingerprints": [
         "48:EB:F9:DA:5A:12:19:5B:62:AC:D7:E5:AE:9D:FA:63:43:9A:2E:2B:E7:BF:DA:E7:B7:CD:5F:01:7E:82:77:88"
       ]

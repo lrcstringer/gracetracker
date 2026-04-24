@@ -238,6 +238,7 @@ class APIError implements Exception {
   static const serverError = APIError._('Server error. Please try again.');
   static const unauthorized = APIError._('Please sign in to continue');
   static const decodingError = APIError._('Unexpected response format');
+  static const rateLimited = APIError._('You can send up to 2 prayer requests per day.');
 
   @override
   String toString() => message;
@@ -311,7 +312,7 @@ class APIService {
   Future<void> registerPushToken(String token) async {
     if (userId == null) return;
     try {
-      await _postMutation<Map<String, dynamic>>('auth.registerPushToken', body: {'userId': userId, 'pushToken': token}, fromJson: (j) => j);
+      await _postMutation<Map<String, dynamic>>('auth.registerPushToken', body: {'fcmToken': token}, fromJson: (j) => j);
     } catch (_) {}
   }
 
@@ -393,6 +394,7 @@ class APIService {
   void _checkStatus(http.Response response) {
     if (response.statusCode < 200 || response.statusCode > 299) {
       if (response.statusCode == 401) throw APIError.unauthorized;
+      if (response.statusCode == 429) throw APIError.rateLimited;
       throw APIError.serverError;
     }
   }
