@@ -153,7 +153,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: store.isPurchasing ? null : () => _purchase(store),
+              onPressed: (store.isPurchasing || store.isLoading) ? null : () => _purchase(store),
               icon: store.isPurchasing
                   ? const SizedBox(
                       width: 18,

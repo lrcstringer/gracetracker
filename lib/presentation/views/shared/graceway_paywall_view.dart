@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 import '../../providers/store_provider.dart';
 import '../../theme/app_theme.dart';
@@ -22,10 +23,12 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
 
   static const _features = [
     (Icons.all_inclusive_rounded, 'Unlimited habits'),
-    (Icons.shield_rounded, 'Recovery Path & partner support'),
-    (Icons.bar_chart_rounded, 'Detailed analytics & insights'),
+    (Icons.menu_book_rounded, 'Full personal journalling'),
+    (Icons.people_alt_rounded, 'One-to-one support & prayer partner'),
+    (Icons.groups_rounded, 'Group circle support & prayer requests'),
+    (Icons.bar_chart_rounded, 'Detailed analytics & tracking'),
     (Icons.format_quote_rounded, 'Custom purpose statements'),
-    (Icons.calendar_month_rounded, '52-week Year in GraceWay heatmap'),
+    (Icons.calendar_month_rounded, '52-week Year heatmap'),
     (Icons.notifications_rounded, 'Smart reminders'),
   ];
 
@@ -152,11 +155,38 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
     final lifetime = store.lifetimeProduct;
 
     if (monthly == null && annual == null && lifetime == null) {
+      if (store.isLoading) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const SizedBox(
+              width: 14, height: 14,
+              child: CircularProgressIndicator(
+                  strokeWidth: 1.5, color: GraceWayColor.golden),
+            ),
+            const SizedBox(width: 10),
+            Text('Loading plans\u2026',
+                style: TextStyle(
+                    fontSize: 13, color: Colors.white.withValues(alpha: 0.4))),
+          ]),
+        );
+      }
+      // Products loaded but none returned \u2014 store unreachable or not configured.
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Text('Loading plans\u2026',
-            style: TextStyle(
-                fontSize: 13, color: Colors.white.withValues(alpha: 0.4))),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(children: [
+          Text(
+            'Could not load plans. Check your connection.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.45)),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: () => store.retryLoadProducts(),
+            child: const Text('Retry',
+                style: TextStyle(fontSize: 13, color: GraceWayColor.golden)),
+          ),
+        ]),
       );
     }
 
@@ -309,7 +339,7 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: (store.isPurchasing || store.isLoading)
+              onPressed: (store.isPurchasing || store.isLoading || _selectedProduct(store) == null)
                   ? null
                   : () => _purchase(store),
               style: ElevatedButton.styleFrom(
@@ -369,12 +399,14 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
         _Plan.lifetime => 'Buy Lifetime Access',
       };
 
+  ProductDetails? _selectedProduct(StoreProvider store) => switch (_selectedPlan) {
+    _Plan.monthly => store.monthlyProduct,
+    _Plan.annual => store.annualProduct,
+    _Plan.lifetime => store.lifetimeProduct,
+  };
+
   Future<void> _purchase(StoreProvider store) async {
-    final product = switch (_selectedPlan) {
-      _Plan.monthly => store.monthlyProduct,
-      _Plan.annual => store.annualProduct,
-      _Plan.lifetime => store.lifetimeProduct,
-    };
+    final product = _selectedProduct(store);
     if (product != null) await store.purchase(product);
   }
 }

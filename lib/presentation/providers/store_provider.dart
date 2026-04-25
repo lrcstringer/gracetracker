@@ -179,6 +179,17 @@ class StoreProvider extends ChangeNotifier with WidgetsBindingObserver {
     }
   }
 
+  /// Re-queries product details from the store. Use when initial load fails.
+  Future<void> retryLoadProducts() async {
+    if (isLoading) return;
+    isLoading = true;
+    error = null;
+    notifyListeners();
+    await _loadProducts();
+    isLoading = false;
+    notifyListeners();
+  }
+
   // ── Premium status ────────────────────────────────────────────────────────
 
   /// Sets [isPremium] and persists it to SharedPreferences so the next launch

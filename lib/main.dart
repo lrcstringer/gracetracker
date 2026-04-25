@@ -32,20 +32,11 @@ import 'presentation/providers/habit_category_provider.dart';
 import 'presentation/providers/journal_provider.dart';
 import 'data/repositories/local_habit_category_repository.dart';
 import 'data/repositories/firestore_journal_repository.dart';
-import 'data/services/media_upload_service.dart';
 import 'data/services/pending_action_queue_service.dart';
 import 'data/services/pending_notification_send_queue.dart';
 import 'data/repositories/firestore_notification_repository.dart';
 import 'domain/repositories/notification_repository.dart';
 import 'presentation/providers/circle_notification_provider.dart';
-import 'data/datasources/local/bible_database.dart';
-import 'data/repositories/local_bible_repository.dart';
-import 'data/repositories/firestore_bookmark_repository.dart';
-import 'domain/repositories/bible_repository.dart';
-import 'domain/repositories/bookmark_repository.dart';
-import 'presentation/providers/bible_provider.dart';
-import 'data/repositories/firestore_bible_reading_repository.dart';
-import 'presentation/providers/bible_reading_provider.dart';
 import 'app.dart';
 
 /// Top-level handler for background/terminated FCM messages.
@@ -128,15 +119,9 @@ void main() async {
   final accountabilityRepository = FirestoreAccountabilityRepository();
 
   final journalRepository = FirestoreJournalRepository();
-  await MediaUploadService.instance.init(sharedPrefs, journalRepository);
-
-  final pendingActionQueue = PendingActionQueueService(sharedPrefs);
+final pendingActionQueue = PendingActionQueueService(sharedPrefs);
   final pendingSendQueue = PendingNotificationSendQueue(sharedPrefs);
   final notificationRepository = FirestoreNotificationRepository(pendingActionQueue, pendingSendQueue);
-
-  final bibleRepository = LocalBibleRepository(BibleDatabase.instance);
-  final bookmarkRepository = FirestoreBookmarkRepository();
-  final bibleReadingRepository = FirestoreBibleReadingRepository();
 
   runApp(
     MultiProvider(
@@ -177,14 +162,6 @@ void main() async {
         Provider<NotificationRepository>.value(value: notificationRepository),
         ChangeNotifierProvider<CircleNotificationProvider>(
           create: (_) => CircleNotificationProvider(notificationRepository),
-        ),
-        Provider<BibleRepository>.value(value: bibleRepository),
-        Provider<BookmarkRepository>.value(value: bookmarkRepository),
-        ChangeNotifierProvider<BibleProvider>(
-          create: (_) => BibleProvider(bibleRepository, bookmarkRepository),
-        ),
-        ChangeNotifierProvider<BibleReadingProvider>(
-          create: (_) => BibleReadingProvider(bibleReadingRepository),
         ),
       ],
       child: const GraceWayApp(),

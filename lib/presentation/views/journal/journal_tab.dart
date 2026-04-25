@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 import '../../../domain/entities/journal_entry.dart';
 import '../../../domain/entities/journal_theme.dart';
 import '../../providers/journal_provider.dart';
+import '../../providers/store_provider.dart';
 import '../../theme/app_theme.dart';
 import 'journal_entry_composer.dart';
 import 'journal_entry_detail_view.dart';
 import '../shared/appbar_actions.dart';
+import '../shared/graceway_paywall_view.dart';
 import '../help/journal_help_view.dart';
 
 class JournalTab extends StatefulWidget {
@@ -86,16 +88,29 @@ class _JournalTabState extends State<JournalTab> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<JournalProvider>();
+    final isPremium = context.watch<StoreProvider>().isPremium;
     const theme = JournalTheme.parchment;
     final entries = provider.filteredEntries;
 
     return Scaffold(
       backgroundColor: theme.bgPrimary,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push<void>(
-          context,
-          MaterialPageRoute(builder: (_) => const JournalEntryComposer()),
-        ),
+        onPressed: () {
+          if (isPremium) {
+            Navigator.push<void>(
+              context,
+              MaterialPageRoute(builder: (_) => const JournalEntryComposer()),
+            );
+          } else {
+            showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              backgroundColor: GraceWayColor.charcoal,
+              builder: (_) => const GraceWayPaywallView(),
+            );
+          }
+        },
         backgroundColor: theme.textPrimary,
         foregroundColor: theme.bgCard,
         child: const Icon(Icons.edit_outlined),
@@ -160,7 +175,6 @@ class _JournalTabState extends State<JournalTab> {
             actions: [
               infoIconAction(context, const JournalHelpView(),
                   color: theme.textPrimary),
-              bibleBrowserAction(context, theme.textPrimary),
               IconButton(
                 icon: Icon(Icons.sort, size: 26, color: theme.textPrimary),
                 onPressed: () => _showSortSheet(context, provider),
@@ -451,24 +465,6 @@ class _JournalEntryCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                if (entry.uploadPending)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Icon(Icons.cloud_upload_outlined,
-                        size: 14,
-                        color: theme.textSecondary.withValues(alpha: 0.6)),
-                  ),
-                if (entry.imageUrls.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Icon(Icons.image_outlined,
-                        size: 14,
-                        color: theme.textSecondary.withValues(alpha: 0.5)),
-                  ),
-                if (entry.voiceUrl != null)
-                  Icon(Icons.mic_outlined,
-                      size: 14,
-                      color: theme.textSecondary.withValues(alpha: 0.5)),
               ],
             ),
 

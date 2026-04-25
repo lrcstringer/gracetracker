@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import '../shared/bible_project_browser_view.dart';
 import '../settings/settings_view.dart';
 import 'notification_bell.dart';
 import '../../theme/app_theme.dart';
 
 /// Standard AppBar actions for Today, Progress, and Circles screens.
-/// Order: Bible | Notifications | Settings | ⋮ (Help)
+/// Order: Notifications | Settings | ⋮ (Help)
 List<Widget> standardAppBarActions(BuildContext context, {Widget? helpView}) {
   final iconColor = GraceWayColor.warmWhite.withValues(alpha: 0.7);
   return [
-    IconButton(
-      icon: Icon(Icons.menu_book_outlined, color: iconColor),
-      onPressed: () => BibleProjectBrowserView.openOrPrompt(context),
-      tooltip: 'Bible',
-    ),
     const NotificationBell(),
     IconButton(
       icon: Icon(Icons.settings_outlined, color: iconColor),
@@ -73,11 +67,3 @@ Widget infoIconAction(
   );
 }
 
-/// Standalone Bible icon for screens that use a theme-aware color (e.g. Journal).
-Widget bibleBrowserAction(BuildContext context, Color color) {
-  return IconButton(
-    icon: Icon(Icons.menu_book_outlined, color: color),
-    onPressed: () => BibleProjectBrowserView.openOrPrompt(context),
-    tooltip: 'Bible',
-  );
-}

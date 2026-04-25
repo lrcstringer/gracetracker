@@ -382,7 +382,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
         child: Icon(Icons.group_rounded, size: 36, color: GraceWayColor.golden.withValues(alpha: 0.6)),
       ),
       const SizedBox(height: 20),
-      const Text('No Circles Yet',
+      const Text('No Circles created yet',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
       const SizedBox(height: 8),
       Text('Create a circle to pray with friends,\nor join one with an invite code.',

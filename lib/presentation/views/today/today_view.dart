@@ -21,7 +21,6 @@ import '../shared/appbar_actions.dart';
 import '../help/today_help_view.dart';
 import '../week/week_strip_view.dart';
 import 'widgets/category_group_header.dart';
-import '../bible_reading/bible_reading_habit_card.dart';
 
 class TodayView extends StatefulWidget {
   final WeekCycleManager weekCycleManager;
@@ -261,9 +260,6 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                       // Gratitude card
                       if (habits.any((h) => h.isBuiltIn && h.category == HabitCategory.gratitude))
                         _gratitudeCard(gratitudeHabit),
-
-                      // Bible reading plan card
-                      const BibleReadingHabitCard(),
 
                       // User habits (grouped by category)
                       ..._buildGroupedHabitList(

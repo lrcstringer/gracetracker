@@ -5,7 +5,6 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../domain/entities/habit.dart';
-import '../../../domain/entities/scripture.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../../domain/services/milestone_service.dart';
@@ -13,7 +12,6 @@ import '../../theme/app_theme.dart';
 import '../shared/graceway_paywall_view.dart';
 import 'edit_habit_view.dart';
 import 'heatmap_view.dart';
-import '../shared/bible_project_browser_view.dart';
 
 class HabitDetailView extends StatefulWidget {
   final Habit habit;
@@ -107,8 +105,6 @@ class _HabitDetailViewState extends State<HabitDetailView> {
     final lifetimeStat = _milestoneService.lifetimeStat(_habit);
     final milestones = _milestoneService.milestones(_habit);
     final habitAge = _milestoneService.habitAge(_habit);
-    final verse = ScriptureLibrary.completionVerse(_habit.category, DateTime.now(), isPremium: isPremium);
-
     return Scaffold(
       backgroundColor: GraceWayColor.charcoal,
       appBar: AppBar(
@@ -157,8 +153,6 @@ class _HabitDetailViewState extends State<HabitDetailView> {
             const SizedBox(height: 20),
             _referenceUrlRow(),
           ],
-          const SizedBox(height: 20),
-          _verseSection(verse),
           const SizedBox(height: 20),
           _habitInfoSection(habitAge),
         ],
@@ -922,41 +916,6 @@ class _HabitDetailViewState extends State<HabitDetailView> {
     );
   }
 
-  Widget _verseSection(Scripture verse) {
-    return GestureDetector(
-      onTap: () => BibleProjectBrowserView.openOrPrompt(context, reference: verse.reference),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          children: [
-            Text(
-              '\u201C${verse.text}\u201D',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 13,
-                fontStyle: FontStyle.italic,
-                color: GraceWayColor.softGold.withValues(alpha: 0.6),
-                height: 1.6,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  verse.reference,
-                  style: TextStyle(fontSize: 11, color: GraceWayColor.golden.withValues(alpha: 0.5)),
-                ),
-                const SizedBox(width: 4),
-                Icon(Icons.menu_book_outlined,
-                    size: 10, color: GraceWayColor.golden.withValues(alpha: 0.4)),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _habitInfoSection(int habitAge) {
     final activedays = _habit.activeDaySet.toList()..sort();

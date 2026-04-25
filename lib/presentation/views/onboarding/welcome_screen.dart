@@ -88,25 +88,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         scale: _showTitle ? 1.0 : 0.8,
                         duration: const Duration(milliseconds: 900),
                         curve: Curves.easeOut,
-                        child: Stack(alignment: Alignment.center, children: [
-                          Container(
-                            width: 280,
-                            height: 280,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: RadialGradient(colors: [
-                                Colors.white.withValues(alpha: 0.04 + b * 0.08),
-                                GraceWayColor.golden.withValues(alpha: 0.08 + b * 0.17),
-                                Colors.transparent,
-                              ]),
-                            ),
+                        child: Container(
+                          width: 280,
+                          height: 280,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(colors: [
+                              Colors.white.withValues(alpha: 0.04 + b * 0.08),
+                              GraceWayColor.golden.withValues(alpha: 0.08 + b * 0.17),
+                              Colors.transparent,
+                            ]),
                           ),
-                          Image.asset(
-                            'assets/icon1.png',
-                            width: 180,
-                            height: 180,
-                          ),
-                        ]),
+                        ),
                       ),
                     ),
                     AnimatedOpacity(

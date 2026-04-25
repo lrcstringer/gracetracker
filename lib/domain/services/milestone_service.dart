@@ -1,11 +1,9 @@
 import '../entities/habit.dart';
-import '../entities/scripture.dart';
 
 class Milestone {
   final String id;
   final double threshold;
   final String message;
-  final Scripture? verse;
   final bool isReached;
   final String? progressHint;
 
@@ -13,13 +11,12 @@ class Milestone {
     required this.id,
     required this.threshold,
     required this.message,
-    this.verse,
     required this.isReached,
     this.progressHint,
   });
 
   Milestone copyWith({String? progressHint}) => Milestone(
-    id: id, threshold: threshold, message: message, verse: verse,
+    id: id, threshold: threshold, message: message,
     isReached: isReached, progressHint: progressHint ?? this.progressHint,
   );
 }
@@ -180,7 +177,6 @@ class MilestoneService {
   }
 
   List<Milestone> _buildMilestones(Habit habit) {
-    final anchor = ScriptureLibrary.anchorVerse(habit.category);
     switch (habit.trackingType) {
       case HabitTrackingType.timed:
         final total = habit.totalValue();
@@ -190,7 +186,7 @@ class MilestoneService {
         ].map((t) => Milestone(
           id: 'timed_${t.$1.toInt()}', threshold: t.$1.toDouble(),
           message: '${t.$2} given to God through ${habit.name.toLowerCase()}.',
-          verse: anchor, isReached: total >= t.$1,
+          isReached: total >= t.$1,
         )).toList();
 
       case HabitTrackingType.count:
@@ -201,7 +197,7 @@ class MilestoneService {
         ].map((t) => Milestone(
           id: 'count_${t.$1.toInt()}', threshold: t.$1.toDouble(),
           message: '${t.$2} $unit. Every one counts.',
-          verse: anchor, isReached: total >= t.$1,
+          isReached: total >= t.$1,
         )).toList();
 
       case HabitTrackingType.checkIn:
@@ -211,7 +207,7 @@ class MilestoneService {
         ].map((t) => Milestone(
           id: 'checkin_${t.$1.toInt()}', threshold: t.$1.toDouble(),
           message: '${t.$2} of ${habit.name.toLowerCase()}. That\'s faithfulness.',
-          verse: anchor, isReached: days >= t.$1,
+          isReached: days >= t.$1,
         )).toList();
 
       case HabitTrackingType.abstain:
@@ -222,27 +218,26 @@ class MilestoneService {
         ].map((t) => Milestone(
           id: 'abstain_${t.$1.toInt()}', threshold: t.$1.toDouble(),
           message: '${t.$2} of freedom. Those days still stand.',
-          verse: anchor, isReached: total >= t.$1,
+          isReached: total >= t.$1,
         )).toList();
     }
   }
 
   Milestone? _milestoneFor(Habit habit, double threshold) {
-    final anchor = ScriptureLibrary.anchorVerse(habit.category);
     switch (habit.trackingType) {
       case HabitTrackingType.timed:
         final labels = {60.0: '1 hour', 600.0: '10 hours', 3000.0: '50 hours', 6000.0: '100 hours', 30000.0: '500 hours', 60000.0: '1,000 hours'};
         final label = labels[threshold];
         if (label == null) return null;
-        return Milestone(id: 'timed_${threshold.toInt()}', threshold: threshold, message: '$label given to God through ${habit.name.toLowerCase()}. What an offering.', verse: anchor, isReached: true);
+        return Milestone(id: 'timed_${threshold.toInt()}', threshold: threshold, message: '$label given to God through ${habit.name.toLowerCase()}. What an offering.', isReached: true);
       case HabitTrackingType.count:
         final unit = habit.targetUnit.isEmpty ? 'completed' : habit.targetUnit;
         final formatted = threshold >= 1000 ? '${(threshold / 1000).toStringAsFixed(0)},000' : threshold.toInt().toString();
-        return Milestone(id: 'count_${threshold.toInt()}', threshold: threshold, message: '$formatted $unit. Every single one counted.', verse: anchor, isReached: true);
+        return Milestone(id: 'count_${threshold.toInt()}', threshold: threshold, message: '$formatted $unit. Every single one counted.', isReached: true);
       case HabitTrackingType.checkIn:
-        return Milestone(id: 'checkin_${threshold.toInt()}', threshold: threshold, message: '${threshold.toInt()} days of ${habit.name.toLowerCase()}. ${threshold.toInt()} times you chose to show up.', verse: anchor, isReached: true);
+        return Milestone(id: 'checkin_${threshold.toInt()}', threshold: threshold, message: '${threshold.toInt()} days of ${habit.name.toLowerCase()}. ${threshold.toInt()} times you chose to show up.', isReached: true);
       case HabitTrackingType.abstain:
-        return Milestone(id: 'abstain_${threshold.toInt()}', threshold: threshold, message: '${threshold.toInt()} days of freedom. This is who you\'re becoming.', verse: anchor, isReached: true);
+        return Milestone(id: 'abstain_${threshold.toInt()}', threshold: threshold, message: '${threshold.toInt()} days of freedom. This is who you\'re becoming.', isReached: true);
     }
   }
 

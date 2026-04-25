@@ -10,6 +10,7 @@ import '../../theme/app_theme.dart';
 import '../../../domain/entities/accountability_partnership.dart';
 import '../../providers/accountability_provider.dart';
 import '../shared/golden_pulse_view.dart';
+import '../shared/graceway_paywall_view.dart';
 import '../shared/milestone_celebration_view.dart';
 import 'habit_detail_view.dart';
 import '../journal/journal_entry_composer.dart';
@@ -141,6 +142,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
     final isPulse = context.select<HabitProvider, bool>(
       (p) => p.checkInPulseHabitId == _habit.id,
     );
+    final isPremium = context.watch<StoreProvider>().isPremium;
     final isAbstain = _habit.trackingType == HabitTrackingType.abstain;
     final accentColor = isAbstain ? GraceWayColor.sage : GraceWayColor.golden;
 
@@ -166,7 +168,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                 ],
                 if (isAbstain && !widget.isRetroactive) ...[
                   const SizedBox(height: 12),
-                  _partnerStrip(context),
+                  _partnerStrip(context, isPremium: isPremium),
                 ],
               ],
             ),
@@ -328,10 +330,44 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
     );
   }
 
-  Widget _partnerStrip(BuildContext context) {
+  Widget _partnerStrip(BuildContext context, {required bool isPremium}) {
     final partnership = context
         .watch<AccountabilityProvider>()
         .partnershipForHabit(_habit.id);
+
+    if (partnership == null && !isPremium) {
+      return GestureDetector(
+        onTap: () => showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          backgroundColor: GraceWayColor.charcoal,
+          builder: (_) => const GraceWayPaywallView(
+            contextTitle: 'Prayer Partner — Premium',
+            contextMessage: 'Invite someone to walk with you on this journey.',
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: GraceWayColor.golden.withValues(alpha: 0.06),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.18), width: 0.5),
+          ),
+          child: Row(children: [
+            const Icon(Icons.workspace_premium, size: 14, color: GraceWayColor.golden),
+            const SizedBox(width: 5),
+            Expanded(
+              child: Text(
+                'Add a support/prayer partner',
+                style: TextStyle(fontSize: 12, color: GraceWayColor.golden.withValues(alpha: 0.8)),
+              ),
+            ),
+            Icon(Icons.lock_outline, size: 12, color: GraceWayColor.golden.withValues(alpha: 0.5)),
+          ]),
+        ),
+      );
+    }
 
     if (partnership == null) {
       final accountabilityProv = context.watch<AccountabilityProvider>();
