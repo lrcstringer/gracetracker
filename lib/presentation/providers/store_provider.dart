@@ -95,6 +95,7 @@ class StoreProvider extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
 
     final available = await _iap.isAvailable();
+    debugPrint('[IAP] store available: $available');
     if (!available) {
       isLoading = false;
       notifyListeners();
@@ -173,8 +174,12 @@ class StoreProvider extends ChangeNotifier with WidgetsBindingObserver {
   Future<void> _loadProducts() async {
     try {
       final response = await _iap.queryProductDetails(GraceWayProducts.all);
+      debugPrint('[IAP] products found: ${response.productDetails.map((p) => p.id).toList()}');
+      debugPrint('[IAP] not found IDs: ${response.notFoundIDs}');
+      debugPrint('[IAP] error: ${response.error}');
       _products = {for (final p in response.productDetails) p.id: p};
     } catch (e) {
+      debugPrint('[IAP] queryProductDetails threw: $e');
       error = e.toString();
     }
   }

@@ -26,7 +26,6 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
   late final Animation<double> _burstOpacity;
   late final Animation<double> _contentScale;
   late final Animation<double> _contentOpacity;
-  bool _showVerse = false;
 
   @override
   void initState() {
@@ -49,9 +48,6 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
     );
 
     _controller.forward();
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (mounted) setState(() => _showVerse = true);
-    });
   }
 
   @override
@@ -191,40 +187,6 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
               height: 1.4,
             ),
           ),
-          if (_showVerse && widget.milestone.verse != null) ...[
-            const SizedBox(height: 16),
-            AnimatedOpacity(
-              opacity: _showVerse ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 400),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  children: [
-                    Text(
-                      '\u201C${widget.milestone.verse!.text}\u201D',
-                      textAlign: TextAlign.center,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: GraceWayColor.softGold.withValues(alpha: 0.5),
-                        fontSize: 12,
-                        fontStyle: FontStyle.italic,
-                        height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      widget.milestone.verse!.reference,
-                      style: TextStyle(
-                        color: GraceWayColor.golden.withValues(alpha: 0.4),
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
           const SizedBox(height: 24),
           GestureDetector(
             onTap: _dismiss,

@@ -26,6 +26,6 @@ class JournalTheme {
     textSecondary:  Color(0xFF6B5035),
     accentAction:   Color(0xFFC4894A),
     accentMuted:    Color(0xFFDDD0C0),
-    heroImageAsset: 'assets/Journalling.webp',
+    heroImageAsset: 'assets/journal/seadistantmod.webp',
   );
 }

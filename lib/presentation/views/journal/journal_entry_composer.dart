@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import '../../../domain/entities/journal_entry.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/journal_theme.dart';
@@ -39,13 +36,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
   bool _isSaving = false;
   Habit? _linkedHabit;
 
-  // Dictation
-  final _speech = SpeechToText();
-  bool _speechAvailable = false;
-  bool _isListening = false;
-  int _dictationStartIndex = 0;
-  String _lastDictationText = '';
-
   bool get _isEditMode => widget.initialEntry != null;
 
   @override
@@ -71,12 +61,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
         if (mounted) _editorFocusNode.requestFocus();
       });
     }
-
-    _speech.initialize(onError: (_) {
-      if (mounted) setState(() => _isListening = false);
-    }).then((available) {
-      if (mounted) setState(() => _speechAvailable = available);
-    });
   }
 
   @override
@@ -85,65 +69,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
     _editorFocusNode.dispose();
     _editorScrollController.dispose();
     super.dispose();
-  }
-
-  // ── Voice dictation ─────────────────────────────────────────────────────
-
-  Future<void> _toggleDictation() async {
-    if (_isListening) {
-      await _speech.stop();
-      setState(() { _isListening = false; _lastDictationText = ''; });
-      return;
-    }
-    if (!_speechAvailable) return;
-
-    // Android speech recognition uses Google's network API — guard offline.
-    if (Platform.isAndroid) {
-      final results = await Connectivity().checkConnectivity();
-      if (results.every((r) => r == ConnectivityResult.none)) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Voice dictation requires an internet connection on Android.'),
-            duration: Duration(seconds: 3),
-          ));
-        }
-        return;
-      }
-    }
-
-    _editorFocusNode.requestFocus();
-    final sel = _textController.selection;
-    _dictationStartIndex = sel.isValid ? sel.baseOffset : _textController.document.length - 1;
-    _lastDictationText = '';
-    setState(() => _isListening = true);
-
-    await _speech.listen(
-      onResult: (result) {
-        final words = result.recognizedWords;
-        if (words.isEmpty) return;
-        _textController.replaceText(
-          _dictationStartIndex,
-          _lastDictationText.length,
-          words,
-          TextSelection.collapsed(offset: _dictationStartIndex + words.length),
-        );
-        _lastDictationText = words;
-        if (result.finalResult) {
-          final end = _dictationStartIndex + words.length;
-          _textController.replaceText(end, 0, ' ',
-              TextSelection.collapsed(offset: end + 1));
-          _dictationStartIndex = end + 1;
-          _lastDictationText = '';
-          if (mounted) setState(() => _isListening = false);
-        }
-      },
-      pauseFor: const Duration(seconds: 3),
-      listenOptions: SpeechListenOptions(
-        listenMode: ListenMode.dictation,
-        cancelOnError: true,
-        autoPunctuation: true,
-      ),
-    );
   }
 
   // ── Save ────────────────────────────────────────────────────────────────
@@ -367,17 +292,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
                 showSearchButton: false,
                 showSubscript: false,
                 showSuperscript: false,
-                customButtons: [
-                  QuillToolbarCustomButtonOptions(
-                    icon: Icon(
-                      _isListening ? Icons.mic : Icons.mic_none_rounded,
-                      color: _isListening ? Colors.red : theme.textSecondary,
-                      size: 18,
-                    ),
-                    onPressed: _speechAvailable ? _toggleDictation : null,
-                    tooltip: _isListening ? 'Stop dictation' : 'Dictate',
-                  ),
-                ],
                 iconTheme: QuillIconTheme(
                   iconButtonUnselectedData: IconButtonData(
                     color: theme.textSecondary,
