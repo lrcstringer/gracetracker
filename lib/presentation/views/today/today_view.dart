@@ -134,7 +134,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                   pinned: true,
                   automaticallyImplyLeading: false,
                   title: const Text(
-                    'GraceWay',
+                    'Grace Tracker',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -175,7 +175,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
-                                'GraceWay',
+                                'Grace Tracker',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 28,
@@ -267,9 +267,6 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                         catProvider,
                       ),
 
-                      // Add habit / limit section
-                      _addHabitSection(userHabits.length, atLimit, isPremium),
-
                       const SizedBox(height: 80),
                     ],
                   ),
@@ -278,12 +275,12 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
           ),
         ),
 
-        // Add a habit — pinned bottom-right, hidden when at limit or in retroactive mode.
-        if (!_isRetroactive && !atLimit)
+        // Add a habit — always visible unless in retroactive mode.
+        if (!_isRetroactive)
           Positioned(
             bottom: 24,
             right: 20,
-            child: _addHabitButton(),
+            child: _addHabitButton(atLimit: atLimit),
           ),
 
       ],
@@ -373,48 +370,9 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     );
   }
 
-  Widget _addHabitSection(int userHabitCount, bool atLimit, bool isPremium) {
-    if (atLimit) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-        child: GestureDetector(
-          onTap: () => _showPaywall(context),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: GraceWayColor.golden.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.workspace_premium, color: GraceWayColor.golden, size: 18),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Unlock unlimited habits',
-                          style: TextStyle(fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite, fontSize: 13)),
-                      Text('Free plan includes $_freeHabitLimit habits. Upgrade to add more.',
-                          style: TextStyle(fontSize: 11, color: GraceWayColor.softGold.withValues(alpha: 0.6))),
-                    ],
-                  ),
-                ),
-                Icon(Icons.chevron_right, color: GraceWayColor.golden.withValues(alpha: 0.5), size: 16),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
-    return const SizedBox.shrink();
-  }
-
-  Widget _addHabitButton() {
+  Widget _addHabitButton({required bool atLimit}) {
     return FloatingActionButton.extended(
-      onPressed: () => _showAddHabit(context),
+      onPressed: () => atLimit ? _showPaywall(context) : _showAddHabit(context),
       backgroundColor: GraceWayColor.softGold.withValues(alpha: 0.12),
       foregroundColor: GraceWayColor.softGold,
       elevation: 0,

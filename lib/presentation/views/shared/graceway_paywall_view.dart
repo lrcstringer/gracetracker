@@ -108,7 +108,7 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
             size: 28, color: GraceWayColor.golden),
       ),
       const SizedBox(height: 10),
-      const Text('GraceWay Pro',
+      const Text('Grace Tracker Pro',
           style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
@@ -329,7 +329,7 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
             const Icon(Icons.check_circle_rounded,
                 color: GraceWayColor.sage, size: 18),
             const SizedBox(width: 8),
-            const Text('Welcome to GraceWay Pro',
+            const Text('Welcome to Grace Tracker Pro',
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,

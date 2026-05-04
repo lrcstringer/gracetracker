@@ -511,8 +511,8 @@ class _EditHabitViewState extends State<EditHabitView> {
 
   Future<void> _sharePartnerLink(String url, String shortCode) async {
     await Share.share(
-        'Please walk with me on my journey — open GraceWay on your phone '
-        'and accept my prayer partner invite. If you don\'t have GraceWay, '
+        'Please walk with me on my journey — open Grace Tracker on your phone '
+        'and accept my prayer partner invite. If you don\'t have Grace Tracker, '
         'download it and tap this link: $url\n\nOr enter code $shortCode in the app.');
   }
 

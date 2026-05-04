@@ -35,6 +35,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
 
   bool _saving = false;
   bool _deleting = false;
+  bool _isLeaving = false;
   String? _error;
   bool _dirty = false;
 
@@ -171,9 +172,12 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    final text = 'Join my Prayer Circle "${widget.circleName}" on GraceWay!\n\n'
-                        'Tap to join: https://graceway.faith/join?code=${widget.inviteCode}\n\n'
-                        'Or enter invite code "${widget.inviteCode}" manually in the app.';
+                    final text = 'Join my Prayer Circle "${widget.circleName}" on Grace Tracker!\n\n'
+                        'Your invite code: ${widget.inviteCode}\n\n'
+                        'Already have the app? Go to Circles → Join with Invite Code → enter ${widget.inviteCode}\n\n'
+                        "Don't have the app yet?\n"
+                        'Android: https://play.google.com/store/apps/details?id=com.gracetracker.com\n'
+                        'iPhone: https://apps.apple.com/app/grace-tracker/id[APP_STORE_ID]';
                     Share.share(text);
                   },
                   icon: const Icon(Icons.share_rounded, size: 16),
@@ -204,6 +208,14 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
 
           // ── Danger Zone ─────────────────────────────────────────────────
           _sectionHeader('Danger Zone'),
+          const SizedBox(height: 8),
+          _dangerButton(
+            icon: Icons.logout_rounded,
+            label: 'Leave Circle',
+            subtitle: 'Remove yourself from this circle',
+            onTap: _confirmLeave,
+            loading: _isLeaving,
+          ),
           const SizedBox(height: 8),
           _dangerButton(
             icon: Icons.delete_forever_rounded,
@@ -428,6 +440,43 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
         ],
       ),
     );
+  }
+
+  void _confirmLeave() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: GraceWayColor.cardBackground,
+        title: const Text('Leave Circle',
+            style: TextStyle(color: GraceWayColor.warmWhite, fontSize: 16)),
+        content: Text(
+          "You'll no longer receive prayer requests or see this circle's progress.",
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel',
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
+          ),
+          TextButton(
+            onPressed: () { Navigator.pop(context); _leaveCircle(); },
+            child: const Text('Leave',
+                style: TextStyle(color: GraceWayColor.warmCoral, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _leaveCircle() async {
+    setState(() { _isLeaving = true; _error = null; });
+    try {
+      await context.read<CircleRepository>().leaveCircle(widget.circleId);
+      if (mounted) Navigator.pop(context, 'left');
+    } catch (e) {
+      if (mounted) setState(() { _error = e.toString(); _isLeaving = false; });
+    }
   }
 
   void _confirmDelete() {

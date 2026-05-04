@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/repositories/circle_repository.dart';
@@ -35,12 +37,33 @@ class _CreateCircleViewState extends State<CreateCircleView> {
       final response = await context.read<CircleRepository>().createCircle(
         name,
         description: _descController.text.trim(),
-      );
+      ).timeout(const Duration(seconds: 12));
       if (!mounted) return;
       widget.onCreated?.call(response);
       Navigator.pop(context);
-    } catch (e) {
-      if (mounted) setState(() { _error = e.toString(); _isLoading = false; });
+    } on TimeoutException {
+      if (mounted) {
+        setState(() {
+          _error = 'No connection. Check your internet and try again.';
+          _isLoading = false;
+        });
+      }
+    } on FirebaseException catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = (e.code == 'unavailable' || e.code == 'deadline-exceeded')
+              ? 'No connection. Check your internet and try again.'
+              : 'Something went wrong. Please try again.';
+          _isLoading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _error = 'Something went wrong. Please try again.';
+          _isLoading = false;
+        });
+      }
     }
   }
 

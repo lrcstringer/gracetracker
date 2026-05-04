@@ -171,53 +171,14 @@ class _CirclesListViewState extends State<_CirclesListView> {
   void _openCreate() => showModalBottomSheet(
     context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: GraceWayColor.charcoal,
     builder: (_) => CreateCircleView(
-      onCreated: (c) => setState(() => _circles.insert(0, Circle(
-        id: c.id, name: c.name, description: '', memberCount: 1, role: 'admin', inviteCode: c.inviteCode,
-      ))),
+      onCreated: (c) => setState(() {
+        _circles.insert(0, Circle(
+          id: c.id, name: c.name, description: '', memberCount: 1, role: 'admin', inviteCode: c.inviteCode,
+        ));
+        _error = null;
+      }),
     ),
   );
-
-  void _showAddSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: GraceWayColor.cardBackground,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 8),
-            Container(width: 36, height: 4,
-                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2))),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: Container(
-                width: 40, height: 40,
-                decoration: BoxDecoration(color: GraceWayColor.golden.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
-                child: const Icon(Icons.add_circle_outline, color: GraceWayColor.golden, size: 20),
-              ),
-              title: const Text('Create Circle', style: TextStyle(color: GraceWayColor.warmWhite, fontWeight: FontWeight.w600)),
-              subtitle: Text('Start a new prayer circle', style: TextStyle(color: Colors.white.withValues(alpha: 0.45), fontSize: 12)),
-              onTap: () { Navigator.pop(context); _openCreate(); },
-            ),
-            ListTile(
-              leading: Container(
-                width: 40, height: 40,
-                decoration: BoxDecoration(color: GraceWayColor.golden.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
-                child: const Icon(Icons.group_add_outlined, color: GraceWayColor.golden, size: 20),
-              ),
-              title: const Text('Join Circle', style: TextStyle(color: GraceWayColor.warmWhite, fontWeight: FontWeight.w600)),
-              subtitle: Text('Enter an invite code', style: TextStyle(color: Colors.white.withValues(alpha: 0.45), fontSize: 12)),
-              onTap: () { Navigator.pop(context); _openJoin(); },
-            ),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -225,11 +186,48 @@ class _CirclesListViewState extends State<_CirclesListView> {
 
     return Scaffold(
       backgroundColor: GraceWayColor.charcoal,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: GraceWayColor.golden,
-        foregroundColor: GraceWayColor.charcoal,
-        onPressed: () => _showAddSheet(context),
-        child: const Icon(Icons.add),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+          decoration: BoxDecoration(
+            color: GraceWayColor.charcoal,
+            border: Border(
+              top: BorderSide(color: Colors.white.withValues(alpha: 0.06), width: 0.5),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _openCreate,
+                  icon: const Icon(Icons.add_circle_outline_rounded, size: 16),
+                  label: const Text('Create a Circle',
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: GraceWayColor.golden,
+                    foregroundColor: GraceWayColor.charcoal,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                  ),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: _openJoin,
+                icon: Icon(Icons.group_add_rounded,
+                    size: 16,
+                    color: GraceWayColor.softGold.withValues(alpha: 0.75)),
+                label: Text('Join with Invite Code',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: GraceWayColor.softGold.withValues(alpha: 0.75))),
+              ),
+            ],
+          ),
+        ),
       ),
       body: CustomScrollView(
           slivers: [
@@ -239,7 +237,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
               expandedHeight: imageHeight,
               pinned: true,
               title: const Text(
-                'GraceWay',
+                'Grace Tracker',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -388,30 +386,6 @@ class _CirclesListViewState extends State<_CirclesListView> {
       Text('Create a circle to pray with friends,\nor join one with an invite code.',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.45))),
-      const SizedBox(height: 32),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(children: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _openCreate,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: GraceWayColor.golden, foregroundColor: GraceWayColor.charcoal,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-              ),
-              child: const Text('Create a Circle', style: TextStyle(fontWeight: FontWeight.w600)),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: _openJoin,
-            child: const Text('Join with Code',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: GraceWayColor.golden)),
-          ),
-        ]),
-      ),
     ]);
   }
 }

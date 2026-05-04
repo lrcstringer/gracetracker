@@ -392,7 +392,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Enter their GraceWay email address and they\'ll receive an in-app notification immediately.',
+                          'Enter their Grace Tracker email address and they\'ll receive an in-app notification immediately.',
                           style: TextStyle(
                               color: GraceWayColor.warmWhite, fontSize: 13, height: 1.5),
                         ),
@@ -454,17 +454,17 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                     messenger.showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Invitation sent! They\'ll see it in their GraceWay notifications. '
+                          'Invitation sent! They\'ll see it in their Grace Tracker notifications. '
                           'Share code as backup: ${result.shortCode}',
                         ),
                         duration: const Duration(seconds: 6),
                       ),
                     );
                   } else {
-                    // No GraceWay account found — share the link.
+                    // No Grace Tracker account found — share the link.
                     await Share.share(
-                      'Please walk with me on my journey — open GraceWay on your phone '
-                      'and accept my prayer partner invite. If you don\'t have GraceWay, '
+                      'Please walk with me on my journey — open Grace Tracker on your phone '
+                      'and accept my prayer partner invite. If you don\'t have Grace Tracker, '
                       'download it and tap this link: ${result.shareUrl}\n\n'
                       'Or enter code ${result.shortCode} in the app.',
                     );
@@ -778,16 +778,31 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
   }
 
   void _openJournal(BuildContext context) {
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute(
-        builder: (_) => JournalEntryComposer(
-          habitId: _habit.id,
-          habitName: _habit.name,
-          sourceType: 'habit',
+    final isPremium = context.read<StoreProvider>().isPremium;
+    if (isPremium) {
+      // Premium: open composer directly from the habit card.
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute(
+          builder: (_) => JournalEntryComposer(
+            habitId: _habit.id,
+            habitName: _habit.name,
+            sourceType: 'habit',
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: GraceWayColor.charcoal,
+        builder: (_) => const GraceWayPaywallView(
+          contextTitle: 'Journal — Premium',
+          contextMessage: 'Capture your thoughts and reflections alongside your habits.',
+        ),
+      );
+    }
   }
 
   void _showDetail(BuildContext context) {

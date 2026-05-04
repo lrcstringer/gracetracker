@@ -145,7 +145,7 @@ class NotificationService {
       final body = _reminderMessages[i % _reminderMessages.length];
       await _plugin.zonedSchedule(
         100 + i,
-        'GraceWay',
+        'Grace Tracker',
         body,
         _nextWeekday(i + 1, hour, minute),
         NotificationDetails(
@@ -230,7 +230,7 @@ class NotificationService {
     final body = messages[messageIdx];
 
     await _plugin.zonedSchedule(
-      99999, 'GraceWay', body,
+      99999, 'Grace Tracker', body,
       _toTZDateTime(scheduled),
       NotificationDetails(
         android: const AndroidNotificationDetails('encouragement', 'Encouragement', importance: Importance.defaultImportance),

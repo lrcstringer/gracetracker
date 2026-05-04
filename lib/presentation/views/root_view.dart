@@ -70,7 +70,7 @@ class _RootViewState extends State<RootView> {
 
   void _handleLink(Uri uri, PendingInviteService inviteService,
       PendingPartnerTokenService partnerTokenService) {
-    // Circle invite:  graceway://join?code=XXXX  or  https://graceway.faith/join?code=XXXX
+    // Circle invite:  graceway://join?code=XXXX
     final code = uri.queryParameters['code'];
     if (code != null && code.isNotEmpty) {
       inviteService.save(code);
@@ -84,7 +84,7 @@ class _RootViewState extends State<RootView> {
       return;
     }
 
-    // Partner invite (HTTPS App Link): https://graceway.faith/accountability/accept/TOKEN
+    // Partner invite (HTTPS App Link): https://gracetracker.com/accountability/accept/TOKEN
     final segments = uri.pathSegments;
     if (segments.length >= 3 &&
         segments[0] == 'accountability' &&

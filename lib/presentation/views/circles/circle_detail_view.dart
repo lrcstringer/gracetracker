@@ -10,6 +10,7 @@ import '../../theme/app_theme.dart';
 import 'circle_sunday_summary_view.dart';
 import 'gratitude_wall_view.dart' show GratitudeWallWidget;
 import 'circle_settings_view.dart';
+import 'package:share_plus/share_plus.dart';
 import 'announcement_compose_view.dart';
 import 'prayer_request_compose_view.dart';
 
@@ -26,7 +27,6 @@ class _CircleDetailViewState extends State<CircleDetailView> {
   bool _isLoading = true;
   String? _error;
   bool _wasOffline = false;
-  bool _isLeaving = false;
   CircleHeatmap? _heatmap;
   bool _heatmapFailed = false;
   CollectiveMilestones? _milestones;
@@ -90,28 +90,11 @@ class _CircleDetailViewState extends State<CircleDetailView> {
     }
   }
 
-  Future<void> _leaveCircle() async {
-    final messenger = ScaffoldMessenger.of(context);
-    final repo = context.read<CircleRepository>();
-    if (await _isOffline()) {
-      messenger.showSnackBar(
-        const SnackBar(content: Text('No internet connection. Please connect and try again.')),
-      );
-      return;
-    }
-    setState(() => _isLeaving = true);
-    try {
-      await repo.leaveCircle(widget.circleId);
-      if (mounted) Navigator.pop(context);
-    } catch (e) {
-      if (mounted) setState(() { _error = e.toString(); _isLeaving = false; });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: GraceWayColor.charcoal,
+      bottomNavigationBar: _detail != null ? _inviteBar(_detail!) : null,
       body: _buildBody(),
     );
   }
@@ -188,8 +171,6 @@ class _CircleDetailViewState extends State<CircleDetailView> {
           milestonesFailed: _milestonesFailed,
           onSummaryTap: () => _showSundaySummary(detail),
           onPrayerRequestTap: () => _openPrayerRequest(detail),
-          onLeaveTap: _confirmLeave,
-          isLeaving: _isLeaving,
         ),
       ),
     );
@@ -215,7 +196,7 @@ class _CircleDetailViewState extends State<CircleDetailView> {
       ),
     ));
     if (!mounted) return;
-    if (result == 'deleted') {
+    if (result == 'deleted' || result == 'left') {
       Navigator.pop(context);
     } else {
       _loadDetail();
@@ -238,28 +219,41 @@ class _CircleDetailViewState extends State<CircleDetailView> {
     );
   }
 
-  void _confirmLeave() {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: GraceWayColor.cardBackground,
-        title: const Text('Leave Circle', style: TextStyle(color: GraceWayColor.warmWhite)),
-        content: Text(
-          "You'll no longer receive prayer requests or see this circle's progress.",
-          style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+  Widget _inviteBar(CircleDetails detail) {
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+        decoration: BoxDecoration(
+          color: GraceWayColor.charcoal,
+          border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.06), width: 0.5)),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
+        child: SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: () => _shareInvite(detail),
+            icon: const Icon(Icons.person_add_alt_1_rounded, size: 16),
+            label: const Text('Invite Friends to Join',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: GraceWayColor.golden,
+              foregroundColor: GraceWayColor.charcoal,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
           ),
-          TextButton(
-            onPressed: () { Navigator.pop(context); _leaveCircle(); },
-            child: const Text('Leave', style: TextStyle(color: GraceWayColor.warmCoral)),
-          ),
-        ],
+        ),
       ),
     );
+  }
+
+  void _shareInvite(CircleDetails detail) {
+    final text = 'Join my Prayer Circle "${detail.name}" on Grace Tracker!\n\n'
+        'Your invite code: ${detail.inviteCode}\n\n'
+        'Already have the app? Go to Circles → Join with Invite Code → enter ${detail.inviteCode}\n\n'
+        "Don't have the app yet?\n"
+        'Android: https://play.google.com/store/apps/details?id=com.gracetracker.com\n'
+        'iPhone: https://apps.apple.com/app/grace-tracker/id[APP_STORE_ID]';
+    Share.share(text);
   }
 }
 
@@ -274,9 +268,6 @@ class _OverviewTab extends StatelessWidget {
   final bool milestonesFailed;
   final VoidCallback onSummaryTap;
   final VoidCallback onPrayerRequestTap;
-  final VoidCallback onLeaveTap;
-  final bool isLeaving;
-
   const _OverviewTab({
     required this.circleId,
     required this.detail,
@@ -286,8 +277,6 @@ class _OverviewTab extends StatelessWidget {
     required this.milestonesFailed,
     required this.onSummaryTap,
     required this.onPrayerRequestTap,
-    required this.onLeaveTap,
-    required this.isLeaving,
   });
 
   @override
@@ -324,8 +313,6 @@ class _OverviewTab extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 8),
           child: _memberRow(context, m),
         )),
-        const SizedBox(height: 16),
-        _leaveButton(),
       ],
     );
   }
@@ -505,28 +492,6 @@ class _OverviewTab extends StatelessWidget {
     );
   }
 
-  Widget _leaveButton() {
-    return GestureDetector(
-      onTap: isLeaving ? null : onLeaveTap,
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
-        ),
-        child: Row(children: [
-          const Icon(Icons.logout_rounded, size: 16, color: GraceWayColor.warmCoral),
-          const SizedBox(width: 10),
-          const Expanded(child: Text('Leave Circle',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: GraceWayColor.warmCoral))),
-          if (isLeaving)
-            const SizedBox(width: 16, height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.warmCoral)),
-        ]),
-      ),
-    );
-  }
 }
 
 // ─── Supporting types ─────────────────────────────────────────────────────────

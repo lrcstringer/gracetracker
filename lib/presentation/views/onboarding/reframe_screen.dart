@@ -46,7 +46,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
-              'GraceWay works\na bit differently.',
+              'Grace Tracker works\na bit differently.',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite, height: 1.3),
             ),
             const SizedBox(height: 28),
@@ -101,7 +101,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
                     offset: _showRight ? Offset.zero : const Offset(0.3, 0),
                     duration: const Duration(milliseconds: 500),
                     child: Column(children: [
-                      const Text('GraceWay',
+                      const Text('Grace Tracker',
                           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
                       const SizedBox(height: 12),
                       Container(
@@ -147,7 +147,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
                 offset: _showPoints ? Offset.zero : const Offset(0, 0.2),
                 duration: const Duration(milliseconds: 500),
                 child: Column(children: [
-                  _reframePoint(Icons.favorite_rounded, 'Most apps track your performance. GraceWay tracks what you\u2019re giving to God.'),
+                  _reframePoint(Icons.favorite_rounded, 'Most apps track your performance. Grace Tracker tracks what you\u2019re giving to God.'),
                   _reframePoint(Icons.refresh_rounded, 'No streaks. Every week is a fresh start. 5 out of 7 is still a gift.'),
                   _reframePoint(Icons.back_hand_rounded, 'We\u2019ll never tell you that you failed. We\u2019ll meet you wherever you are.'),
 

@@ -125,7 +125,7 @@ class _JournalTabState extends State<JournalTab> {
             pinned: true,
             automaticallyImplyLeading: false,
             title: Text(
-              'GraceWay',
+              'Grace Tracker',
               style: TextStyle(
                 color: theme.textPrimary,
                 fontWeight: FontWeight.bold,

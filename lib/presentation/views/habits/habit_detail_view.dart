@@ -430,7 +430,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
               children: [
                 Row(
                   children: [
-                    Text('Year in GraceWay',
+                    Text('Year in Grace Tracker',
                         style: TextStyle(
                             fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
                     const Spacer(),
@@ -455,7 +455,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                 children: [
                   Row(
                     children: [
-                      Text('Year in GraceWay',
+                      Text('Year in Grace Tracker',
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -496,7 +496,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                     children: [
                       Icon(Icons.lock_outline, size: 13, color: GraceWayColor.golden),
                       const SizedBox(width: 6),
-                      Text('Unlock with GraceWay Pro',
+                      Text('Unlock with Grace Tracker Pro',
                           style: TextStyle(
                               fontSize: 12, color: GraceWayColor.softGold)),
                       const Spacer(),

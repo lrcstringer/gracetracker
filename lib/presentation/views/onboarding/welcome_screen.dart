@@ -88,16 +88,35 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         scale: _showTitle ? 1.0 : 0.8,
                         duration: const Duration(milliseconds: 900),
                         curve: Curves.easeOut,
-                        child: Container(
+                        child: SizedBox(
                           width: 280,
                           height: 280,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: RadialGradient(colors: [
-                              Colors.white.withValues(alpha: 0.04 + b * 0.08),
-                              GraceWayColor.golden.withValues(alpha: 0.08 + b * 0.17),
-                              Colors.transparent,
-                            ]),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: 280,
+                                height: 280,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: RadialGradient(colors: [
+                                    Colors.white.withValues(alpha: 0.04 + b * 0.08),
+                                    GraceWayColor.golden.withValues(alpha: 0.08 + b * 0.17),
+                                    Colors.transparent,
+                                  ]),
+                                ),
+                              ),
+                              Text(
+                                'Grace Tracker',
+                                style: TextStyle(
+                                  fontSize: 42,
+                                  fontWeight: FontWeight.w700,
+                                  color: GraceWayColor.warmWhite.withValues(alpha: 0.92),
+                                  letterSpacing: 1.5,
+                                  height: 1.0,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

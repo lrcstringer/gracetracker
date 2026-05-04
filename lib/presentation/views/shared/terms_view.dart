@@ -237,7 +237,7 @@ class _TermsContent extends StatelessWidget {
         _body(
           'If you have questions about these Terms or this Privacy Policy, '
           'please contact us at:\n\n'
-          'GraceWay Support\nsupport@graceway.faith',
+          'Grace Tracker Support\nsupport@gracetracker.com',
         ),
 
         const SizedBox(height: 32),

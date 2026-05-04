@@ -113,9 +113,17 @@ class FirestoreCircleRepository implements CircleRepository {
   @override
   Future<List<Circle>> listCircles() async {
     final uid = _uid;
-    final memberSnaps = await _queryWithFallback(_db
-        .collectionGroup('members')
-        .where('userId', isEqualTo: uid));
+    final QuerySnapshot memberSnaps;
+    try {
+      memberSnaps = await _queryWithFallback(_db
+          .collectionGroup('members')
+          .where('userId', isEqualTo: uid));
+    } on FirebaseException catch (e) {
+      // permission-denied on a collectionGroup query means the user has no
+      // membership documents yet — treat as an empty list, not a load error.
+      if (e.code == 'permission-denied') return [];
+      rethrow;
+    }
     if (memberSnaps.docs.isEmpty) return [];
 
     final circleIds =
@@ -127,7 +135,7 @@ class FirestoreCircleRepository implements CircleRepository {
       final data = s.data()! as Map<String, dynamic>;
       final membership = memberSnaps.docs
           .firstWhere((m) => m.reference.parent.parent!.id == s.id)
-          .data();
+          .data() as Map<String, dynamic>;
       return Circle(
         id: s.id,
         name: data['name'] as String? ?? '',
@@ -151,6 +159,29 @@ class FirestoreCircleRepository implements CircleRepository {
     final membersSnap = results[1] as QuerySnapshot;
     if (!snap.exists) throw Exception('Circle not found');
     final data = snap.data()! as Map<String, dynamic>;
+
+    // Fetch each member's user profile to get their app-entered name.
+    // Falls back to the auth-sourced displayName stored on the membership doc
+    // if the profile is unreadable (permission, network, or missing doc).
+    final memberDocs = membersSnap.docs;
+    final userIds = memberDocs
+        .map((m) => (m.data() as Map<String, dynamic>)['userId'] as String? ?? '')
+        .where((id) => id.isNotEmpty)
+        .toList();
+
+    final appNames = <String, String>{};
+    await Future.wait(userIds.map((uid) async {
+      try {
+        final userSnap = await _getWithFallback(_db.collection('users').doc(uid));
+        if (userSnap.exists) {
+          final n = userSnap.data()?['name'] as String?;
+          if (n != null && n.isNotEmpty) appNames[uid] = n;
+        }
+      } catch (_) {
+        // Silently fall back to stored displayName for this member.
+      }
+    }));
+
     return CircleDetails(
       id: snap.id,
       name: data['name'] as String? ?? '',
@@ -158,13 +189,14 @@ class FirestoreCircleRepository implements CircleRepository {
       memberCount: data['memberCount'] as int? ?? 0,
       inviteCode: data['inviteCode'] as String? ?? '',
       createdAt: _tsToIso(data['createdAt']),
-      members: membersSnap.docs.map((m) {
+      members: memberDocs.map((m) {
         final md = m.data() as Map<String, dynamic>;
+        final uid = md['userId'] as String? ?? '';
         return CircleMember(
-          userId: md['userId'] as String? ?? '',
+          userId: uid,
           role: md['role'] as String? ?? 'member',
           joinedAt: _tsToIso(md['joinedAt']),
-          displayName: md['displayName'] as String? ?? 'Circle Member',
+          displayName: appNames[uid] ?? md['displayName'] as String? ?? 'Circle Member',
         );
       }).toList(),
     );

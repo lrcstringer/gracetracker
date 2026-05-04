@@ -97,7 +97,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
               duration: const Duration(milliseconds: 500),
               child: Column(children: [
                 const Text(
-                  'Go deeper with\nGraceWay Pro',
+                  'Go deeper with\nGrace Tracker Pro',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 22,
