@@ -5,7 +5,8 @@
       "Bash(sed -i 's|mywalk|graceway_test|g' pubspec.yaml)",
       "Bash(sed -i 's|graceway_test|mywalk|g' pubspec.yaml)",
       "Bash(git rm *)",
-      "Bash(dart analyze *)"
+      "Bash(dart analyze *)",
+      "Bash(firebase functions:delete circleGetPulseResponses circleSubmitPulseResponse seedHabitCategories sendEncouragementPrompts sendEventReminders sendPulsePrompts --region us-central1 --force)"
     ]
   }
 }
