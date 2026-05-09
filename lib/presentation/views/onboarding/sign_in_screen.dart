@@ -54,12 +54,16 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
-  Future<void> _handleSignIn(AuthService auth) async {
-    await auth.signIn();
+  Future<void> _handleApple(AuthService auth) async {
+    await auth.signInWithApple();
     if (!mounted) return;
-    if (auth.isAuthenticated) {
-      widget.onNext();
-    }
+    if (auth.isAuthenticated) widget.onNext();
+  }
+
+  Future<void> _handleGoogle(AuthService auth) async {
+    await auth.signInWithGoogle();
+    if (!mounted) return;
+    if (auth.isAuthenticated) widget.onNext();
   }
 
   @override
@@ -200,37 +204,24 @@ class _SignInScreenState extends State<SignInScreen> {
       Padding(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
         child: Column(children: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: auth.isLoading || _isOffline ? null : () => _handleSignIn(auth),
-              icon: auth.isLoading
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: GraceWayColor.charcoal),
-                    )
-                  : Icon(
-                      isApple ? Icons.apple : Icons.g_mobiledata_rounded,
-                      size: 20,
-                    ),
-              label: Text(
-                auth.isLoading
-                    ? 'Signing in\u2026'
-                    : isApple
-                        ? 'Continue with Apple'
-                        : 'Continue with Google',
-                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: GraceWayColor.golden,
-                foregroundColor: GraceWayColor.charcoal,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          if (isApple) ...[
+            _appleButton(auth),
+            const SizedBox(height: 8),
+            // Hide-My-Email warning: relay emails won't match a Google
+            // sign-in on Android, leaving the user with two separate accounts.
+            Text(
+              'Tip: Don\u2019t pick "Hide My Email" if you want one account across iOS and Android.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 11,
+                color: Colors.white.withValues(alpha: 0.4),
+                height: 1.4,
               ),
             ),
-          ),
+            const SizedBox(height: 12),
+            _googleButton(auth, secondary: true),
+          ] else
+            _googleButton(auth, secondary: false),
           const SizedBox(height: 12),
           RichText(
             textAlign: TextAlign.center,
@@ -254,5 +245,75 @@ class _SignInScreenState extends State<SignInScreen> {
         ]),
       ),
     ]);
+  }
+
+  Widget _appleButton(AuthService auth) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: auth.isLoading || _isOffline ? null : () => _handleApple(auth),
+        icon: auth.isLoading
+            ? const SizedBox(
+                width: 18, height: 18,
+                child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.charcoal),
+              )
+            : const Icon(Icons.apple, size: 20),
+        label: Text(
+          auth.isLoading ? 'Signing in…' : 'Continue with Apple',
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: GraceWayColor.golden,
+          foregroundColor: GraceWayColor.charcoal,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
+    );
+  }
+
+  Widget _googleButton(AuthService auth, {required bool secondary}) {
+    final disabled = auth.isLoading || _isOffline;
+    if (secondary) {
+      return SizedBox(
+        width: double.infinity,
+        child: OutlinedButton.icon(
+          onPressed: disabled ? null : () => _handleGoogle(auth),
+          icon: const Icon(Icons.g_mobiledata_rounded, size: 22),
+          label: const Text(
+            'Continue with Google',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: GraceWayColor.warmWhite,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            side: BorderSide(color: GraceWayColor.cardBorder),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          ),
+        ),
+      );
+    }
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: disabled ? null : () => _handleGoogle(auth),
+        icon: auth.isLoading
+            ? const SizedBox(
+                width: 18, height: 18,
+                child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.charcoal),
+              )
+            : const Icon(Icons.g_mobiledata_rounded, size: 22),
+        label: Text(
+          auth.isLoading ? 'Signing in…' : 'Continue with Google',
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: GraceWayColor.golden,
+          foregroundColor: GraceWayColor.charcoal,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
+    );
   }
 }

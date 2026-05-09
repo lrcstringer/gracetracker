@@ -194,20 +194,32 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
 
   // ── Callbacks ─────────────────────────────────────────────────────────────
 
-  /// Called when sign-in completes. Checks Firestore before advancing so that
-  /// returning users (reinstall / new device) go straight to ContentView instead
-  /// of being walked through the full new-user onboarding flow again.
+  /// Called when sign-in completes. Returning users skip onboarding entirely;
+  /// new users are routed through the full flow.
+  ///
+  /// "Returning" is determined by either signal:
+  ///   • `AuthService.lastSignInWasNewUser == false` — Firebase's
+  ///     `additionalUserInfo.isNewUser`, the authoritative server-side
+  ///     answer to "did this sign-in match an existing UID?"
+  ///   • `tribute_onboarding_complete == true` in the Firestore prefs doc —
+  ///     a fallback for cases where isNewUser is unreliable (e.g. test
+  ///     scenarios where someone deleted only the prefs doc).
+  ///
+  /// `userPrefs.init()` always runs so the rest of the user's preferences
+  /// (onboarding date, week-cycle state) hydrate into the local cache before
+  /// `_completeOnboarding` reads them.
   Future<void> _onSignInComplete() async {
+    final auth = context.read<AuthService>();
     final userPrefs = context.read<UserPreferencesRepository>();
-    await userPrefs.init(); // Pull Firestore → local cache
+    await userPrefs.init();
     if (!mounted) return;
     final alreadyOnboarded =
         await userPrefs.getBool('tribute_onboarding_complete') ?? false;
     if (!mounted) return;
-    if (alreadyOnboarded) {
-      widget.onComplete(); // Returning user — skip all onboarding steps
+    if (!auth.lastSignInWasNewUser || alreadyOnboarded) {
+      widget.onComplete();
     } else {
-      _advance(); // New user — proceed with full onboarding
+      _advance();
     }
   }
 

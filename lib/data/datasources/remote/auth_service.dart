@@ -27,6 +27,11 @@ class AuthService extends ChangeNotifier {
   String? _error;
   // Guards against double-registration of the Firebase auth listener.
   bool _initCalled = false;
+  // True when the most recent successful sign-in created a brand-new
+  // FirebaseAuth user (vs. matching an existing one). Used by the onboarding
+  // flow to skip steps for returning users even when the Firestore prefs doc
+  // is missing (deleted, never written, offline at first sign-in).
+  bool _lastSignInWasNewUser = true;
 
   bool get isAuthenticated => _isAuthenticated;
   String? get userId => _userId;
@@ -40,6 +45,7 @@ class AuthService extends ChangeNotifier {
   String? get phone => _phone;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  bool get lastSignInWasNewUser => _lastSignInWasNewUser;
 
   /// True when the device should use Apple Sign In (iOS), false for Google (Android).
   static bool get isApplePlatform => Platform.isIOS || Platform.isMacOS;
@@ -157,6 +163,8 @@ class AuthService extends ChangeNotifier {
       final user = userCredential.user;
       if (user == null) throw StateError('Apple sign-in completed but Firebase returned a null user');
 
+      _lastSignInWasNewUser = userCredential.additionalUserInfo?.isNewUser ?? true;
+
       // Apple only provides name on the very first sign-in
       String? displayName;
       if (credential.givenName != null) {
@@ -233,6 +241,8 @@ class AuthService extends ChangeNotifier {
       final user = userCredential.user;
       if (user == null) throw StateError('Google sign-in completed but Firebase returned a null user');
 
+      _lastSignInWasNewUser = userCredential.additionalUserInfo?.isNewUser ?? true;
+
       final displayName = googleUser.displayName;
       final givenName = displayName?.split(' ').firstOrNull;
       final email = _isPrivateRelayEmail(googleUser.email) ? null : googleUser.email;
@@ -279,6 +289,11 @@ class AuthService extends ChangeNotifier {
     await prefs.remove('tribute_photo_url');
     await prefs.remove('tribute_surname');
     await prefs.remove('tribute_phone');
+    // Drive routing back to the onboarding/sign-in flow on next launch.
+    // Firestore (the source of truth) is left intact; userPrefs.init() will
+    // repopulate the cache after the next sign-in for returning users.
+    await prefs.remove('tribute_onboarding_complete');
+    await prefs.remove('tribute_onboarding_date');
     notifyListeners();
   }
 
@@ -457,6 +472,8 @@ class AuthService extends ChangeNotifier {
     final user = userCredential.user;
     if (user == null) return;
 
+    _lastSignInWasNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
+
     // Link Apple credential to the existing Google account
     await user.linkWithCredential(pendingAppleCredential);
 
@@ -505,6 +522,8 @@ class AuthService extends ChangeNotifier {
     final userCredential = await FirebaseAuth.instance.signInWithCredential(appleCredential);
     final user = userCredential.user;
     if (user == null) return;
+
+    _lastSignInWasNewUser = userCredential.additionalUserInfo?.isNewUser ?? false;
 
     // Link Google credential to the existing Apple account
     await user.linkWithCredential(pendingGoogleCredential);

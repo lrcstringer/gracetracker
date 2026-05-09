@@ -41,7 +41,7 @@ export {
   accountabilityNotifyParticipant,
   accountabilityEndForHabit,
 } from './callables/accountability';
-export { deleteAccount } from './callables/account';
+export { deleteAccount, onAuthUserDeleted } from './callables/account';
 
 // ── Scheduled: purge expired notifications ─────────────────────────────────
 import { db, Timestamp } from './lib/firestore';
