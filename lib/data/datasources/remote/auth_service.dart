@@ -124,9 +124,15 @@ class AuthService extends ChangeNotifier {
         nonce: nonce,
       );
 
+      // Use signInMethod='apple.com' to route the iOS plugin into its Apple
+      // branch (FIROAuthProvider.appleCredentialWithIDToken:rawNonce:fullName:).
+      // The default 'oauth' branch calls a 4-arg credential method with a nil
+      // accessToken; the bridge then drops rawNonce from the request body and
+      // the backend rejects with INVALID_IDP_RESPONSE.
       final oAuthCredential = OAuthProvider('apple.com').credential(
         idToken: credential.identityToken,
         rawNonce: rawNonce,
+        signInMethod: 'apple.com',
       );
 
       UserCredential userCredential;

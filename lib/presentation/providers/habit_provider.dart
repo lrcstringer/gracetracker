@@ -185,6 +185,7 @@ class HabitProvider extends ChangeNotifier {
   }
 
   Future<void> ensureGratitudeHabit() async {
+    if (!_isAuthenticated()) return;
     final gratitudes = _habits
         .where((h) => h.category == HabitCategory.gratitude)
         .toList();
