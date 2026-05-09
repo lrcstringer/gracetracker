@@ -317,8 +317,6 @@ class _CirclesListViewState extends State<_CirclesListView> {
             if (_isLoading)
               const SliverFillRemaining(
                   child: Center(child: CircularProgressIndicator(color: GraceWayColor.golden)))
-            else if (_error != null && _circles.isEmpty)
-              SliverFillRemaining(child: _errorState())
             else if (_circles.isEmpty)
               SliverFillRemaining(child: _emptyState())
             else
@@ -354,24 +352,6 @@ class _CirclesListViewState extends State<_CirclesListView> {
     );
   }
 
-  Widget _errorState() {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Icon(Icons.wifi_off_rounded, size: 48, color: Colors.white.withValues(alpha: 0.2)),
-      const SizedBox(height: 16),
-      const Text("Couldn't load circles",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
-      const SizedBox(height: 8),
-      Text('Check your connection and try again.',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.45))),
-      const SizedBox(height: 24),
-      TextButton(
-        onPressed: _loadCircles,
-        child: const Text('Retry', style: TextStyle(fontSize: 14, color: GraceWayColor.golden)),
-      ),
-    ]);
-  }
-
   Widget _emptyState() {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
@@ -380,12 +360,18 @@ class _CirclesListViewState extends State<_CirclesListView> {
         child: Icon(Icons.group_rounded, size: 36, color: GraceWayColor.golden.withValues(alpha: 0.6)),
       ),
       const SizedBox(height: 20),
-      const Text('No Circles created yet',
+      const Text('No Circles have been created yet',
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: GraceWayColor.warmWhite)),
       const SizedBox(height: 8),
-      Text('Create a circle to pray with friends,\nor join one with an invite code.',
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Text(
+          'Tap “Create a Circle” to create one, or tap “Join with Invite Code” to join one.',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.45))),
+          style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.45)),
+        ),
+      ),
     ]);
   }
 }
