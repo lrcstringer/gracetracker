@@ -176,7 +176,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                     child: ElevatedButton.icon(
                       onPressed: widget.onComplete,
                       icon: const Icon(Icons.arrow_forward_rounded, size: 16),
-                      label: const Text('Enter GraceWay',
+                      label: const Text('Enter Grace Tracker',
                           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: GraceWayColor.golden,
