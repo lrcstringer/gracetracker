@@ -108,6 +108,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                               ),
                               Text(
                                 'Grace Tracker',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 42,
                                   fontWeight: FontWeight.w700,
