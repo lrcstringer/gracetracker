@@ -676,29 +676,46 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Widget _deleteAccountButton() {
-    return GestureDetector(
-      onTap: _confirmDeleteAccount,
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.25), width: 0.5),
+    final auth = context.watch<AuthService>();
+    final isLoading = auth.isLoading;
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: isLoading ? null : _confirmDeleteAccount,
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.25), width: 0.5),
+          ),
+          child: Row(children: [
+            Icon(Icons.no_accounts_rounded, size: 16, color: GraceWayColor.warmCoral.withValues(alpha: 0.7)),
+            const SizedBox(width: 10),
+            Expanded(child: Text('Delete My Account',
+                style: TextStyle(fontSize: 14, color: GraceWayColor.warmCoral.withValues(alpha: 0.7)))),
+            if (isLoading)
+              const SizedBox(width: 16, height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: GraceWayColor.warmCoral)),
+          ]),
         ),
-        child: Row(children: [
-          Icon(Icons.no_accounts_rounded, size: 16, color: GraceWayColor.warmCoral.withValues(alpha: 0.7)),
-          const SizedBox(width: 10),
-          Expanded(child: Text('Delete My Account',
-              style: TextStyle(fontSize: 14, color: GraceWayColor.warmCoral.withValues(alpha: 0.7)))),
-        ]),
       ),
-    );
+      if (auth.error != null) ...[
+        const SizedBox(height: 6),
+        Row(children: [
+          const Icon(Icons.warning_amber, size: 14, color: GraceWayColor.warmCoral),
+          const SizedBox(width: 6),
+          Expanded(child: Text(auth.error!,
+              style: const TextStyle(fontSize: 12, color: GraceWayColor.warmCoral))),
+        ]),
+      ],
+    ]);
   }
 
   void _confirmDeleteAccount() {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         backgroundColor: GraceWayColor.cardBackground,
         title: const Text('Delete Account', style: TextStyle(color: GraceWayColor.warmWhite)),
         content: Text(
@@ -708,12 +725,12 @@ class _SettingsViewState extends State<SettingsView> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: Text('Cancel', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
           ),
           TextButton(
             onPressed: () async {
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
               await _deleteAccount();
             },
             child: const Text('Delete Forever', style: TextStyle(color: GraceWayColor.warmCoral)),
@@ -726,9 +743,6 @@ class _SettingsViewState extends State<SettingsView> {
   Future<void> _deleteAccount() async {
     final auth = context.read<AuthService>();
     await auth.deleteAccount();
-    // On success, AuthService notifyListeners() triggers root_view.dart to pop
-    // all routes and show the onboarding screen automatically. On failure,
-    // auth.error is non-null and displayed in the account section.
   }
 
   Widget _resetButton() {
