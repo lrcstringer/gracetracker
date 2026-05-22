@@ -38,6 +38,7 @@ abstract class CircleRepository {
     required String requestText,
     required PrayerDuration duration,
     bool anonymous = false,
+    List<String>? recipientIds, // null = all members
   });
   Future<void> prayForRequest(String circleId, String requestId);
   Future<void> markPrayerAnswered(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/circle.dart';
-import '../../../data/datasources/remote/api_service.dart';
-import '../../providers/circle_notification_provider.dart';
+import '../../../domain/repositories/circle_repository.dart';
 import '../../theme/app_theme.dart';
 
 class PrayerRequestComposeView extends StatefulWidget {
@@ -24,15 +23,14 @@ class PrayerRequestComposeView extends StatefulWidget {
 
 class _PrayerRequestComposeViewState extends State<PrayerRequestComposeView> {
   final _controller = TextEditingController();
-  late Set<String> _selectedIds;
+
+  // null = "All" selected; non-null = specific subset
+  Set<String>? _selectedIds;
+  PrayerDuration _duration = PrayerDuration.ongoing;
   bool _sending = false;
   String? _error;
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedIds = widget.otherMembers.map((m) => m.userId).toSet();
-  }
+  bool get _allSelected => _selectedIds == null;
 
   @override
   void dispose() {
@@ -40,30 +38,63 @@ class _PrayerRequestComposeViewState extends State<PrayerRequestComposeView> {
     super.dispose();
   }
 
-  bool get _canSend =>
-      _controller.text.trim().isNotEmpty && _selectedIds.isNotEmpty && !_sending;
+  bool get _canSend {
+    if (_sending) return false;
+    if (_controller.text.trim().isEmpty) return false;
+    // "All" always valid; subset must be non-empty
+    return _allSelected || _selectedIds!.isNotEmpty;
+  }
+
+  void _toggleAll() {
+    setState(() {
+      _selectedIds = null; // null means "All"
+    });
+  }
+
+  void _toggleMember(String userId) {
+    setState(() {
+      if (_allSelected) {
+        // Switch from All → deselect this one member
+        _selectedIds = widget.otherMembers
+            .map((m) => m.userId)
+            .where((id) => id != userId)
+            .toSet();
+      } else {
+        final updated = Set<String>.from(_selectedIds!);
+        if (updated.contains(userId)) {
+          updated.remove(userId);
+        } else {
+          updated.add(userId);
+          // If every member is now selected, switch back to "All"
+          if (updated.length == widget.otherMembers.length) {
+            _selectedIds = null;
+            return;
+          }
+        }
+        _selectedIds = updated;
+      }
+    });
+  }
 
   Future<void> _send() async {
     final message = _controller.text.trim();
-    if (message.isEmpty || _selectedIds.isEmpty) return;
-    setState(() {
-      _sending = true;
-      _error = null;
-    });
+    if (message.isEmpty) return;
+    setState(() { _sending = true; _error = null; });
     try {
-      await context.read<CircleNotificationProvider>().sendPrayerRequest(
+      await context.read<CircleRepository>().createPrayerRequest(
             circleId: widget.circleId,
-            message: message,
-            recipientIds: _selectedIds.toList(),
+            requestText: message,
+            duration: _duration,
+            recipientIds: _allSelected ? null : _selectedIds!.toList(),
           );
       if (mounted) Navigator.pop(context);
-    } on APIError catch (e) {
-      if (mounted) setState(() { _sending = false; _error = e.message; });
-    } catch (_) {
+    } catch (e) {
       if (mounted) {
         setState(() {
           _sending = false;
-          _error = 'Failed to send. Please check your connection.';
+          _error = e.toString().contains('permission')
+              ? 'Not authorized to send in this circle.'
+              : 'Failed to send. Please check your connection.';
         });
       }
     }
@@ -106,15 +137,7 @@ class _PrayerRequestComposeViewState extends State<PrayerRequestComposeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'TO',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.4),
-                  letterSpacing: 1.2,
-                ),
-              ),
+              _label('TO'),
               const SizedBox(height: 10),
               if (widget.otherMembers.isEmpty)
                 Text(
@@ -126,58 +149,29 @@ class _PrayerRequestComposeViewState extends State<PrayerRequestComposeView> {
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: widget.otherMembers.map((m) {
-                    final selected = _selectedIds.contains(m.userId);
-                    return GestureDetector(
-                      onTap: () => setState(() {
-                        if (selected) {
-                          _selectedIds.remove(m.userId);
-                        } else {
-                          _selectedIds.add(m.userId);
-                        }
-                      }),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 150),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 7),
-                        decoration: BoxDecoration(
-                          color: selected
-                              ? GraceWayColor.golden.withValues(alpha: 0.15)
-                              : Colors.white.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: selected
-                                ? GraceWayColor.golden.withValues(alpha: 0.5)
-                                : Colors.white.withValues(alpha: 0.12),
-                            width: 0.5,
-                          ),
-                        ),
-                        child: Text(
-                          m.displayName,
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: selected
-                                ? FontWeight.w600
-                                : FontWeight.normal,
-                            color: selected
-                                ? GraceWayColor.golden
-                                : Colors.white.withValues(alpha: 0.6),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                  children: [
+                    _pill(
+                      label: 'All',
+                      selected: _allSelected,
+                      onTap: _toggleAll,
+                    ),
+                    ...widget.otherMembers.map((m) {
+                      final selected =
+                          _allSelected || (_selectedIds?.contains(m.userId) ?? false);
+                      return _pill(
+                        label: m.displayName,
+                        selected: selected,
+                        onTap: () => _toggleMember(m.userId),
+                      );
+                    }),
+                  ],
                 ),
               const SizedBox(height: 20),
-              Text(
-                'MESSAGE',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withValues(alpha: 0.4),
-                  letterSpacing: 1.2,
-                ),
-              ),
+              _label('HOW LONG'),
+              const SizedBox(height: 10),
+              _durationPicker(),
+              const SizedBox(height: 20),
+              _label('MESSAGE'),
               const SizedBox(height: 10),
               Expanded(
                 child: TextField(
@@ -222,6 +216,98 @@ class _PrayerRequestComposeViewState extends State<PrayerRequestComposeView> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _label(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+        color: Colors.white.withValues(alpha: 0.4),
+        letterSpacing: 1.2,
+      ),
+    );
+  }
+
+  Widget _pill({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        decoration: BoxDecoration(
+          color: selected
+              ? GraceWayColor.golden.withValues(alpha: 0.15)
+              : Colors.white.withValues(alpha: 0.06),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: selected
+                ? GraceWayColor.golden.withValues(alpha: 0.5)
+                : Colors.white.withValues(alpha: 0.12),
+            width: 0.5,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+            color: selected
+                ? GraceWayColor.golden
+                : Colors.white.withValues(alpha: 0.6),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _durationPicker() {
+    const options = [
+      (PrayerDuration.thisWeek, 'This week'),
+      (PrayerDuration.ongoing, 'Ongoing'),
+      (PrayerDuration.untilRemoved, 'Until resolved'),
+    ];
+    return Wrap(
+      spacing: 8,
+      children: options.map((opt) {
+        final (dur, label) = opt;
+        final selected = _duration == dur;
+        return GestureDetector(
+          onTap: () => setState(() => _duration = dur),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: selected
+                  ? GraceWayColor.sage.withValues(alpha: 0.15)
+                  : Colors.white.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: selected
+                    ? GraceWayColor.sage.withValues(alpha: 0.5)
+                    : Colors.white.withValues(alpha: 0.12),
+                width: 0.5,
+              ),
+            ),
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                color: selected
+                    ? GraceWayColor.sage
+                    : Colors.white.withValues(alpha: 0.6),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

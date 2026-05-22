@@ -38,6 +38,7 @@ export const circleCreate = onCall(
     if (!name?.trim()) throw new HttpsError('invalid-argument', 'Name is required');
 
     const uid = request.auth.uid;
+    const displayName = (request.auth.token.name as string | undefined) ?? undefined;
     const circleId = crypto.randomUUID();
     const inviteCode = generateInviteCode();
 
@@ -51,6 +52,7 @@ export const circleCreate = onCall(
     });
     batch.set(membersCol(circleId).doc(uid), {
       userId: uid, role: 'admin', joinedAt: Timestamp.now(), sosContactIds: [],
+      ...(displayName ? { displayName } : {}),
     });
     await batch.commit();
 
@@ -69,6 +71,7 @@ export const circleJoin = onCall(
     if (!code) throw new HttpsError('invalid-argument', 'Invite code required');
 
     const uid = request.auth.uid;
+    const displayName = (request.auth.token.name as string | undefined) ?? undefined;
     const codeSnap = await inviteCodesCol().doc(code).get();
     if (!codeSnap.exists) {
       throw new HttpsError('not-found', 'No prayer circle found with that invite code');
@@ -94,6 +97,7 @@ export const circleJoin = onCall(
     const batch = db.batch();
     batch.set(membersCol(circleId).doc(uid), {
       userId: uid, role: 'member', joinedAt: Timestamp.now(), sosContactIds: [],
+      ...(displayName ? { displayName } : {}),
     });
     batch.update(circlesCol().doc(circleId), { memberCount: FieldValue.increment(1) });
     await batch.commit();

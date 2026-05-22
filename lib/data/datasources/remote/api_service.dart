@@ -255,7 +255,7 @@ class APIService {
 
   static const String _baseURL = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://your-backend-url.com',
+    defaultValue: 'https://us-central1-graceway-db29e.cloudfunctions.net/api',
   );
 
   Future<void> init() async {
@@ -365,23 +365,29 @@ class APIService {
   Future<T> _getQuery<T>(String procedure, {Map<String, dynamic>? input, required T Function(dynamic) fromJson}) async {
     var urlString = '$_baseURL/api/trpc/$procedure';
     if (input != null) {
-      final encoded = Uri.encodeComponent(jsonEncode(input));
+      // tRPC server uses superjson transformer: wrap input as {"json": <input>}
+      final encoded = Uri.encodeComponent(jsonEncode({'json': input}));
       urlString += '?input=$encoded';
     }
     final uri = Uri.parse(urlString);
     final response = await http.get(uri, headers: await _buildAuthHeaders());
     _checkStatus(response);
     final body = jsonDecode(response.body) as Map<String, dynamic>;
-    return fromJson(body['result']['data']);
+    // tRPC server uses superjson transformer: data is wrapped as {"json": <actual>}
+    final data = body['result']['data'] as Map<String, dynamic>;
+    return fromJson(data['json']);
   }
 
   Future<T> _postMutation<T>(String procedure, {required Map<String, dynamic> body, required T Function(Map<String, dynamic>) fromJson}) async {
     final uri = Uri.parse('$_baseURL/api/trpc/$procedure');
     final authHeaders = await _buildAuthHeaders();
-    final response = await http.post(uri, headers: {'Content-Type': 'application/json', ...authHeaders}, body: jsonEncode(body));
+    // tRPC server uses superjson transformer: wrap input as {"json": <body>}
+    final response = await http.post(uri, headers: {'Content-Type': 'application/json', ...authHeaders}, body: jsonEncode({'json': body}));
     _checkStatus(response);
     final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return fromJson(responseBody['result']['data'] as Map<String, dynamic>);
+    // tRPC server uses superjson transformer: data is wrapped as {"json": <actual>}
+    final data = responseBody['result']['data'] as Map<String, dynamic>;
+    return fromJson(data['json'] as Map<String, dynamic>);
   }
 
   Future<Map<String, String>> _buildAuthHeaders() async {

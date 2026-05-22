@@ -7,18 +7,21 @@ export const createContext = async (opts: FetchCreateContextFnOptions) => {
   const authHeader = opts.req.headers.get('authorization');
   let userId: string | null = null;
 
+  let displayName: string | null = null;
+
   if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.slice(7);
     try {
       const decoded = await auth.verifyIdToken(token);
       userId = decoded.uid;
+      displayName = (decoded.name as string | undefined) ?? null;
     } catch {
       // Token invalid or expired — userId stays null
       // protectedProcedure will throw UNAUTHORIZED
     }
   }
 
-  return { req: opts.req, userId };
+  return { req: opts.req, userId, displayName };
 };
 
 export type Context = Awaited<ReturnType<typeof createContext>>;

@@ -13,6 +13,7 @@ import 'circle_settings_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'announcement_compose_view.dart';
 import 'prayer_request_compose_view.dart';
+import 'prayer_list_view.dart';
 
 class CircleDetailView extends StatefulWidget {
   final String circleId;
@@ -31,6 +32,8 @@ class _CircleDetailViewState extends State<CircleDetailView> {
   bool _heatmapFailed = false;
   CollectiveMilestones? _milestones;
   bool _milestonesFailed = false;
+  List<PrayerRequest>? _prayerRequests;
+  bool _prayerRequestsFailed = false;
 
   @override
   void initState() {
@@ -38,6 +41,7 @@ class _CircleDetailViewState extends State<CircleDetailView> {
     _loadDetail();
     _loadHeatmap();
     _loadMilestones();
+    _loadPrayerRequests();
     _loadProviders();
   }
 
@@ -87,6 +91,15 @@ class _CircleDetailViewState extends State<CircleDetailView> {
       if (mounted) setState(() => _milestones = milestones);
     } catch (_) {
       if (mounted) setState(() => _milestonesFailed = true);
+    }
+  }
+
+  Future<void> _loadPrayerRequests() async {
+    try {
+      final requests = await context.read<CircleRepository>().getPrayerRequests(widget.circleId);
+      if (mounted) setState(() => _prayerRequests = requests);
+    } catch (_) {
+      if (mounted) setState(() => _prayerRequestsFailed = true);
     }
   }
 
@@ -169,8 +182,11 @@ class _CircleDetailViewState extends State<CircleDetailView> {
           heatmapFailed: _heatmapFailed,
           milestones: _milestones,
           milestonesFailed: _milestonesFailed,
+          prayerRequests: _prayerRequests,
+          prayerRequestsFailed: _prayerRequestsFailed,
           onSummaryTap: () => _showSundaySummary(detail),
           onPrayerRequestTap: () => _openPrayerRequest(detail),
+          onSeeAllPrayerRequests: () => _openPrayerList(detail),
         ),
       ),
     );
@@ -216,7 +232,19 @@ class _CircleDetailViewState extends State<CircleDetailView> {
           otherMembers: otherMembers,
         ),
       ),
-    );
+    ).then((_) => _loadPrayerRequests());
+  }
+
+  void _openPrayerList(CircleDetails detail) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PrayerListView(
+          circleId: widget.circleId,
+          circleName: detail.name,
+        ),
+      ),
+    ).then((_) => _loadPrayerRequests());
   }
 
   Widget _inviteBar(CircleDetails detail) {
@@ -266,8 +294,11 @@ class _OverviewTab extends StatelessWidget {
   final bool heatmapFailed;
   final CollectiveMilestones? milestones;
   final bool milestonesFailed;
+  final List<PrayerRequest>? prayerRequests;
+  final bool prayerRequestsFailed;
   final VoidCallback onSummaryTap;
   final VoidCallback onPrayerRequestTap;
+  final VoidCallback onSeeAllPrayerRequests;
   const _OverviewTab({
     required this.circleId,
     required this.detail,
@@ -275,8 +306,11 @@ class _OverviewTab extends StatelessWidget {
     required this.heatmapFailed,
     required this.milestones,
     required this.milestonesFailed,
+    required this.prayerRequests,
+    required this.prayerRequestsFailed,
     required this.onSummaryTap,
     required this.onPrayerRequestTap,
+    required this.onSeeAllPrayerRequests,
   });
 
   @override
@@ -306,6 +340,8 @@ class _OverviewTab extends StatelessWidget {
           title: 'Prayer Request', subtitle: 'Ask circle members to pray for you',
           onTap: onPrayerRequestTap,
         ),
+        const SizedBox(height: 16),
+        _prayerRequestsSection(),
         const SizedBox(height: 16),
         _sectionHeader('Members (${detail.members.length})'),
         const SizedBox(height: 8),
@@ -464,6 +500,135 @@ class _OverviewTab extends StatelessWidget {
           ])),
           Icon(Icons.chevron_right, size: 14, color: Colors.white.withValues(alpha: 0.3)),
         ]),
+      ),
+    );
+  }
+
+  Widget _prayerRequestsSection() {
+    final requests = prayerRequests;
+    final active = requests
+            ?.where((r) => r.status == PrayerRequestStatus.active)
+            .take(3)
+            .toList() ??
+        [];
+    final total = requests
+            ?.where((r) => r.status == PrayerRequestStatus.active)
+            .length ??
+        0;
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: GraceWayDecorations.card,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          const Icon(Icons.volunteer_activism_rounded,
+              size: 13, color: GraceWayColor.sage),
+          const SizedBox(width: 6),
+          Text('Prayer Requests',
+              style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: GraceWayColor.sage)),
+          const Spacer(),
+          if (total > 0)
+            GestureDetector(
+              onTap: onSeeAllPrayerRequests,
+              child: Text(
+                'See all ($total)',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: GraceWayColor.sage.withValues(alpha: 0.7)),
+              ),
+            ),
+        ]),
+        const SizedBox(height: 10),
+        if (prayerRequestsFailed)
+          Text('Could not load prayer requests.',
+              style: TextStyle(
+                  fontSize: 12, color: Colors.white.withValues(alpha: 0.35)))
+        else if (requests == null)
+          const SizedBox(
+            height: 24,
+            child: Center(
+              child: SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                      strokeWidth: 1.5, color: GraceWayColor.sage)),
+            ),
+          )
+        else if (active.isEmpty)
+          Text(
+            'No active prayer requests. Tap "Prayer Request" above to share one.',
+            style: TextStyle(
+                fontSize: 12,
+                color: Colors.white.withValues(alpha: 0.4),
+                height: 1.4),
+          )
+        else
+          ...active.map((r) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: _prayerRequestTile(r),
+              )),
+      ]),
+    );
+  }
+
+  Widget _prayerRequestTile(PrayerRequest r) {
+    return GestureDetector(
+      onTap: onSeeAllPrayerRequests,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.03),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+              color: Colors.white.withValues(alpha: 0.07), width: 0.5),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 1),
+              child: Icon(Icons.volunteer_activism_rounded,
+                  size: 13, color: GraceWayColor.sage.withValues(alpha: 0.6)),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      r.authorDisplayName,
+                      style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: GraceWayColor.warmWhite),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      r.requestText,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white.withValues(alpha: 0.65),
+                          height: 1.4),
+                    ),
+                  ]),
+            ),
+            const SizedBox(width: 6),
+            Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.people_outline_rounded,
+                  size: 11, color: Colors.white.withValues(alpha: 0.3)),
+              const SizedBox(width: 3),
+              Text('${r.prayerCount}',
+                  style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.white.withValues(alpha: 0.3))),
+            ]),
+          ],
+        ),
       ),
     );
   }

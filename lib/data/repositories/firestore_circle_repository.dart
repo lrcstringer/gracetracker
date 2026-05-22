@@ -160,25 +160,27 @@ class FirestoreCircleRepository implements CircleRepository {
     if (!snap.exists) throw Exception('Circle not found');
     final data = snap.data()! as Map<String, dynamic>;
 
-    // Fetch each member's user profile to get their app-entered name.
-    // Falls back to the auth-sourced displayName stored on the membership doc
-    // if the profile is unreadable (permission, network, or missing doc).
+    // Fetch each member's user profile to resolve their display name.
+    // Priority: users/{uid}.displayName → users/{uid}.firstName → member doc displayName.
     final memberDocs = membersSnap.docs;
     final userIds = memberDocs
         .map((m) => (m.data() as Map<String, dynamic>)['userId'] as String? ?? '')
         .where((id) => id.isNotEmpty)
         .toList();
 
-    final appNames = <String, String>{};
+    final resolvedNames = <String, String>{};
     await Future.wait(userIds.map((uid) async {
       try {
         final userSnap = await _getWithFallback(_db.collection('users').doc(uid));
         if (userSnap.exists) {
-          final n = userSnap.data()?['name'] as String?;
-          if (n != null && n.isNotEmpty) appNames[uid] = n;
+          final d = userSnap.data() as Map<String, dynamic>;
+          final displayName = d['displayName'] as String?;
+          final firstName = d['firstName'] as String?;
+          final name = (displayName?.isNotEmpty == true ? displayName : firstName);
+          if (name != null && name.isNotEmpty) resolvedNames[uid] = name;
         }
       } catch (_) {
-        // Silently fall back to stored displayName for this member.
+        // Silently fall back to cached name on the member doc.
       }
     }));
 
@@ -192,11 +194,12 @@ class FirestoreCircleRepository implements CircleRepository {
       members: memberDocs.map((m) {
         final md = m.data() as Map<String, dynamic>;
         final uid = md['userId'] as String? ?? '';
+        final cachedName = md['displayName'] as String?;
         return CircleMember(
           userId: uid,
           role: md['role'] as String? ?? 'member',
           joinedAt: _tsToIso(md['joinedAt']),
-          displayName: appNames[uid] ?? md['displayName'] as String? ?? 'Circle Member',
+          displayName: resolvedNames[uid] ?? cachedName ?? uid,
         );
       }).toList(),
     );
@@ -498,12 +501,14 @@ class FirestoreCircleRepository implements CircleRepository {
     required String requestText,
     required PrayerDuration duration,
     bool anonymous = false,
+    List<String>? recipientIds,
   }) async {
     await _call('prayerRequestCreate', {
       'circleId': circleId,
       'requestText': requestText,
       'duration': _prayerDurationToString(duration),
       'anonymous': anonymous,
+      'recipientIds': recipientIds,
     });
   }
 

@@ -67,6 +67,7 @@ export const circlesRouter = createTRPCRouter({
         role: 'admin',
         joinedAt: Timestamp.now(),
         sosContactIds: [],
+        ...(ctx.displayName ? { displayName: ctx.displayName } : {}),
       });
       await batch.commit();
 
@@ -104,6 +105,7 @@ export const circlesRouter = createTRPCRouter({
         role: 'member',
         joinedAt: Timestamp.now(),
         sosContactIds: [],
+        ...(ctx.displayName ? { displayName: ctx.displayName } : {}),
       });
       batch.update(circlesCol().doc(circleId), { memberCount: FieldValue.increment(1) });
       await batch.commit();

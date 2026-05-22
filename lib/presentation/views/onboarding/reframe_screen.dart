@@ -50,7 +50,8 @@ class _ReframeScreenState extends State<ReframeScreen> {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: GraceWayColor.warmWhite, height: 1.3),
             ),
             const SizedBox(height: 28),
-            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            IntrinsicHeight(
+              child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               Expanded(
                 child: AnimatedOpacity(
                   opacity: _showLeft ? 1.0 : 0.0,
@@ -58,35 +59,38 @@ class _ReframeScreenState extends State<ReframeScreen> {
                   child: AnimatedSlide(
                     offset: _showLeft ? Offset.zero : const Offset(-0.3, 0),
                     duration: const Duration(milliseconds: 500),
-                    child: Column(children: [
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       Text('Other apps',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Colors.white.withValues(alpha: 0.5))),
                       const SizedBox(height: 12),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: GraceWayColor.warmCoral.withValues(alpha: 0.06),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: GraceWayColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+                          ),
+                          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            Text('Day 47',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: GraceWayColor.warmCoral,
+                                  decoration: TextDecoration.lineThrough,
+                                  decorationColor: GraceWayColor.warmCoral,
+                                )),
+                            const SizedBox(height: 6),
+                            Text('Streak broken.',
+                                style: TextStyle(fontSize: 12, color: GraceWayColor.warmCoral.withValues(alpha: 0.8))),
+                            const SizedBox(height: 8),
+                            Icon(Icons.cancel_rounded, size: 28, color: GraceWayColor.warmCoral.withValues(alpha: 0.6)),
+                          ]),
                         ),
-                        child: Column(children: [
-                          Text('Day 47',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: GraceWayColor.warmCoral,
-                                decoration: TextDecoration.lineThrough,
-                                decorationColor: GraceWayColor.warmCoral,
-                              )),
-                          const SizedBox(height: 6),
-                          Text('Streak broken.',
-                              style: TextStyle(fontSize: 12, color: GraceWayColor.warmCoral.withValues(alpha: 0.8))),
-                          const SizedBox(height: 8),
-                          Icon(Icons.cancel_rounded, size: 28, color: GraceWayColor.warmCoral.withValues(alpha: 0.6)),
-                        ]),
                       ),
                     ]),
                   ),
@@ -100,45 +104,48 @@ class _ReframeScreenState extends State<ReframeScreen> {
                   child: AnimatedSlide(
                     offset: _showRight ? Offset.zero : const Offset(0.3, 0),
                     duration: const Duration(milliseconds: 500),
-                    child: Column(children: [
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       const Text('Grace Tracker',
+                          textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
                       const SizedBox(height: 12),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: GraceWayColor.golden.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
-                        ),
-                        child: Column(children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(7, (i) => Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 2),
-                              child: Container(
-                                width: 14, height: 14,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: i < 5
-                                      ? GraceWayColor.golden
-                                      : Colors.white.withValues(alpha: 0.08),
-                                ),
-                              ),
-                            )),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: GraceWayColor.golden.withValues(alpha: 0.06),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: GraceWayColor.golden.withValues(alpha: 0.2), width: 0.5),
                           ),
-                          const SizedBox(height: 6),
-                          const Text('5 out of 7',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
-                          const SizedBox(height: 4),
-                          const Text('Great week.', style: TextStyle(fontSize: 12, color: GraceWayColor.sage)),
-                        ]),
+                          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(7, (i) => Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 2),
+                                child: Container(
+                                  width: 14, height: 14,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: i < 5
+                                        ? GraceWayColor.golden
+                                        : Colors.white.withValues(alpha: 0.08),
+                                  ),
+                                ),
+                              )),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text('5 out of 7',
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
+                            const SizedBox(height: 4),
+                            const Text('Great week.', style: TextStyle(fontSize: 12, color: GraceWayColor.sage)),
+                          ]),
+                        ),
                       ),
                     ]),
                   ),
                 ),
               ),
-            ]),
+            ])),
             const SizedBox(height: 28),
             AnimatedOpacity(
               opacity: _showPoints ? 1.0 : 0.0,

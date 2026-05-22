@@ -4,10 +4,15 @@ import { FieldValue } from 'firebase-admin/firestore';
 import {
   db,
   membersCol,
+  circlesCol,
+  userNotificationsCol,
   prayerRequestsCol,
   Timestamp,
   weekStart,
 } from '../lib/firestore';
+import { sendPushToUsers } from '../lib/fcm';
+
+const NOTIFICATION_TTL_DAYS = 30;
 
 // ── prayerRequestCreate ────────────────────────────────────────────────────────
 
@@ -16,11 +21,12 @@ export const prayerRequestCreate = onCall(
   async (request) => {
     if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in required');
 
-    const { circleId, requestText, duration, anonymous } = request.data as {
+    const { circleId, requestText, duration, anonymous, recipientIds } = request.data as {
       circleId: string;
       requestText: string;
       duration: 'THIS_WEEK' | 'ONGOING' | 'UNTIL_REMOVED';
       anonymous?: boolean;
+      recipientIds?: string[] | null;
     };
 
     if (!circleId?.trim()) throw new HttpsError('invalid-argument', 'circleId required');
@@ -34,12 +40,12 @@ export const prayerRequestCreate = onCall(
 
     const uid = request.auth.uid;
 
-    // Verify membership.
+    // Verify membership and get sender display name.
     const memberSnap = await membersCol(circleId).doc(uid).get();
     if (!memberSnap.exists) throw new HttpsError('permission-denied', 'Not a member of this circle');
 
     const memberData = memberSnap.data()!;
-    const displayName = anonymous
+    const senderDisplayName = anonymous
       ? 'Anonymous'
       : (memberData['displayName'] as string | undefined) ?? 'Circle Member';
 
@@ -57,7 +63,7 @@ export const prayerRequestCreate = onCall(
       id: ref.id,
       circleId,
       authorId: uid,
-      authorDisplayName: displayName,
+      authorDisplayName: senderDisplayName,
       requestText: requestText.trim(),
       duration,
       status: 'ACTIVE',
@@ -68,6 +74,63 @@ export const prayerRequestCreate = onCall(
       answeredAt: null,
       expiresAt,
     });
+
+    // ── Fan out notifications ─────────────────────────────────────────────────
+
+    // Resolve recipients: null/empty = all circle members; otherwise validate the
+    // provided list contains only actual members.
+    let targetIds: string[];
+    if (!recipientIds || recipientIds.length === 0) {
+      const allSnap = await membersCol(circleId).get();
+      targetIds = allSnap.docs.map((d) => d.id).filter((id) => id !== uid);
+    } else {
+      const allSnap = await membersCol(circleId).get();
+      const memberSet = new Set(allSnap.docs.map((d) => d.id));
+      targetIds = recipientIds.filter((id) => id !== uid && memberSet.has(id));
+    }
+
+    if (targetIds.length > 0) {
+      // Get circle name for notification title.
+      const circleSnap = await circlesCol().doc(circleId).get();
+      const circleName = (circleSnap.data()?.name as string | undefined) ?? 'Your circle';
+
+      const notifId = crypto.randomUUID();
+      const now = Timestamp.now();
+      const exp = Timestamp.fromDate(
+        new Date(Date.now() + NOTIFICATION_TTL_DAYS * 86_400_000)
+      );
+
+      const batch = db.batch();
+      for (const recipientId of targetIds) {
+        batch.set(userNotificationsCol(recipientId).doc(notifId), {
+          id: notifId,
+          type: 'prayer_request',
+          circleId,
+          circleName,
+          senderUid: uid,
+          senderName: senderDisplayName,
+          message: requestText.trim(),
+          prayerRequestId: ref.id,
+          createdAt: now,
+          expiresAt: exp,
+          isRead: false,
+          actionTaken: null,
+          suppressActions: false,
+        });
+      }
+      await batch.commit();
+
+      // FCM push — best-effort, never blocks the response.
+      const pushTitle = anonymous
+        ? `${circleName} — Prayer Request`
+        : `${senderDisplayName} needs prayer`;
+      sendPushToUsers(targetIds, {
+        title: pushTitle,
+        body: requestText.trim(),
+        data: { notifId, type: 'prayer_request', circleId, prayerRequestId: ref.id },
+        channelId: 'circles',
+      }).catch(() => undefined);
+    }
 
     return { id: ref.id };
   }
