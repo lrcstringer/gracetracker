@@ -511,11 +511,11 @@ class _EditHabitViewState extends State<EditHabitView> {
 
   Future<void> _sharePartnerLink(String url, String shortCode) async {
     await Share.share(
-        'Please walk with me on my journey — open Grace Tracker on your phone '
-        'and accept my prayer partner invite. If you don\'t have Grace Tracker, '
-        'download it and tap this link: $url\n\n'
-        'Or open the Grace Habits app, tap the Notifications bell at the top of the screen, '
-        'then tap "Enter code" and enter the code $shortCode');
+        'Please walk with me on my journey — open Grace Habits on your phone and accept my prayer partner invite by '
+        'i) tapping the Notifications bell at the top of the screen, '
+        'ii) then tapping "Enter code" and '
+        'iii) then entering the code: $shortCode\n\n'
+        'If you don\'t have Grace Habits, download it at this link: https://gracehabits.com');
   }
 
   Widget _referenceUrlSection() {

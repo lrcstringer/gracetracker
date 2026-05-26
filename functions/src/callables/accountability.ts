@@ -76,7 +76,7 @@ export const accountabilityCreateInvite = onCall(
             senderName: ownerDisplayName ?? '',
             circleId: partnershipId,
             circleName: habitName ?? '',
-            message: `${ownerDisplayName ?? 'Someone'} wants you to be their support/prayer partner for "${habitName ?? 'a habit'}"`,
+            message: `${ownerDisplayName ?? 'Someone'} wants you to be their support/prayer partner for "${habitName ?? 'a habit'}". Click on Enter Code and enter the code that was sent to you.`,
             partnerInviteToken: token,
             isRead: false,
             suppressActions: false,
@@ -85,8 +85,8 @@ export const accountabilityCreateInvite = onCall(
           inAppSent = true;
           // Also send a push nudge so the notification bell lights up.
           sendPushToUsers([recipientUid], {
-            title: `${ownerDisplayName ?? 'Someone'} invited you to walk with them`,
-            body: `Open GraceWay to accept their support partner request.`,
+            title: `${ownerDisplayName ?? 'Someone'} invited you to walk with them as a support/prayer partner.`,
+            body: `To accept their support partner request, open Grace Habits, click on the Notifications bell icon at the top of the screen and then click Enter Code and enter the code sent to you.`,
             data: { type: 'partnership_invite', partnershipId, channel: 'partnerships' },
             channelId: 'partnerships',
           }).catch(() => {});
