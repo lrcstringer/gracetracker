@@ -513,7 +513,9 @@ class _EditHabitViewState extends State<EditHabitView> {
     await Share.share(
         'Please walk with me on my journey — open Grace Tracker on your phone '
         'and accept my prayer partner invite. If you don\'t have Grace Tracker, '
-        'download it and tap this link: $url\n\nOr enter code $shortCode in the app.');
+        'download it and tap this link: $url\n\n'
+        'Or open the Grace Habits app, tap the Notifications bell at the top of the screen, '
+        'then tap "Enter code" and enter the code $shortCode');
   }
 
   Widget _referenceUrlSection() {

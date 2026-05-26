@@ -3,6 +3,7 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { FieldValue } from 'firebase-admin/firestore';
 import {
   db,
+  usersCol,
   membersCol,
   circlesCol,
   userNotificationsCol,
@@ -40,14 +41,16 @@ export const prayerRequestCreate = onCall(
 
     const uid = request.auth.uid;
 
-    // Verify membership and get sender display name.
-    const memberSnap = await membersCol(circleId).doc(uid).get();
+    // Verify membership and get sender display name from their user profile.
+    const [memberSnap, userSnap] = await Promise.all([
+      membersCol(circleId).doc(uid).get(),
+      usersCol().doc(uid).get(),
+    ]);
     if (!memberSnap.exists) throw new HttpsError('permission-denied', 'Not a member of this circle');
 
-    const memberData = memberSnap.data()!;
     const senderDisplayName = anonymous
       ? 'Anonymous'
-      : (memberData['displayName'] as string | undefined) ?? 'Circle Member';
+      : (userSnap.data()?.['name'] as string | undefined) ?? 'Circle Member';
 
     // Calculate expiry for THIS_WEEK requests: end of Saturday (23:59:59).
     let expiresAt: Timestamp | null = null;
