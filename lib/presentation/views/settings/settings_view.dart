@@ -1,4 +1,4 @@
-import 'package:app_settings/app_settings.dart';
+﻿import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
@@ -246,7 +246,7 @@ class _SettingsViewState extends State<SettingsView> {
                   padding: const EdgeInsets.all(16),
                   decoration: GraceWayDecorations.card,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('Grace Tracker',
+                    const Text('Grace Habits',
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: GraceWayColor.golden)),
                     Text('Track your habits. Give them to God.',
                         style: TextStyle(fontSize: 14, color: GraceWayColor.softGold.withValues(alpha: 0.7))),
@@ -391,7 +391,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
             const SizedBox(width: 12),
             const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Grace Tracker Pro', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
+              Text('Grace Habits Pro', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
               Text('All premium features unlocked',
                   style: TextStyle(fontSize: 12, color: GraceWayColor.softGold)),
             ])),

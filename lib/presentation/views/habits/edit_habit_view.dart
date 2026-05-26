@@ -401,7 +401,7 @@ class _EditHabitViewState extends State<EditHabitView> {
           child: Text(
             accountability.isLoading
                 ? 'Creating invite…'
-                : 'Invite a prayer partner',
+                : 'Invite a support/prayer partner',
             style: TextStyle(
                 fontSize: 14,
                 color: GraceWayColor.sage.withValues(alpha: 0.9),

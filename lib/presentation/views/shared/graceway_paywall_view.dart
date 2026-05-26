@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 import '../../providers/store_provider.dart';
@@ -108,7 +108,7 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
             size: 28, color: GraceWayColor.golden),
       ),
       const SizedBox(height: 10),
-      const Text('Grace Tracker Pro',
+      const Text('Grace Habits Pro',
           style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
@@ -329,7 +329,7 @@ class _GraceWayPaywallViewState extends State<GraceWayPaywallView> {
             const Icon(Icons.check_circle_rounded,
                 color: GraceWayColor.sage, size: 18),
             const SizedBox(width: 8),
-            const Text('Welcome to Grace Tracker Pro',
+            const Text('Welcome to Grace Habits Pro',
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -107,7 +107,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                 ),
                               ),
                               Text(
-                                'Grace Tracker',
+                                'Grace Habits',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 42,

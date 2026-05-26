@@ -12,7 +12,7 @@ class GraceWayApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Grace Tracker',
+      title: 'Grace Habits',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
       localizationsDelegates: const [

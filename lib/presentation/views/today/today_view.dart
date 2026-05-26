@@ -134,7 +134,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                   pinned: true,
                   automaticallyImplyLeading: false,
                   title: const Text(
-                    'Grace Tracker',
+                    'Grace Habits',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -175,7 +175,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
-                                'Grace Tracker',
+                                'Grace Habits',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 28,

@@ -1,4 +1,4 @@
-import 'dart:ui' as ui;
+﻿import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
@@ -233,7 +233,7 @@ class _JourneyViewState extends State<JourneyView> {
           children: [
             Row(
               children: [
-                Text('Year in Grace Tracker',
+                Text('Year in Grace Habits',
                     style: TextStyle(
                         fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
                 const Spacer(),
@@ -262,7 +262,7 @@ class _JourneyViewState extends State<JourneyView> {
               children: [
                 Row(
                   children: [
-                    Text('Year in Grace Tracker',
+                    Text('Year in Grace Habits',
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -303,7 +303,7 @@ class _JourneyViewState extends State<JourneyView> {
                   children: [
                     Icon(Icons.lock_outline, size: 13, color: GraceWayColor.golden),
                     const SizedBox(width: 6),
-                    Text('Unlock with Grace Tracker Pro',
+                    Text('Unlock with Grace Habits Pro',
                         style: TextStyle(fontSize: 12, color: GraceWayColor.softGold)),
                     const Spacer(),
                     Icon(Icons.chevron_right, size: 13, color: Colors.white.withValues(alpha: 0.3)),

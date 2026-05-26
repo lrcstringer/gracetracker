@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -172,7 +172,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    final text = 'Join my Prayer Circle "${widget.circleName}" on Grace Tracker!\n\n'
+                    final text = 'Join my Prayer Circle "${widget.circleName}" on Grace Habits!\n\n'
                         'Your invite code: ${widget.inviteCode}\n\n'
                         'Already have the app? Go to Circles → Join with Invite Code → enter ${widget.inviteCode}\n\n'
                         "Don't have the app yet?\n"

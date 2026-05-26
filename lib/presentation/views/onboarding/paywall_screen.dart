@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/store_provider.dart';
 import '../../theme/app_theme.dart';
@@ -97,7 +97,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
               duration: const Duration(milliseconds: 500),
               child: Column(children: [
                 const Text(
-                  'Go deeper with\nGrace Tracker Pro',
+                  'Go deeper with\nGrace Habits Pro',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 22,

@@ -1,4 +1,4 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+﻿import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
@@ -145,7 +145,7 @@ class NotificationService {
       final body = _reminderMessages[i % _reminderMessages.length];
       await _plugin.zonedSchedule(
         100 + i,
-        'Grace Tracker',
+        'Grace Habits',
         body,
         _nextWeekday(i + 1, hour, minute),
         NotificationDetails(
@@ -230,7 +230,7 @@ class NotificationService {
     final body = messages[messageIdx];
 
     await _plugin.zonedSchedule(
-      99999, 'Grace Tracker', body,
+      99999, 'Grace Habits', body,
       _toTZDateTime(scheduled),
       NotificationDetails(
         android: const AndroidNotificationDetails('encouragement', 'Encouragement', importance: Importance.defaultImportance),

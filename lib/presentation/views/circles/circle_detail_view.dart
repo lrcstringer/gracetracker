@@ -1,4 +1,4 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+﻿import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../data/datasources/remote/auth_service.dart';
@@ -275,7 +275,7 @@ class _CircleDetailViewState extends State<CircleDetailView> {
   }
 
   void _shareInvite(CircleDetails detail) {
-    final text = 'Join my Prayer Circle "${detail.name}" on Grace Tracker!\n\n'
+    final text = 'Join my Prayer Circle "${detail.name}" on Grace Habits!\n\n'
         'Your invite code: ${detail.inviteCode}\n\n'
         'Already have the app? Go to Circles → Join with Invite Code → enter ${detail.inviteCode}\n\n'
         "Don't have the app yet?\n"

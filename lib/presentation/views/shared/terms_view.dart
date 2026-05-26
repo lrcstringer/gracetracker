@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 
 class TermsView extends StatelessWidget {
@@ -237,7 +237,7 @@ class _TermsContent extends StatelessWidget {
         _body(
           'If you have questions about these Terms or this Privacy Policy, '
           'please contact us at:\n\n'
-          'Grace Tracker Support\nsupport@gracetracker.com',
+          'Grace Habits Support\nsupport@gracetracker.com',
         ),
 
         const SizedBox(height: 32),

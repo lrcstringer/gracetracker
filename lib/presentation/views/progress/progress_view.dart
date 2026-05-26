@@ -1,4 +1,4 @@
-import 'dart:ui' as ui;
+﻿import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
@@ -83,7 +83,7 @@ class ProgressView extends StatelessWidget {
               pinned: true,
               automaticallyImplyLeading: false,
               title: const Text(
-                'Grace Tracker',
+                'Grace Habits',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -515,7 +515,7 @@ class ProgressView extends StatelessWidget {
         decoration: GraceWayDecorations.card,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            Text('Year in Grace Tracker',
+            Text('Year in Grace Habits',
                 style: const TextStyle(
                     fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.golden)),
             const Spacer(),
@@ -538,7 +538,7 @@ class ProgressView extends StatelessWidget {
           decoration: GraceWayDecorations.card,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Text('Year in Grace Tracker',
+              Text('Year in Grace Habits',
                   style: const TextStyle(
                       fontSize: 13, fontWeight: FontWeight.w600, color: GraceWayColor.softGold)),
               const Spacer(),
@@ -570,7 +570,7 @@ class ProgressView extends StatelessWidget {
             Row(children: [
               const Icon(Icons.lock_outline, size: 13, color: GraceWayColor.golden),
               const SizedBox(width: 6),
-              const Text('Unlock with Grace Tracker Pro',
+              const Text('Unlock with Grace Habits Pro',
                   style: TextStyle(fontSize: 12, color: GraceWayColor.softGold)),
               const Spacer(),
               Icon(Icons.chevron_right, size: 13, color: Colors.white.withValues(alpha: 0.3)),

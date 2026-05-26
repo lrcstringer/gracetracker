@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../domain/entities/habit.dart';
@@ -382,7 +382,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                   context: context,
                   builder: (ctx) => AlertDialog(
                     backgroundColor: GraceWayColor.charcoal,
-                    title: const Text('Invite a prayer partner',
+                    title: const Text('Invite a support/prayer partner',
                         style: TextStyle(
                             color: GraceWayColor.warmWhite,
                             fontWeight: FontWeight.w600,
@@ -392,7 +392,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Enter their Grace Tracker email address and they\'ll receive an in-app notification immediately.',
+                          'Enter their Grace Habits email address and they\'ll receive an in-app notification immediately.',
                           style: TextStyle(
                               color: GraceWayColor.warmWhite, fontSize: 13, height: 1.5),
                         ),
@@ -454,14 +454,14 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                     messenger.showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Invitation sent! They\'ll see it in their Grace Tracker notifications. '
+                          'Invitation sent! They\'ll see it in their Grace Habits notifications. '
                           'Share code as backup: ${result.shortCode}',
                         ),
                         duration: const Duration(seconds: 6),
                       ),
                     );
                   } else {
-                    // No Grace Tracker account found — share the link.
+                    // No Grace Habits account found — share the link.
                     await Share.share(
                       'Please walk with me on my journey — open Grace Habits on your phone and accept my prayer partner invite by '
                       'i) tapping the Notifications bell at the top of the screen, '
